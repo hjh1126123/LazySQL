@@ -1,0 +1,9 @@
+F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.csproj.CoreCompileInputs.cache
+F:\GitHub2\LazySQL2\LazySQL\bin\Debug\LazySQL.dll
+F:\GitHub2\LazySQL2\LazySQL\bin\Debug\LazySQL.pdb
+F:\GitHub2\LazySQL2\LazySQL\bin\Debug\System.Data.SQLite.dll
+F:\GitHub2\LazySQL2\LazySQL\bin\Debug\System.Data.SQLite.xml
+F:\GitHub2\LazySQL2\LazySQL\bin\Debug\System.Data.SQLite.dll.config
+F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.csproj.CopyComplete
+F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.dll
+F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.pdb
