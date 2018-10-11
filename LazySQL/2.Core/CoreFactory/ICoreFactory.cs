@@ -1,4 +1,6 @@
-﻿using LazySQL.Core.CoreSystem;
+﻿using LazySQL.Core.CoreFactory.Blueprint;
+using LazySQL.Core.CoreFactory.MethodEncapsulation;
+using LazySQL.Core.CoreSystem;
 using LazySQL.Infrastructure;
 using System;
 using System.CodeDom;
@@ -15,18 +17,6 @@ namespace LazySQL.Core.CoreFactory
         public ICoreFactory(SystemMediator systemMediator)
         {
             this.systemMediator = systemMediator;
-        }
-
-        private class SqlSign
-        {
-            public int Index { get; set; }
-            public int ConditionSign { get; set; }
-        }
-
-        protected class SqlFormat
-        {
-            public int Condition { get; set; }
-            public string SQLText { get; set; }
         }
 
         /// <summary>
@@ -123,6 +113,48 @@ namespace LazySQL.Core.CoreFactory
         }
 
         /// <summary>
+        /// 条件序号以及所在位置
+        /// </summary>
+        private class CondiIndex
+        {
+            /// <summary>
+            /// 位置
+            /// </summary>
+            public int Index { get; set; }
+
+            /// <summary>
+            /// 条件序号
+            /// </summary>
+            public int CondiCount { get; set; }
+
+            /// <summary>
+            /// 是否是条件语句
+            /// </summary>
+            public bool Where { get; set; }
+        }
+
+        /// <summary>
+        /// 条件序号以及SQL脚本
+        /// </summary>
+        protected class SqlFormat
+        {
+            /// <summary>
+            /// 条件序号
+            /// </summary>
+            public int CondiIndex { get; set; }
+
+            /// <summary>
+            /// SQL脚本
+            /// </summary>
+            public string SQLText { get; set; }
+
+            /// <summary>
+            /// 是否是Where
+            /// </summary>
+            public bool IsWhere { get; set; }
+        }
+
+        /// <summary>
         /// 代码构成脚本
         /// </summary>
         /// <param name="connection">连接字符串</param>
@@ -147,91 +179,98 @@ namespace LazySQL.Core.CoreFactory
             provider = CodeDomProvider.CreateProvider("CSharp");
 
             XmlNode sqlNode = XmlHelper.GetInstance().GetNode(xmlNode, "SQL");
-                if (sqlNode == null)
-                    throw new Exception($"{name}不包含SQL节点，该XML文档是无效的");
+            if (sqlNode == null)
+                throw new Exception($"{name}不包含SQL节点，该XML文档是无效的");
 
-                string sQL = sqlNode.InnerText.Replace("\r", " ").Replace("\t", " ").Replace("\n", " ").Trim();
+            string sQL = sqlNode.InnerText.Replace("\r", " ").Replace("\t", " ").Replace("\n", " ").Trim();
 
-                //诺是无任何条件标记则为true (即是无 {0},{1},{2},... 中任意一个)
-                bool isNotActiveConditionInsQL;
+            //诺是无任何条件标记则为true (即是无 {0},{1},{2},... 中任意一个)
+            bool isNotActiveConditionInsQL;
 
-                //格式化SQL字段，分割SQL并写出对应条件键值
-                List<SqlFormat> sqlList = SqlFormatAction(sQL, maxConditionsCount, out isNotActiveConditionInsQL);
+            //格式化SQL字段，分割SQL并写出对应条件键值
+            List<SqlFormat> sqlList = SqlFormatAction(sQL, maxConditionsCount, out isNotActiveConditionInsQL);
 
-                #region 格式化条件字符
+            #region 格式化条件字符
 
-                List<CodeParameterDeclarationExpression> codeParameterDeclarationExpressions = new List<CodeParameterDeclarationExpression>();
+            List<CodeParameterDeclarationExpression> codeParameterDeclarationExpressions = new List<CodeParameterDeclarationExpression>();
 
-                //从XML中获取Parameters所有内容
-                XmlNode parametersFarther = XmlHelper.GetInstance().GetNode(xmlNode, "Parameters");
-                parameters = null;
-                if (parametersFarther != null)
-                {
-                    parameters = XmlHelper.GetInstance().GetNode(xmlNode, "Parameters").ChildNodes;
-                }
-                //将Parameters内容格化式
-                Dictionary<int, List<Dictionary<PARAMETER, string>>> parametersDict = ParFormatAction(codeParameterDeclarationExpressions, parameters);
+            //从XML中获取Parameters所有内容
+            XmlNode parametersFarther = XmlHelper.GetInstance().GetNode(xmlNode, "Parameters");
+            parameters = null;
+            if (parametersFarther != null)
+            {
+                parameters = XmlHelper.GetInstance().GetNode(xmlNode, "Parameters").ChildNodes;
+            }
+            //将Parameters内容格化式
+            Dictionary<int, List<Dictionary<PARAMETER, string>>> parametersDict = ParFormatAction(codeParameterDeclarationExpressions, parameters);
 
-                #endregion
+            #endregion
 
-                //返回类型
-                string returnType = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "return");
-                if (string.IsNullOrWhiteSpace(returnType))
-                    returnType = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "ReturnType");
-                if (string.IsNullOrWhiteSpace(returnType))
-                    returnType = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "RETURN");
-                if (string.IsNullOrWhiteSpace(returnType))
-                    returnType = "datatable";
+            //返回类型
+            string query = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "query");
+            if (string.IsNullOrWhiteSpace(query))
+                query = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "Query");
+            if (string.IsNullOrWhiteSpace(query))
+                query = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "QUERY");
+            if (string.IsNullOrWhiteSpace(query))
+                query = "select";
 
-                codeReturnType = returnType.ConventToTypes();
+            codeReturnType = query.ConventToTypes();
 
-                //添加系统组件
-                compilerParameters = new CompilerParameters
-                {
-                    GenerateExecutable = false,
-                    GenerateInMemory = true
-                };
-                compilerParameters.ReferencedAssemblies.Add("System.dll");
-                compilerParameters.ReferencedAssemblies.Add("System.Xml.dll");
-                compilerParameters.ReferencedAssemblies.Add("System.Data.dll");
+            //添加系统组件
+            compilerParameters = new CompilerParameters
+            {
+                GenerateExecutable = false,
+                GenerateInMemory = true
+            };
+            compilerParameters.ReferencedAssemblies.Add("System.dll");
+            compilerParameters.ReferencedAssemblies.Add("System.Xml.dll");
+            compilerParameters.ReferencedAssemblies.Add("System.Data.dll");
 
-                codeCompileUnit = new CodeCompileUnit();
+            codeCompileUnit = new CodeCompileUnit();
 
-                //创建命名空间
-                CodeNamespace nameSpace = new CodeNamespace("Autogeneration.Dao.SQL");
+            //创建命名空间
+            CodeNamespace nameSpace = new CodeNamespace("Autogeneration.Dao.SQL");
 
-                //创建类
-                CodeTypeDeclaration codeTypeDeclarations = new CodeTypeDeclaration();
-                codeTypeDeclarations.Name = $"{name}Class";
-                codeTypeDeclarations.Attributes = MemberAttributes.Public | MemberAttributes.Final;
+            //创建类
+            CodeTypeDeclaration codeTypeDeclarations = new CodeTypeDeclaration();
+            codeTypeDeclarations.Name = $"{name}Class";
+            codeTypeDeclarations.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 
-                //创建方法
-                CodeMemberMethod codeMemberMethod = new CodeMemberMethod
-                {
-                    Attributes = MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static
-                };
-                codeMemberMethod.Name = name;
-                codeMemberMethod.ReturnType = new CodeTypeReference(codeReturnType);
+            //创建方法
+            CodeMemberMethod codeMemberMethod = new CodeMemberMethod
+            {
+                Attributes = MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static
+            };
+            codeMemberMethod.Name = name;
+            codeMemberMethod.ReturnType = new CodeTypeReference(codeReturnType);
 
-                //为方法添加参数
-                codeMemberMethod.Parameters.AddRange(codeParameterDeclarationExpressions.ToArray());
-                List<string> referencedAssemblies = new List<string>();
-                codeMemberMethod.Statements.AddRange(Build(parametersDict, sqlList, connection, isNotActiveConditionInsQL, referencedAssemblies, codeReturnType));
-                if (referencedAssemblies.Count > 0)
-                {
-                    compilerParameters.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
-                }
+            //为方法添加参数
+            codeMemberMethod.Parameters.AddRange(codeParameterDeclarationExpressions.ToArray());
+            List<string> referencedAssemblies = new List<string>();
+            codeMemberMethod.Statements.AddRange(Build(parametersDict
+                , sqlList
+                , connection
+                , isNotActiveConditionInsQL
+                , referencedAssemblies
+                , codeReturnType
+                , query
+                ));
+            if (referencedAssemblies.Count > 0)
+            {
+                compilerParameters.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
+            }
 
-                //在类中添加方法
-                codeTypeDeclarations.Members.Add(codeMemberMethod);
-                //在命名空间添加类
-                nameSpace.Types.Add(codeTypeDeclarations);
-                //在代码容器中添加命名空间
-                codeCompileUnit.Namespaces.Add(nameSpace);
+            //在类中添加方法
+            codeTypeDeclarations.Members.Add(codeMemberMethod);
+            //在命名空间添加类
+            nameSpace.Types.Add(codeTypeDeclarations);
+            //在代码容器中添加命名空间
+            codeCompileUnit.Namespaces.Add(nameSpace);
         }
 
         /// <summary>
-        /// 将Xml获取到的SQL格式化，让其最终输出产物为 { [条件:0,SQL:...] ,[条件:1,SQL:...] ,...}
+        /// 将Xml获取到的SQL格式化
         /// </summary>
         /// <param name="sQL">sQL字段</param>
         /// <param name="maxConditionsCount">最大条件数量</param>
@@ -240,11 +279,11 @@ namespace LazySQL.Core.CoreFactory
             , int maxConditionsCount
             , out bool isNotActiveConditionInsQL)
         {
-            //最终输出产物 { [条件:0,SQL:...] ,[条件:1,SQL:...] ,...}
+            //最终输出产物 { [条件:0,SQL:...,IsWhere:...] ,[条件:1,SQL:...,IsWhere:...] ,...}
             List<SqlFormat> sqlList = new List<SqlFormat>();
 
             List<string> spliteCount = new List<string>();
-            List<SqlSign> indexList = new List<SqlSign>();
+            List<CondiIndex> indexList = new List<CondiIndex>();
 
             isNotActiveConditionInsQL = true;
 
@@ -259,10 +298,32 @@ namespace LazySQL.Core.CoreFactory
                     if (index == -1)
                         break;
 
-                    indexList.Add(new SqlSign
+                    indexList.Add(new CondiIndex
                     {
                         Index = index,
-                        ConditionSign = sqlCount
+                        CondiCount = sqlCount,
+                        Where = false
+                    });
+                    isNotActiveConditionInsQL = false;
+                }
+            }
+
+            //获取({0?},{1?},{2?}...)的位置，并格式化为 { [条件(ConditionSign):0,位置(Index):153], [条件:1,位置:178] ,...}
+            for (var sqlCount = 0; sqlCount < maxConditionsCount; sqlCount++)
+            {
+                int index = 0;
+                spliteCount.Add($"{{{sqlCount}?}}");
+                while (index != -1)
+                {
+                    index = sQL.IndexOf($"{{{sqlCount}?}}", index + $"{{{sqlCount}?}}".Length);
+                    if (index == -1)
+                        break;
+
+                    indexList.Add(new CondiIndex
+                    {
+                        Index = index,
+                        CondiCount = sqlCount,
+                        Where = true
                     });
                     isNotActiveConditionInsQL = false;
                 }
@@ -286,9 +347,12 @@ namespace LazySQL.Core.CoreFactory
 
                     //将最后一段SQL标记为-1
                     if (count < indexList.Count)
-                        sqlFormat.Condition = indexList[count].ConditionSign;
+                    {
+                        sqlFormat.CondiIndex = indexList[count].CondiCount;
+                        sqlFormat.IsWhere = indexList[count].Where;
+                    }                        
                     else
-                        sqlFormat.Condition = -1;
+                        sqlFormat.CondiIndex = -1;
 
                     sqlList.Add(sqlFormat);
                 }
@@ -298,8 +362,9 @@ namespace LazySQL.Core.CoreFactory
                 //无任何逻辑字符直接输出
                 sqlList.Add(new SqlFormat()
                 {
-                    Condition = 0,
-                    SQLText = sqlSplite[0]
+                    CondiIndex = -1,
+                    SQLText = sqlSplite[0],
+                    IsWhere = false
                 });
             }
 
@@ -381,11 +446,6 @@ namespace LazySQL.Core.CoreFactory
             if (string.IsNullOrWhiteSpace(template))
                 template = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "template");
 
-            //获取节点Value属性
-            string _value = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "VALUE");
-            if (string.IsNullOrWhiteSpace(_value))
-                _value = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "value");
-
             #region 节点属性添加至属性字典(parameters)
 
             if (!string.IsNullOrWhiteSpace(name))
@@ -412,11 +472,6 @@ namespace LazySQL.Core.CoreFactory
                 tmpDict.Add(PARAMETER.TEMPLATE, template);
             }
 
-            if (!string.IsNullOrWhiteSpace(_value))
-            {
-                tmpDict.Add(PARAMETER.VALUE, _value);
-            }
-
             #endregion
 
             return tmpDict;
@@ -436,6 +491,101 @@ namespace LazySQL.Core.CoreFactory
             , string connection
             , bool isNotCondition
             , List<string> ReferencedAssemblies
-            , Type returnType);
+            , Type returnType
+            , string query);
+
+        /// <summary>
+        /// 代码构成享元模板
+        /// </summary>
+        /// <param name="isNotCondition"></param>
+        /// <param name="parameters"></param>
+        /// <param name="tryCodeStatementCollection"></param>
+        /// <param name="paramterQuery"></param>
+        /// <param name="type"></param>
+        /// <param name="sqls"></param>
+        /// <param name="stringBuilderBlueprint"></param>
+        protected void Building(bool isNotCondition
+            , Dictionary<int, List<Dictionary<PARAMETER, string>>> parameters
+            , CodeStatementCollection tryCodeStatementCollection
+            , IParamterQuery paramterQuery
+            , Type type
+            , List<SqlFormat> sqls
+            , StringBuilderBlueprint stringBuilderBlueprint
+            , string query
+            , string connection
+            , ITemplateBlueprint templateBlueprint
+            , ListBlueprint listBlueprint)
+        {
+            //拥有条件字段时
+            if (!isNotCondition)
+            {
+                //循环创建拼接语句
+                for (int parametersCount = 0; parametersCount < parameters.Count; parametersCount++)
+                {
+                    StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{parametersCount}");
+
+                    tryCodeStatementCollection.Add(stringBuilderBlueprintTmp.Create());
+
+                    for (int parametersChildCount = 0; parametersChildCount < parameters[parametersCount].Count; parametersChildCount++)
+                    {
+                        bool isLastOne = (parametersChildCount == parameters[parametersCount].Count - 1);
+
+                        tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
+                            , parameters[parametersCount][parametersChildCount]
+                            , isLastOne
+                            , type
+                            , query));
+                    }
+                }
+            }
+
+            //按顺序添加SQL语句以及条件语句
+            for (int sQLsCount = 0; sQLsCount < sqls.Count; sQLsCount++)
+            {
+                tryCodeStatementCollection.Add(stringBuilderBlueprint.Append(sqls[sQLsCount].SQLText));
+                if (!isNotCondition)
+                {
+                    if (sqls[sQLsCount].CondiIndex != -1)
+                        tryCodeStatementCollection.Add(stringBuilderBlueprint.AppendField($"par{sqls[sQLsCount].CondiIndex}"));
+                }
+            }
+
+            //返回值
+            ReturnBlueprint returnBlueprint = new ReturnBlueprint();
+            switch (query)
+            {
+                case "select":
+                    SelectReturn(connection
+                        , tryCodeStatementCollection
+                        , templateBlueprint
+                        , returnBlueprint
+                        , stringBuilderBlueprint
+                        , listBlueprint);
+                    break;
+
+                default:
+                    DefaultReturn(connection
+                        , tryCodeStatementCollection
+                        , templateBlueprint
+                        , returnBlueprint
+                        , stringBuilderBlueprint
+                        , listBlueprint);
+                    break;
+            }
+        }
+
+        protected abstract void SelectReturn(string connection
+            , CodeStatementCollection codeStatementCollection
+            , ITemplateBlueprint templateBlueprint
+            , ReturnBlueprint returnBlueprint
+            , StringBuilderBlueprint stringBuilderBlueprint
+            , ListBlueprint listBlueprint);
+
+        protected abstract void DefaultReturn(string connection
+            , CodeStatementCollection codeStatementCollection
+            , ITemplateBlueprint templateBlueprint
+            , ReturnBlueprint returnBlueprint
+            , StringBuilderBlueprint stringBuilderBlueprint
+            , ListBlueprint listBlueprint);
     }
 }

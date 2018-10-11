@@ -20,7 +20,7 @@ namespace LazySQL.Infrastructure
         /// <param name="commandType">执行类型(默认语句)</param>
         /// <param name="cmdParms">SQL参数对象</param>
         /// <returns>所受影响的行数</returns>
-        public bool ExecuteNonQuery(string connectionString, StringBuilder commandText, List<SQLiteParameter> cmdParms)
+        public ExecuteNonModel ExecuteNonQuery(string connectionString, StringBuilder commandText, List<SQLiteParameter> cmdParms)
         {
             int result = 0;
             if (connectionString == null || connectionString.Length == 0)
@@ -37,12 +37,27 @@ namespace LazySQL.Infrastructure
                 {
                     result = cmd.ExecuteNonQuery();
                     trans.Commit();
-                    return true;
+                    return new ExecuteNonModel()
+                    {
+                        Result = result,
+                        Message = $"修改成功",
+                        Success = true
+                    };
                 }
                 catch (Exception ex)
                 {
                     trans.Rollback();
                     throw ex;
+                }
+                finally
+                {
+                    if (con != null)
+                    {
+                        if (con.State == ConnectionState.Open)
+                        {
+                            con.Close();
+                        }
+                    }
                 }
             }
         }
@@ -64,7 +79,7 @@ namespace LazySQL.Infrastructure
             if (commandText == null || commandText.Length == 0)
                 throw new ArgumentNullException("commandText");
             DataTable dt = new DataTable();
-            SQLiteConnection con = new SQLiteConnection(connectionString);
+            SQLiteConnection con = new SQLiteConnection(connectionString);            
             SQLiteCommand cmd = new SQLiteCommand();
             SQLiteTransaction trans = null;
             PrepareCommand(cmd, con, ref trans, false, CommandType.Text, commandText.ToString(), cmdParms.ToArray());

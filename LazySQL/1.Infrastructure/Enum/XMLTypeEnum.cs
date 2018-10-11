@@ -7,7 +7,6 @@
         TARGET,
         SYMBOL,
         TEMPLATE,
-        SEQUENCE,
-        VALUE
+        SEQUENCE
     }
 }

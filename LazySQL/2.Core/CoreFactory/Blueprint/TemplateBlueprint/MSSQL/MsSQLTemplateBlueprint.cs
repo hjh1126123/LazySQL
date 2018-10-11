@@ -1,40 +1,39 @@
 ﻿using LazySQL.Core.CoreFactory.Tools;
 using LazySQL.Infrastructure;
 using System.CodeDom;
-using System.Data;
 
 namespace LazySQL.Core.CoreFactory.Blueprint
 {
-    public class SQLiteTemplateBlueprint : IBlueprint
+    public class MsSQLTemplateBlueprint : ITemplateBlueprint
     {
-        public SQLiteTemplateBlueprint()
+        public MsSQLTemplateBlueprint()
         {
-            SetField("sqlLite");
+            SetField("msSqlT");
         }
 
-        public SQLiteTemplateBlueprint(string field)
+        public MsSQLTemplateBlueprint(string field)
         {
             SetField(field);
         }
 
-        public CodeExpression Create()
+        public override CodeExpression Create()
         {
-            return ToolManager.Instance.InitializeTool.CreateAndInstantiation<SQLiteTemplate>(Field);
+            return ToolManager.Instance.InitializeTool.CreateAndInstantiation<MSSQLTemplate>(Field);
         }
 
-        public CodeExpression ExecuteNonQuery(string connectionString, string commandTextField, string cmdParmsField)
+        public override CodeExpression ExecuteDataTable(string connectionString, string commandTextField, string cmdParmsField)
         {
             return ToolManager.Instance.InvokeTool.InvokeWithMore(Field,
-                "ExecuteNonQuery",
+                "ExecuteDataTable", 
                 new CodePrimitiveExpression(connectionString),
                 new CodeVariableReferenceExpression(commandTextField),
                 new CodeVariableReferenceExpression(cmdParmsField));
         }
 
-        public CodeExpression ExecuteDataTable(string connectionString, string commandTextField, string cmdParmsField)
+        public override CodeExpression ExecuteNonQuery(string connectionString, string commandTextField, string cmdParmsField)
         {
             return ToolManager.Instance.InvokeTool.InvokeWithMore(Field,
-                "ExecuteDataTable",
+                "ExecuteNonQuery",
                 new CodePrimitiveExpression(connectionString),
                 new CodeVariableReferenceExpression(commandTextField),
                 new CodeVariableReferenceExpression(cmdParmsField));

@@ -45,5 +45,10 @@ namespace LazySQL.Core.CoreFactory.Blueprint
         {
             return ToolManager.Instance.InvokeTool.InvokeWithMore($"{Field}.Parameters", "AddWithValue", new CodePrimitiveExpression($"@{field.Replace(".", string.Empty)}"), new CodeVariableReferenceExpression($"{field}.ToString()"));
         }
+
+        public CodeExpression CmdParAddWithValue(string field,string value)
+        {
+            return ToolManager.Instance.InvokeTool.InvokeWithMore($"{Field}.Parameters", "AddWithValue", new CodePrimitiveExpression($"@{field.Replace(".", string.Empty)}"), new CodePrimitiveExpression($"{value}"));
+        }
     }
 }

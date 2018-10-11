@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Data;
-using System.Linq;
 
 namespace LazySQL.Infrastructure
 {
@@ -10,19 +9,12 @@ namespace LazySQL.Infrastructure
         {
             switch (str.ToLower())
             {
-                case "int?":
-                    return typeof(int?);
-
-                case "double?":
-                    return typeof(double?);
-
-                case "datetime?":
-                    return typeof(DateTime?);
-
-                case "datatable":
+                case "select":
                     return typeof(DataTable);
+
+                default:
+                    return typeof(ExecuteNonModel);
             }
-            return Type.GetType($"System.{str}", true, true);
         }
     }
 }

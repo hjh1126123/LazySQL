@@ -18,7 +18,7 @@ namespace LazySQL.Infrastructure
                 }
             }
             
-            return new Exception($"{obj.GetType().Name}.{FuncName}({tmp.ToString()})错误[错误行数【{ex.StackTrace}】错误对象【{ex.Source}】]错误信息【{ex.Message}】");
+            return new Exception($"{obj.GetType().Name}.{FuncName}({tmp.ToString()})错误[错误数据【{ex.Data}】，错误信息【{ex.Message}】");
         }
     }
 }

@@ -1,24 +1,25 @@
 ﻿using LazySQL.Core.CoreFactory.Blueprint;
 using LazySQL.Core.CoreFactory.Tools;
 using System.CodeDom;
-using System.Data.SqlClient;
 
 namespace LazySQL.Core.CoreFactory.MethodEncapsulation
 {
     public class MsSqlParamterQuery : IParamterQuery
     {
-        public CommandBlueprint<SqlCommand> commandBlueprint;
-        public MsSqlParamterQuery(CommandBlueprint<SqlCommand> commandBlueprint)
+        ListBlueprint listBlueprint;
+        public MsSqlParamterQuery(ListBlueprint listBlueprint)
         {
-            this.commandBlueprint = commandBlueprint;
+            this.listBlueprint = listBlueprint;
         }
 
-        protected override void normalBuild(CodeStatementCollection codeStatementCollection)
+        protected override void ExecuteDataTableNormalBuild(CodeStatementCollection codeStatementCollection)
         {
-            codeStatementCollection.Add(commandBlueprint.CmdParAddWithValue(fieldName));
+            MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}Par");
+            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", $"{fieldName}"));
+            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
         }
 
-        protected override void CircleBuild(CodeStatementCollection codeStatementCollection)
+        protected override void ExecuteDataTableCircleBuild(CodeStatementCollection codeStatementCollection)
         {
             codeStatementCollection.Add(stringBuilderBlueprint.Append($"@{fieldName}"));
             codeStatementCollection.Add(stringBuilderBlueprint.AppendField("i"));
@@ -29,10 +30,23 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
                 return codeStatementCollectionTmpIF;
             }));
 
-            ParameterBlueprint<SqlParameter> parameterBlueprint = new ParameterBlueprint<SqlParameter>($"{fieldName}Par");
-            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\" + i"));
-            codeStatementCollection.Add(parameterBlueprint.AssignmentObj($"{fieldName}List[i]"));
-            codeStatementCollection.Add(commandBlueprint.CmdParAdd(parameterBlueprint.Field));
+            MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}Par");
+            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\" + i", $"{fieldName}List[i]"));
+            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+        }
+
+        protected override void ExecuteNonQueryBuildTrue(CodeStatementCollection codeStatementCollection)
+        {
+            MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}Par");
+            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", "\"''\""));
+            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+        }
+
+        protected override void ExecuteNonQueryBuildFalse(CodeStatementCollection codeStatementCollection)
+        {
+            MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}Par");
+            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", $"{fieldName}"));
+            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
         }
     }
 }

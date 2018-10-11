@@ -45,9 +45,46 @@ namespace LazySQL.Action.Modules
 
         #endregion
 
+        /// <summary>
+        /// 初始化工厂配置
+        /// </summary>
         private LazySqlFactory()
         {
             factoryConfig = new FactoryConfig();
+        }
+
+        /// <summary>
+        /// 母版方法
+        /// </summary>
+        /// <param name="connName">连接库</param>
+        /// <param name="name">名称</param>
+        /// <param name="path">xml路径</param>
+        /// <param name="action">扩展方法</param>
+        private void Method(string connName, string name, string path, Action<XmlNode, XmlNode, XmlNode, XmlNode> action)
+        {
+            Stream stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path);
+            if (factoryConfig.Assembly != null)
+                stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path, factoryConfig.Assembly);
+
+            try
+            {
+                XmlDocument xmlDocument = XmlHelper.GetInstance().GetXml(stream);
+
+                XmlNode MSSQLXML = XmlHelper.GetInstance().GetNode(xmlDocument, "MSSQL");
+                XmlNode MYSQLXML = XmlHelper.GetInstance().GetNode(xmlDocument, "MYSQL");
+                XmlNode ORACLEXML = XmlHelper.GetInstance().GetNode(xmlDocument, "ORACLESQL");
+                XmlNode SQLLITE = XmlHelper.GetInstance().GetNode(xmlDocument, "SQLLITE");
+
+                action(MSSQLXML, MYSQLXML, ORACLEXML, SQLLITE);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception($"错误消息：{ex.Message},错误方法：{ex.TargetSite}");
+            }
+            finally
+            {
+                stream.Dispose();
+            }
         }
 
         /// <summary>
@@ -55,75 +92,38 @@ namespace LazySQL.Action.Modules
         /// </summary>
         /// <param name="connName">连接库</param>
         /// <param name="name">存储名称</param>
-        /// <param name="path">xml资源路径</param>
-        public void Build(string connName, string name, string path)
+        /// <param name="xmlPath">xml资源路径</param>
+        public void BuildMethod(string connName, string name, string xmlPath)
         {
-            Stream stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path);
-            if (factoryConfig.Assembly != null)
-                stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path, factoryConfig.Assembly);
-
-            try
+            Method(connName, name, xmlPath, (ms, my, oracl, sqllite) =>
             {
-                XmlDocument xmlDocument = XmlHelper.GetInstance().GetXml(stream);
+                if (ms != null)
+                    CoreMain.GetInstance().CoreBuild(factoryConfig.SQLConnDict[connName], name, ms, factoryConfig.MaxCondition[connName], Core.DBType.MSSQL);
 
-                XmlNode MSSQLXML = XmlHelper.GetInstance().GetNode(xmlDocument, "MSSQL");
-                XmlNode MYSQLXML = XmlHelper.GetInstance().GetNode(xmlDocument, "MYSQL");
-                XmlNode ORACLEXML = XmlHelper.GetInstance().GetNode(xmlDocument, "ORACLESQL");
-                XmlNode SQLLITE = XmlHelper.GetInstance().GetNode(xmlDocument, "SQLLITE");
-
-                if (MSSQLXML != null)
-                    CoreMain.GetInstance().CoreBuild(factoryConfig.SQLConnDict[connName], name, MSSQLXML, factoryConfig.MaxCondition[connName], Core.DBType.MSSQL);
-
-                if (SQLLITE != null)
-                    CoreMain.GetInstance().CoreBuild(factoryConfig.SQLConnDict[connName], name, SQLLITE, factoryConfig.MaxCondition[connName], Core.DBType.SQLLITE);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"LazySqlFactory.Build({connName},{name},{path})错误，错误消息${ex.Message}");
-            }
-            finally
-            {
-                stream.Dispose();
-            }
+                if (sqllite != null)
+                    CoreMain.GetInstance().CoreBuild(factoryConfig.SQLConnDict[connName], name, sqllite, factoryConfig.MaxCondition[connName], Core.DBType.SQLLITE);
+            });
         }
 
         /// <summary>
-        /// 导出代码
+        /// 导出脚本
         /// </summary>
         /// <param name="connName">连接库</param>
-        /// <param name="name">生成名称</param>
-        /// <param name="path">xml资源路径</param>
-        /// <param name="outPutPath">导出路径</param>
-        public void OutPut(string connName, string name, string path, string outPutPath)
+        /// <param name="name">名称</param>
+        /// <param name="xmlPath">xml路径</param>
+        /// <param name="outPutPath">导出地址</param>
+        public void ExportScript(string connName, string name, string xmlPath, string outPutPath)
         {
-            Stream stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path);
-            if (factoryConfig.Assembly != null)
-                stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path, factoryConfig.Assembly);
-
-            try
+            Method(connName, name, xmlPath, (ms, my, oracl, sqllite) =>
             {
-                XmlDocument xmlDocument = XmlHelper.GetInstance().GetXml(stream);
+                if (ms != null)
+                    CoreMain.GetInstance().CoreOutPut(factoryConfig.SQLConnDict[connName], name, ms, factoryConfig.MaxCondition[connName], Core.DBType.MSSQL, outPutPath);
 
-                XmlNode MSSQLXML = XmlHelper.GetInstance().GetNode(xmlDocument, "MSSQL");
-                XmlNode MYSQLXML = XmlHelper.GetInstance().GetNode(xmlDocument, "MYSQL");
-                XmlNode ORACLEXML = XmlHelper.GetInstance().GetNode(xmlDocument, "ORACLESQL");
-                XmlNode SQLLITE = XmlHelper.GetInstance().GetNode(xmlDocument, "SQLLITE");
-
-                if (MSSQLXML != null)
-                    CoreMain.GetInstance().CoreOutPut(factoryConfig.SQLConnDict[connName], name, MSSQLXML, factoryConfig.MaxCondition[connName], Core.DBType.MSSQL, outPutPath);
-
-                if (SQLLITE != null)
-                    CoreMain.GetInstance().CoreOutPut(factoryConfig.SQLConnDict[connName], name, SQLLITE, factoryConfig.MaxCondition[connName], Core.DBType.SQLLITE, outPutPath);
-            }
-            catch (Exception ex)
-            {
-                throw new Exception($"LazySqlFactory.Build({connName},{name},{path})错误，错误消息${ex.Message}");
-            }
-            finally
-            {
-                stream.Dispose();
-            }
+                if (sqllite != null)
+                    CoreMain.GetInstance().CoreOutPut(factoryConfig.SQLConnDict[connName], name, sqllite, factoryConfig.MaxCondition[connName], Core.DBType.SQLLITE, outPutPath);
+            });
         }
+
 
         /// <summary>
         /// 添加连接库

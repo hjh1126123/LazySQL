@@ -46,5 +46,5 @@ namespace LazySQL.Action
         {
             return LazySqlSystem.GetInstance();
         }
-    }
+    }    
 }

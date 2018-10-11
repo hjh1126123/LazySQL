@@ -13,7 +13,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <PlatformTarget>AnyCPU</PlatformTarget>
+    <PlatformTarget>x86</PlatformTarget>
     <DebugSymbols>true</DebugSymbols>
     <DebugType>full</DebugType>
     <Optimize>false</Optimize>
@@ -50,7 +50,7 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="TestSQLLite.xml" />
+    <EmbeddedResource Include="SimpleInsert.xml" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\LazySQL\LazySQL.csproj">
@@ -59,7 +59,12 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Content Include="db\sqlliteTest.db">
+    <Content Include="db\sqlliteTest.db" />
+    <EmbeddedResource Include="SimpleQuery.xml" />
+    <Content Include="x64\SQLite.Interop.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </Content>
+    <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
   </ItemGroup>
