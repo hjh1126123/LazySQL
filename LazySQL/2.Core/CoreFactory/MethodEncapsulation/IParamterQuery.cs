@@ -22,8 +22,7 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
         public CodeStatementCollection Create(StringBuilderBlueprint sqlStrBlueprint
             , Dictionary<PARAMETER, string> paramter
             , bool isLastOne
-            , Type returnType
-            , string query)
+            , bool isWhere)
         {
             stringBuilderBlueprint = sqlStrBlueprint;
 

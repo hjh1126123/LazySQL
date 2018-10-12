@@ -516,37 +516,62 @@ namespace LazySQL.Core.CoreFactory
             , ITemplateBlueprint templateBlueprint
             , ListBlueprint listBlueprint)
         {
-            //拥有条件字段时
-            if (!isNotCondition)
-            {
-                //循环创建拼接语句
-                for (int parametersCount = 0; parametersCount < parameters.Count; parametersCount++)
-                {
-                    StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{parametersCount}");
-
-                    tryCodeStatementCollection.Add(stringBuilderBlueprintTmp.Create());
-
-                    for (int parametersChildCount = 0; parametersChildCount < parameters[parametersCount].Count; parametersChildCount++)
-                    {
-                        bool isLastOne = (parametersChildCount == parameters[parametersCount].Count - 1);
-
-                        tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
-                            , parameters[parametersCount][parametersChildCount]
-                            , isLastOne
-                            , type
-                            , query));
-                    }
-                }
-            }
-
+            Dictionary<string, string> SavePar = new Dictionary<string, string>(); 
             //按顺序添加SQL语句以及条件语句
             for (int sQLsCount = 0; sQLsCount < sqls.Count; sQLsCount++)
             {
                 tryCodeStatementCollection.Add(stringBuilderBlueprint.Append(sqls[sQLsCount].SQLText));
                 if (!isNotCondition)
                 {
-                    if (sqls[sQLsCount].CondiIndex != -1)
-                        tryCodeStatementCollection.Add(stringBuilderBlueprint.AppendField($"par{sqls[sQLsCount].CondiIndex}"));
+                    int CondiIndex = sqls[sQLsCount].CondiIndex;                    
+                    if (sqls[sQLsCount].IsWhere)
+                    {
+                        if (!SavePar.ContainsKey($"{CondiIndex}ParWhere"))
+                        {
+                            StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{CondiIndex}Where");
+
+                            tryCodeStatementCollection.Add(stringBuilderBlueprintTmp.Create());
+
+                            for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
+                            {
+                                bool isLastOne = (parametersChildCount == parameters[CondiIndex].Count - 1);
+
+                                tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
+                                    , parameters[CondiIndex][parametersChildCount]
+                                    , isLastOne
+                                    , true));
+                            }
+
+                            SavePar.Add($"{CondiIndex}ParWhere", stringBuilderBlueprintTmp.Field);
+                        }
+
+                        if (sqls[sQLsCount].CondiIndex != -1)
+                            tryCodeStatementCollection.Add(stringBuilderBlueprint.AppendField($"par{CondiIndex}Where"));
+                    }
+                    else
+                    {
+                        if (!SavePar.ContainsKey($"{CondiIndex}Par"))
+                        {
+                            StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{CondiIndex}");
+
+                            tryCodeStatementCollection.Add(stringBuilderBlueprintTmp.Create());
+
+                            for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
+                            {
+                                bool isLastOne = (parametersChildCount == parameters[CondiIndex].Count - 1);
+
+                                tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
+                                    , parameters[CondiIndex][parametersChildCount]
+                                    , isLastOne
+                                    , false));
+                            }
+
+                            SavePar.Add($"{CondiIndex}Par", stringBuilderBlueprintTmp.Field);
+                        }
+
+                        if (sqls[sQLsCount].CondiIndex != -1)
+                            tryCodeStatementCollection.Add(stringBuilderBlueprint.AppendField($"par{CondiIndex}"));
+                    }                    
                 }
             }
 
