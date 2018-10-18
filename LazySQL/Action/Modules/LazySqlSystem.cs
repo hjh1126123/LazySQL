@@ -1,4 +1,5 @@
 ﻿using LazySQL.Core.CoreSystem;
+using LazySQL.Infrastructure;
 using System.Data;
 
 namespace LazySQL.Action.Modules
@@ -35,9 +36,9 @@ namespace LazySQL.Action.Modules
         /// <param name="name">方法名</param>
         /// <param name="args">方法参数</param>
         /// <returns></returns>
-        public bool Method_Bool(string name, params string[] args)
+        public ExecuteNonModel Method_ExecuteNonModel(string name, params string[] args)
         {
-            return SystemMediator.GetInstance().FuncBool(name, args);
+            return SystemMediator.GetInstance().FuncExecuteNonModel(name, args);
         }
     }
 }

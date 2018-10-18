@@ -579,11 +579,10 @@ namespace LazySQL.Core.CoreFactory
 
                 for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
                 {
-                    bool isLastOne = (parametersChildCount == parameters[CondiIndex].Count - 1);
+                    //bool isLastOne = (parametersChildCount == parameters.Count - 1);
 
                     tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
                         , parameters[CondiIndex][parametersChildCount]
-                        , isLastOne
                         , cONDITION_TYPE));
                 }
 

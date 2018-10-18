@@ -1,8 +1,4 @@
 ﻿using System.CodeDom;
-using System.Data;
-using System.Data.SqlClient;
-using System.Collections.Generic;
-using System;
 
 namespace LazySQL.Core.CoreFactory.Tools.Modules
 {

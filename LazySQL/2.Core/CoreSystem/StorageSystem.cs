@@ -13,7 +13,7 @@ namespace LazySQL.Core.CoreSystem
         public enum RETURNTYPE
         {
             DATA,
-            BOOL
+            EXECUTE_NON_MODEL
         }
 
         #region DT委托
@@ -32,19 +32,19 @@ namespace LazySQL.Core.CoreSystem
 
         #endregion
 
-        #region BL委托
+        #region ExecuteNonModel委托
 
-        public readonly Dictionary<string, Func<bool>> noParamsFuncBL;
-        public readonly Dictionary<string, Func<string, bool>> oneParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, bool>> twoParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, bool>> threeParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, string, bool>> fourParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, string, string, bool>> fiveParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, string, string, string, bool>> sixParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, bool>> sevenParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, string, bool>> eightParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, string, string, bool>> nineParamsFuncBL;
-        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, string, string, string, bool>> tenParamsFuncBL;
+        public readonly Dictionary<string, Func<ExecuteNonModel>> noParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, ExecuteNonModel>> oneParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, ExecuteNonModel>> twoParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, ExecuteNonModel>> threeParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, string, ExecuteNonModel>> fourParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, string, string, ExecuteNonModel>> fiveParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, string, string, string, ExecuteNonModel>> sixParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, ExecuteNonModel>> sevenParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, string, ExecuteNonModel>> eightParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, string, string, ExecuteNonModel>> nineParamsFuncExecuteNonModel;
+        public readonly Dictionary<string, Func<string, string, string, string, string, string, string, string, string, string, ExecuteNonModel>> tenParamsFuncExecuteNonModel;
 
         #endregion
 
@@ -92,17 +92,17 @@ namespace LazySQL.Core.CoreSystem
         {
             #region 实例化BL委托存储
 
-            noParamsFuncBL = new Dictionary<string, Func<bool>>();
-            oneParamsFuncBL = new Dictionary<string, Func<string, bool>>();
-            twoParamsFuncBL = new Dictionary<string, Func<string, string, bool>>();
-            threeParamsFuncBL = new Dictionary<string, Func<string, string, string, bool>>();
-            fourParamsFuncBL = new Dictionary<string, Func<string, string, string, string, bool>>();
-            fiveParamsFuncBL = new Dictionary<string, Func<string, string, string, string, string, bool>>();
-            sixParamsFuncBL = new Dictionary<string, Func<string, string, string, string, string, string, bool>>();
-            sevenParamsFuncBL = new Dictionary<string, Func<string, string, string, string, string, string, string, bool>>();
-            eightParamsFuncBL = new Dictionary<string, Func<string, string, string, string, string, string, string, string, bool>>();
-            nineParamsFuncBL = new Dictionary<string, Func<string, string, string, string, string, string, string, string, string, bool>>();
-            tenParamsFuncBL = new Dictionary<string, Func<string, string, string, string, string, string, string, string, string, string, bool>>();
+            noParamsFuncExecuteNonModel = new Dictionary<string, Func<ExecuteNonModel>>();
+            oneParamsFuncExecuteNonModel = new Dictionary<string, Func<string, ExecuteNonModel>>();
+            twoParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, ExecuteNonModel>>();
+            threeParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, ExecuteNonModel>>();
+            fourParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, string, ExecuteNonModel>>();
+            fiveParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, string, string, ExecuteNonModel>>();
+            sixParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, string, string, string, ExecuteNonModel>>();
+            sevenParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, string, string, string, string, ExecuteNonModel>>();
+            eightParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, string, string, string, string, string, ExecuteNonModel>>();
+            nineParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, string, string, string, string, string, string, ExecuteNonModel>>();
+            tenParamsFuncExecuteNonModel = new Dictionary<string, Func<string, string, string, string, string, string, string, string, string, string, ExecuteNonModel>>();
 
             #endregion
 
@@ -286,123 +286,123 @@ namespace LazySQL.Core.CoreSystem
 
         #region BL委托添加
 
-        private void NoParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void NoParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock (noParams_BL)
             {
-                if (!noParamsFuncBL.ContainsKey(funcName))
+                if (!noParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    noParamsFuncBL.Add(funcName, (Func<bool>)Delegate.CreateDelegate(typeof(Func<bool>), methodInfo));
+                    noParamsFuncExecuteNonModel.Add(funcName, (Func<ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void OneParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void OneParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock (oneParams_BL)
             {
-                if (!oneParamsFuncBL.ContainsKey(funcName))
+                if (!oneParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    oneParamsFuncBL.Add(funcName, (Func<string, bool>)Delegate.CreateDelegate(typeof(Func<string, bool>), methodInfo));
+                    oneParamsFuncExecuteNonModel.Add(funcName, (Func<string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void TwoParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void TwoParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock (twoParams_BL)
             {
-                if (!twoParamsFuncBL.ContainsKey(funcName))
+                if (!twoParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    twoParamsFuncBL.Add(funcName, (Func<string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, bool>), methodInfo));
+                    twoParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void ThreeParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void ThreeParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock (threeParams_BL)
             {
-                if (!threeParamsFuncBL.ContainsKey(funcName))
+                if (!threeParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    threeParamsFuncBL.Add(funcName, (Func<string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, bool>), methodInfo));
+                    threeParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void FourParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void FourParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock (fourParams_BL)
             {
-                if (!fourParamsFuncBL.ContainsKey(funcName))
+                if (!fourParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    fourParamsFuncBL.Add(funcName, (Func<string, string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, bool>), methodInfo));
+                    fourParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }            
         }
 
-        private void FiveParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void FiveParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock (fiveParams_BL)
             {
-                if (!fiveParamsFuncBL.ContainsKey(funcName))
+                if (!fiveParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    fiveParamsFuncBL.Add(funcName, (Func<string, string, string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, bool>), methodInfo));
+                    fiveParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void SixParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void SixParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock(sixParams_BL)
             {
-                if (!sixParamsFuncBL.ContainsKey(funcName))
+                if (!sixParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    sixParamsFuncBL.Add(funcName, (Func<string, string, string, string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, bool>), methodInfo));
+                    sixParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void SevenParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void SevenParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock(sevenParams_BL)
             {
-                if (!sevenParamsFuncBL.ContainsKey(funcName))
+                if (!sevenParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    sevenParamsFuncBL.Add(funcName, (Func<string, string, string, string, string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, bool>), methodInfo));
+                    sevenParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, string, string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void EightParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void EightParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock(eightParams_BL)
             {
-                if (!eightParamsFuncBL.ContainsKey(funcName))
+                if (!eightParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    eightParamsFuncBL.Add(funcName, (Func<string, string, string, string, string, string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, string, bool>), methodInfo));
+                    eightParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, string, string, string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void NineParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void NineParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock(nineParams_BL)
             {
-                if (!nineParamsFuncBL.ContainsKey(funcName))
+                if (!nineParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    nineParamsFuncBL.Add(funcName, (Func<string, string, string, string, string, string, string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, string, string, bool>), methodInfo));
+                    nineParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, string, string, string, string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
 
-        private void TenParamsFuncDTAddBL(string funcName, MethodInfo methodInfo)
+        private void TenParamsFuncDTAddExecuteNonModel(string funcName, MethodInfo methodInfo)
         {
             lock(tenParams_BL)
             {
-                if (!tenParamsFuncBL.ContainsKey(funcName))
+                if (!tenParamsFuncExecuteNonModel.ContainsKey(funcName))
                 {
-                    tenParamsFuncBL.Add(funcName, (Func<string, string, string, string, string, string, string, string, string, string, bool>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, string, string, string, bool>), methodInfo));
+                    tenParamsFuncExecuteNonModel.Add(funcName, (Func<string, string, string, string, string, string, string, string, string, string, ExecuteNonModel>)Delegate.CreateDelegate(typeof(Func<string, string, string, string, string, string, string, string, string, string, ExecuteNonModel>), methodInfo));
                 }
             }
         }
@@ -423,9 +423,9 @@ namespace LazySQL.Core.CoreSystem
             {
                 rETURNTYPE = RETURNTYPE.DATA;
             }
-            else if (returnType == typeof(bool))
+            else if (returnType == typeof(ExecuteNonModel))
             {
-                rETURNTYPE = RETURNTYPE.BOOL;
+                rETURNTYPE = RETURNTYPE.EXECUTE_NON_MODEL;
             }
 
             switch (rETURNTYPE)
@@ -439,7 +439,6 @@ namespace LazySQL.Core.CoreSystem
                         case 1:
                             OneParamsFuncDTAddDT(funcName, methodInfo);
                             break;
-
                         case 2:
                             TwoParamsFuncDTAddDT(funcName, methodInfo);
                             break;
@@ -478,50 +477,50 @@ namespace LazySQL.Core.CoreSystem
                     }
                     break;
 
-                case RETURNTYPE.BOOL:
+                case RETURNTYPE.EXECUTE_NON_MODEL:
                     switch (paramsCount)
                     {
                         case 0:
-                            NoParamsFuncDTAddBL(funcName, methodInfo);
+                            NoParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
                         case 1:
-                            OneParamsFuncDTAddBL(funcName, methodInfo);
+                            OneParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 2:
-                            TwoParamsFuncDTAddBL(funcName, methodInfo);
+                            TwoParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 3:
-                            ThreeParamsFuncDTAddBL(funcName, methodInfo);
+                            ThreeParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 4:
-                            FourParamsFuncDTAddBL(funcName, methodInfo);
+                            FourParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 5:
-                            FiveParamsFuncDTAddBL(funcName, methodInfo);
+                            FiveParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 6:
-                            SixParamsFuncDTAddBL(funcName, methodInfo);
+                            SixParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 7:
-                            SevenParamsFuncDTAddBL(funcName, methodInfo);
+                            SevenParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 8:
-                            EightParamsFuncDTAddBL(funcName, methodInfo);
+                            EightParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 9:
-                            NineParamsFuncDTAddBL(funcName, methodInfo);
+                            NineParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
 
                         case 10:
-                            TenParamsFuncDTAddBL(funcName, methodInfo);
+                            TenParamsFuncDTAddExecuteNonModel(funcName, methodInfo);
                             break;
                     }
                     break;

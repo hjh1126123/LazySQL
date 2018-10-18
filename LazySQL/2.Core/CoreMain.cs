@@ -1,9 +1,8 @@
 ﻿using LazySQL.Core.CoreFactory;
 using LazySQL.Core.CoreSystem;
+using LazySQL.Infrastructure;
 using System;
 using System.Xml;
-
-using LazySQL.Infrastructure;
 
 namespace LazySQL.Core
 {

@@ -1,8 +1,8 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Text;
-using System.Collections.Generic;
 
 namespace LazySQL.Infrastructure
 {
@@ -21,7 +21,7 @@ namespace LazySQL.Infrastructure
         /// <param name="cmdParms">SQL参数对象</param>
         /// <returns>所受影响的行数</returns>
         public ExecuteNonModel ExecuteNonQuery(string connectionString, StringBuilder commandText, List<SQLiteParameter> cmdParms)
-        {
+        {                        
             int result = 0;
             if (connectionString == null || connectionString.Length == 0)
                 throw new ArgumentNullException("connectionString");
@@ -40,7 +40,7 @@ namespace LazySQL.Infrastructure
                     return new ExecuteNonModel()
                     {
                         Result = result,
-                        Message = $"修改成功",
+                        Message = $"执行成功",
                         Success = true
                     };
                 }
@@ -119,7 +119,7 @@ namespace LazySQL.Infrastructure
         /// <param name="cmdType">SQL字符串执行类型</param>
         /// <param name="cmdText">SQL Text</param>
         /// <param name="cmdParms">SQLiteParameters to use in the command</param>
-        private static void PrepareCommand(SQLiteCommand cmd
+        private void PrepareCommand(SQLiteCommand cmd
             , SQLiteConnection conn
             , ref SQLiteTransaction trans
             , bool useTrans

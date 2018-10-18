@@ -14,47 +14,27 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
 
         protected override void ExecuteDataTableCircleBuild(CodeStatementCollection codeStatementCollection)
         {
-            codeStatementCollection.Add(stringBuilderBlueprint.Append($"@{fieldName}"));
-            codeStatementCollection.Add(stringBuilderBlueprint.AppendField("i"));
-            codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"i != ({fieldName}List.Count - 1)", () =>
-            {
-                CodeStatementCollection codeStatementCollectionTmpIF = new CodeStatementCollection();
-                codeStatementCollectionTmpIF.Add(stringBuilderBlueprint.Append(","));
-                return codeStatementCollectionTmpIF;
-            }));
-
-            SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}Par");
-            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\" + i", $"{fieldName}List[i]"));
-            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+            SimpleExecuteDataTableCircleBuild(new SQLLiteParmsBlueprint($"{fieldName}Par"), listBlueprint, codeStatementCollection);
         }
 
         protected override void ExecuteDataTableNormalBuild(CodeStatementCollection codeStatementCollection)
         {
-            SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}Par");
-            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", $"{fieldName}"));
-            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+            SimpleExecuteDataTableNormalBuild(new SQLLiteParmsBlueprint($"{fieldName}Par"), listBlueprint, codeStatementCollection);
         }
 
         protected override void SetTrue(CodeStatementCollection codeStatementCollection)
         {
-            stringBuilderBlueprint.Append($"{fieldName} = @{fieldName}ParSET");
-            SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}ParSET");
-            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}ParSET\"", $"{fieldName}ParSET"));
-            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+            SimpleSetTrue(new SQLLiteParmsBlueprint($"{fieldName}ParSET"), listBlueprint, codeStatementCollection);
         }
 
         protected override void ValueFalse(CodeStatementCollection codeStatementCollection)
         {
-            SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}Par");
-            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", "\"''\""));
-            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+            SimpleValueFalse(new SQLLiteParmsBlueprint($"{fieldName}ParValue"), listBlueprint, codeStatementCollection);
         }
 
         protected override void ValueTrue(CodeStatementCollection codeStatementCollection)
         {
-            SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}Par");
-            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", $"{fieldName}"));
-            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+            SimpleValueTrue(new SQLLiteParmsBlueprint($"{fieldName}ParValue"), listBlueprint, codeStatementCollection);
         }
     }
 }

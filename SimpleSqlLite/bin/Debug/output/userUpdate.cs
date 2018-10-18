@@ -15,7 +15,7 @@ namespace Autogeneration.Dao.SQL
     public class userUpdateClass
     {
         
-        public static LazySQL.Infrastructure.ExecuteNonModel userUpdate(string user, string pwd, string power, string id)
+        public static ExecuteNonModel userUpdate(string user, string pwd, string power, string id)
         {
             System.Text.StringBuilder StrbSQL = new System.Text.StringBuilder();
             LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = new LazySQL.Infrastructure.SQLiteTemplate();
@@ -26,18 +26,21 @@ namespace Autogeneration.Dao.SQL
                 System.Text.StringBuilder par0 = new System.Text.StringBuilder();
                 if (!string.IsNullOrWhiteSpace(user))
                 {
+                    par0.Append("user = @userParSET");
                     System.Data.SQLite.SQLiteParameter userParSET = new System.Data.SQLite.SQLiteParameter("@userParSET",userParSET);
                     aList.Add(userParSET);
                 }
-                par0.Append(" , ");
                 if (!string.IsNullOrWhiteSpace(pwd))
                 {
+                    par0.Append(" , ");
+                    par0.Append("pwd = @pwdParSET");
                     System.Data.SQLite.SQLiteParameter pwdParSET = new System.Data.SQLite.SQLiteParameter("@pwdParSET",pwdParSET);
                     aList.Add(pwdParSET);
                 }
-                par0.Append(" , ");
                 if (!string.IsNullOrWhiteSpace(power))
                 {
+                    par0.Append(" , ");
+                    par0.Append("power = @powerParSET");
                     System.Data.SQLite.SQLiteParameter powerParSET = new System.Data.SQLite.SQLiteParameter("@powerParSET",powerParSET);
                     aList.Add(powerParSET);
                 }

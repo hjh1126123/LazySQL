@@ -1,7 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.CodeDom;
 using System.CodeDom.Compiler;
+using System.Collections.Generic;
 
 namespace LazySQL.Infrastructure
 {

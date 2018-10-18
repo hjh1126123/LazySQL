@@ -21,7 +21,6 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
 
         public CodeStatementCollection Create(StringBuilderBlueprint sqlStrBlueprint
             , Dictionary<PARAMETER, string> paramter
-            , bool isLastOne
             , CONDITION_TYPE cONDITION_TYPE)
         {
             stringBuilderBlueprint = sqlStrBlueprint;
@@ -101,18 +100,15 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
                         () =>
                         {
                             CodeStatementCollection codeStatementCollectionIF = new CodeStatementCollection();
-                            SetTrue(codeStatementCollectionIF);
+                            codeStatementCollectionIF.Add(sqlStrBlueprint.Append($"{fieldName} = @{fieldName}ParSET,"));
+                            SetTrue(codeStatementCollectionIF);                            
                             return codeStatementCollectionIF;
                         }));
-                    if (!isLastOne)
-                        codeStatementCollection.Add(stringBuilderBlueprint.Append(" , "));
                     break;
 
                 case CONDITION_TYPE.VALUE:
                     codeStatementCollection.Add(sqlStrBlueprint.Append($"@{fieldName}VALUE"));
-                    if (!isLastOne)
-                        codeStatementCollection.Add(stringBuilderBlueprint.Append(" , "));
-
+                    codeStatementCollection.Add(sqlStrBlueprint.Append(" , "));
                     codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"!string.IsNullOrWhiteSpace({fieldName})",
                         () =>
                         {
@@ -133,6 +129,7 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
                       () =>
                       {
                           CodeStatementCollection codeStatementCollectionIF = new CodeStatementCollection();
+                          codeStatementCollectionIF.Add(stringBuilderBlueprint.Append(" AND "));
                           if (!needSplit)
                           {
                               codeStatementCollectionIF.Add(sqlStrBlueprint.Append($"{target} {symbol} {(string.IsNullOrWhiteSpace(template) ? $"@{fieldName}" : template)}"));
@@ -152,10 +149,6 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
                               }));
 
                               codeStatementCollectionIF.Add(sqlStrBlueprint.Append(templates[1]));
-                          }
-                          if (!isLastOne)
-                          {
-                              codeStatementCollectionIF.Add(stringBuilderBlueprint.Append(" AND "));
                           }
                           return codeStatementCollectionIF;
                       }));
@@ -179,6 +172,32 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
 
         protected abstract void ExecuteDataTableCircleBuild(CodeStatementCollection codeStatementCollection);
 
+        protected void SimpleExecuteDataTableCircleBuild<T>(T par, ListBlueprint listBlueprint, CodeStatementCollection codeStatementCollection) where T : IBlueprint, IParmsBlueprint
+        {
+            codeStatementCollection.Add(stringBuilderBlueprint.Append($"@{fieldName}"));
+            codeStatementCollection.Add(stringBuilderBlueprint.AppendField("i"));
+            codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"i != ({fieldName}List.Count - 1)", () =>
+            {
+                CodeStatementCollection codeStatementCollectionTmpIF = new CodeStatementCollection();
+                codeStatementCollectionTmpIF.Add(stringBuilderBlueprint.Append(","));
+                return codeStatementCollectionTmpIF;
+            }));
+            
+            codeStatementCollection.Add(par.Create($"\"@{fieldName}\" + i", $"{fieldName}List[i]"));
+            codeStatementCollection.Add(listBlueprint.Add(par.Field));
+        }
+
+        protected void SimpleExecuteDataTableNormalBuild<T>(T par, ListBlueprint listBlueprint, CodeStatementCollection codeStatementCollection) where T : IBlueprint, IParmsBlueprint
+        {
+            codeStatementCollection.Add(par.Create($"\"@{fieldName}\"", $"{fieldName}"));
+            codeStatementCollection.Add(listBlueprint.Add(par.Field));
+        }
+
+        protected void SimpleSetTrue<T>(T par, ListBlueprint listBlueprint, CodeStatementCollection codeStatementCollection) where T : IBlueprint, IParmsBlueprint
+        {
+            codeStatementCollection.Add(par.Create($"\"@{fieldName}ParSET\"", $"{fieldName}"));
+            codeStatementCollection.Add(listBlueprint.Add(par.Field));
+        }
 
         protected void SimpleValueTrue<T>(T par, ListBlueprint listBlueprint, CodeStatementCollection codeStatementCollection) where T : IBlueprint, IParmsBlueprint
         {           
@@ -188,7 +207,7 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
 
         protected void SimpleValueFalse<T>(T par, ListBlueprint listBlueprint, CodeStatementCollection codeStatementCollection) where T : IBlueprint, IParmsBlueprint
         {
-            codeStatementCollection.Add(par.Create($"\"@{fieldName}\"", "\"''\""));
+            codeStatementCollection.Add(par.Create($"\"@{fieldName}VALUE\"", "\"\""));
             codeStatementCollection.Add(listBlueprint.Add(par.Field));
         }
     }

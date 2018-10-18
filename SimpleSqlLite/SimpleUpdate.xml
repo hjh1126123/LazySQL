@@ -7,6 +7,6 @@
     <Parameter name="id" index="1"></Parameter>
   </Parameters>
   <SQL>
-    UPDATE user SET {0!} where {1?}
+    UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}
   </SQL>
 </SQLLITE>

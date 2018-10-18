@@ -1,5 +1,4 @@
-﻿using System;
-using System.Data;
+﻿using System.Data;
 
 namespace LazySQL.Core.CoreSystem
 {
@@ -32,44 +31,49 @@ namespace LazySQL.Core.CoreSystem
 
         #region 使用存储委托
 
-        public bool FuncBool(string name, params string[] pars)
+        public ExecuteNonModel FuncExecuteNonModel(string name, params string[] pars)
         {
             switch (pars.Length)
             {
                 case 0:
-                    return StorageSystem.noParamsFuncBL[name]();
+                    return StorageSystem.noParamsFuncExecuteNonModel[name]();
 
                 case 1:
-                    return StorageSystem.oneParamsFuncBL[name](pars[0]);
+                    return StorageSystem.oneParamsFuncExecuteNonModel[name](pars[0]);
 
                 case 2:
-                    return StorageSystem.twoParamsFuncBL[name](pars[0], pars[1]);
+                    return StorageSystem.twoParamsFuncExecuteNonModel[name](pars[0], pars[1]);
 
                 case 3:
-                    return StorageSystem.threeParamsFuncBL[name](pars[0], pars[1], pars[2]);
+                    return StorageSystem.threeParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2]);
 
                 case 4:
-                    return StorageSystem.fourParamsFuncBL[name](pars[0], pars[1], pars[2], pars[3]);
+                    return StorageSystem.fourParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2], pars[3]);
 
                 case 5:
-                    return StorageSystem.fiveParamsFuncBL[name](pars[0], pars[1], pars[2], pars[3], pars[4]);
+                    return StorageSystem.fiveParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2], pars[3], pars[4]);
 
                 case 6:
-                    return StorageSystem.sixParamsFuncBL[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5]);
+                    return StorageSystem.sixParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5]);
 
                 case 7:
-                    return StorageSystem.sevenParamsFuncBL[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6]);
+                    return StorageSystem.sevenParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6]);
 
                 case 8:
-                    return StorageSystem.eightParamsFuncBL[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6], pars[7]);
+                    return StorageSystem.eightParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6], pars[7]);
 
                 case 9:
-                    return StorageSystem.nineParamsFuncBL[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6], pars[7], pars[8]);
+                    return StorageSystem.nineParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6], pars[7], pars[8]);
 
                 case 10:
-                    return StorageSystem.tenParamsFuncBL[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6], pars[7], pars[8], pars[9]);
+                    return StorageSystem.tenParamsFuncExecuteNonModel[name](pars[0], pars[1], pars[2], pars[3], pars[4], pars[5], pars[6], pars[7], pars[8], pars[9]);
             }
-            return false;
+            return new ExecuteNonModel()
+            {
+                Message = "参数超过10",
+                Success = false,
+                Result = 0
+            };
         }
 
         public DataTable FuncDT(string name, params string[] pars)

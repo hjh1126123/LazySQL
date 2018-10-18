@@ -6,6 +6,6 @@
     <Parameter NAME="power"></Parameter>
   </Parameters>
   <SQL>
-    insert into user (user,pwd,power) values ({0})
+    insert into user (user,pwd,power,sysTime) values ({0}datetime(CURRENT_TIMESTAMP,'localtime'))
   </SQL>
 </SQLLITE>
