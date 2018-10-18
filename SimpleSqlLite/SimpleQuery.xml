@@ -1,6 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <SQLLITE Query="select">
+  <Parameters>
+    <Parameter name="user"></Parameter>
+    <Parameter name="pwd"></Parameter>    
+    <Parameter name="id"></Parameter>
+  </Parameters>
   <SQL>
-    select * from user
+    select * from user where {0?}
   </SQL>
 </SQLLITE>

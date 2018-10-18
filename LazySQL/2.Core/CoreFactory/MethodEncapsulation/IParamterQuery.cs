@@ -22,7 +22,7 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
         public CodeStatementCollection Create(StringBuilderBlueprint sqlStrBlueprint
             , Dictionary<PARAMETER, string> paramter
             , bool isLastOne
-            , bool isWhere)
+            , CONDITION_TYPE cONDITION_TYPE)
         {
             stringBuilderBlueprint = sqlStrBlueprint;
 
@@ -87,36 +87,49 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
             {
                 if (needSplit)
                     throw new Exception("你使用了in,not in这类多参数的传值没有写模板");
-            }            
+            }
 
             #endregion
 
             //FieldName赋值，方便给子类使用
             this.fieldName = fieldName;
 
-            if (returnType == typeof(Boolean))
+            switch (cONDITION_TYPE)
             {
-                codeStatementCollection.Add(sqlStrBlueprint.Append($"@{fieldName}"));
-                if (!isLastOne)
-                    codeStatementCollection.Add(stringBuilderBlueprint.Append(" , "));
+                case CONDITION_TYPE.SET:
+                    codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"!string.IsNullOrWhiteSpace({fieldName})",
+                        () =>
+                        {
+                            CodeStatementCollection codeStatementCollectionIF = new CodeStatementCollection();
+                            SetTrue(codeStatementCollectionIF);
+                            return codeStatementCollectionIF;
+                        }));
+                    if (!isLastOne)
+                        codeStatementCollection.Add(stringBuilderBlueprint.Append(" , "));
+                    break;
 
-                codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"!string.IsNullOrWhiteSpace({fieldName})",
-                    () =>
-                    {
-                        CodeStatementCollection codeStatementCollectionIF = new CodeStatementCollection();
-                        ExecuteNonQueryBuildTrue(codeStatementCollectionIF);
-                        return codeStatementCollectionIF;
-                    },
-                    () =>
-                    {
-                        CodeStatementCollection codeStatementCollectionElse = new CodeStatementCollection();
-                        ExecuteNonQueryBuildFalse(codeStatementCollectionElse);
-                        return codeStatementCollectionElse;
-                    }));
-            }
-            else
-            {
-                codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"!string.IsNullOrWhiteSpace({fieldName})",
+                case CONDITION_TYPE.VALUE:
+                    codeStatementCollection.Add(sqlStrBlueprint.Append($"@{fieldName}VALUE"));
+                    if (!isLastOne)
+                        codeStatementCollection.Add(stringBuilderBlueprint.Append(" , "));
+
+                    codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"!string.IsNullOrWhiteSpace({fieldName})",
+                        () =>
+                        {
+                            CodeStatementCollection codeStatementCollectionIF = new CodeStatementCollection();
+                            ValueTrue(codeStatementCollectionIF);
+                            return codeStatementCollectionIF;
+                        },
+                        () =>
+                        {
+                            CodeStatementCollection codeStatementCollectionElse = new CodeStatementCollection();
+                            ValueFalse(codeStatementCollectionElse);
+                            return codeStatementCollectionElse;
+                        }));
+                    break;
+
+                case CONDITION_TYPE.WHERE:
+                    codeStatementCollection.Add(ToolManager.Instance.ConditionTool.CreateConditionCode($"!string.IsNullOrWhiteSpace({fieldName})",
                       () =>
                       {
                           CodeStatementCollection codeStatementCollectionIF = new CodeStatementCollection();
@@ -146,7 +159,9 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
                           }
                           return codeStatementCollectionIF;
                       }));
+                    break;
             }
+
             return codeStatementCollection;
         }
 
@@ -154,12 +169,27 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
 
         protected StringBuilderBlueprint stringBuilderBlueprint;
 
-        protected abstract void ExecuteNonQueryBuildTrue(CodeStatementCollection codeStatementCollection);
+        protected abstract void SetTrue(CodeStatementCollection codeStatementCollection);
 
-        protected abstract void ExecuteNonQueryBuildFalse(CodeStatementCollection codeStatementCollection);
+        protected abstract void ValueTrue(CodeStatementCollection codeStatementCollection);
+
+        protected abstract void ValueFalse(CodeStatementCollection codeStatementCollection);
 
         protected abstract void ExecuteDataTableNormalBuild(CodeStatementCollection codeStatementCollection);
 
         protected abstract void ExecuteDataTableCircleBuild(CodeStatementCollection codeStatementCollection);
+
+
+        protected void SimpleValueTrue<T>(T par, ListBlueprint listBlueprint, CodeStatementCollection codeStatementCollection) where T : IBlueprint, IParmsBlueprint
+        {           
+            codeStatementCollection.Add(par.Create($"\"@{fieldName}VALUE\"", $"{fieldName}"));
+            codeStatementCollection.Add(listBlueprint.Add(par.Field));
+        }
+
+        protected void SimpleValueFalse<T>(T par, ListBlueprint listBlueprint, CodeStatementCollection codeStatementCollection) where T : IBlueprint, IParmsBlueprint
+        {
+            codeStatementCollection.Add(par.Create($"\"@{fieldName}\"", "\"''\""));
+            codeStatementCollection.Add(listBlueprint.Add(par.Field));
+        }
     }
 }

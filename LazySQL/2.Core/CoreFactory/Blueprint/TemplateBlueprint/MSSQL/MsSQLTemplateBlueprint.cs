@@ -24,7 +24,7 @@ namespace LazySQL.Core.CoreFactory.Blueprint
         public override CodeExpression ExecuteDataTable(string connectionString, string commandTextField, string cmdParmsField)
         {
             return ToolManager.Instance.InvokeTool.InvokeWithMore(Field,
-                "ExecuteDataTable", 
+                "ExecuteDataTable",
                 new CodePrimitiveExpression(connectionString),
                 new CodeVariableReferenceExpression(commandTextField),
                 new CodeVariableReferenceExpression(cmdParmsField));

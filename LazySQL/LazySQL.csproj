@@ -51,9 +51,16 @@
     <Compile Include="1.Infrastructure\Eextend\ExceptionEextend.cs" />
     <Compile Include="1.Infrastructure\Eextend\StringExtend.cs" />
     <Compile Include="1.Infrastructure\Enum\XMLTypeEnum.cs" />
+    <Compile Include="1.Infrastructure\Model\ExecuteNonModel.cs" />
     <Compile Include="1.Infrastructure\ReflectionHelper.cs" />
+    <Compile Include="1.Infrastructure\Template\MSSQLTemplate.cs" />
     <Compile Include="1.Infrastructure\Template\SQLiteTemplate.cs" />
     <Compile Include="1.Infrastructure\XmlHelper.cs" />
+    <Compile Include="2.Core\CoreFactory\Blueprint\TemplateBlueprint\IParmsBlueprint.cs" />
+    <Compile Include="2.Core\CoreFactory\Blueprint\TemplateBlueprint\ITemplateBlueprint.cs" />
+    <Compile Include="2.Core\CoreFactory\Blueprint\TemplateBlueprint\MSSQL\MsSQLParmsBlueprint.cs" />
+    <Compile Include="2.Core\CoreFactory\Blueprint\TemplateBlueprint\MSSQL\MsSQLTemplateBlueprint.cs" />
+    <Compile Include="2.Core\CoreFactory\Blueprint\TemplateBlueprint\SqlLite\SQLLiteTemplateBlueprint.cs" />
     <Compile Include="Action\ActionMain.cs" />
     <Compile Include="Action\Modules\LazySqlFactory.cs" />
     <Compile Include="Action\Modules\LazySqlSystem.cs" />
@@ -69,7 +76,6 @@
     <Compile Include="2.Core\CoreFactory\Blueprint\IBlueprint.cs" />
     <Compile Include="2.Core\CoreFactory\Blueprint\SystemBlueprint\ListBlueprint.cs" />
     <Compile Include="2.Core\CoreFactory\Blueprint\SystemBlueprint\StringBuilderBlueprint.cs" />
-    <Compile Include="2.Core\CoreFactory\Blueprint\TemplateBlueprint\SqlLite\SQLiteTemplateBlueprint.cs" />
     <Compile Include="2.Core\CoreFactory\Blueprint\TemplateBlueprint\SqlLite\SqlLiteParmsBlueprint.cs" />
     <Compile Include="2.Core\CoreFactory\ICoreFactory.cs" />
     <Compile Include="2.Core\CoreFactory\MethodEncapsulation\IParamterQuery.cs" />

@@ -125,14 +125,34 @@ namespace LazySQL.Infrastructure
         }
 
         /// <summary>
-        /// 获取某节点某特性的值
+        /// 获取某节点某特性的值(可不区分大小写，但是建议全小写或全大写，效率很快)
         /// </summary>
         /// <param name="xmlNode">节点</param>
         /// <param name="AttributeName">特性名称</param>
         /// <returns></returns>
         public string GetNodeAttribute(XmlNode xmlNode, string AttributeName)
         {
-            return (xmlNode as XmlElement).GetAttribute(AttributeName);
+            var xmlnode = xmlNode as XmlElement;
+            string Attr = xmlnode.GetAttribute(AttributeName);
+            if (string.IsNullOrWhiteSpace(Attr))
+            {
+                Attr = xmlnode.GetAttribute(AttributeName.ToLower());
+            }
+            if (string.IsNullOrWhiteSpace(Attr))
+            {
+                Attr = xmlnode.GetAttribute(AttributeName.ToUpper());
+            }
+            if (string.IsNullOrWhiteSpace(Attr))
+            {
+                List<string> tmpList = AttributeName.StringAllCombination();
+                foreach(var str in tmpList)
+                {
+                    Attr = xmlnode.GetAttribute(str);
+                    if (!string.IsNullOrWhiteSpace(Attr))
+                        break;
+                }
+            }
+            return Attr;
         }
 
         /// <summary>

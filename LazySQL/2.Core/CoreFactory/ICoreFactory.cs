@@ -11,6 +11,13 @@ using System.Xml;
 
 namespace LazySQL.Core.CoreFactory
 {
+    public enum CONDITION_TYPE
+    {
+        WHERE,
+        VALUE,
+        SET
+    }
+
     public abstract class ICoreFactory
     {
         SystemMediator systemMediator = null;
@@ -128,9 +135,9 @@ namespace LazySQL.Core.CoreFactory
             public int CondiCount { get; set; }
 
             /// <summary>
-            /// 是否是条件语句
+            /// 自动构建类型
             /// </summary>
-            public bool Where { get; set; }
+            public CONDITION_TYPE cONDITION_TYPE { get; set; }
         }
 
         /// <summary>
@@ -149,9 +156,9 @@ namespace LazySQL.Core.CoreFactory
             public string SQLText { get; set; }
 
             /// <summary>
-            /// 是否是Where
+            /// 自动构建类型
             /// </summary>
-            public bool IsWhere { get; set; }
+            public CONDITION_TYPE oNDITION_TYPE { get; set; }
         }
 
         /// <summary>
@@ -208,10 +215,6 @@ namespace LazySQL.Core.CoreFactory
 
             //返回类型
             string query = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "query");
-            if (string.IsNullOrWhiteSpace(query))
-                query = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "Query");
-            if (string.IsNullOrWhiteSpace(query))
-                query = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "QUERY");
             if (string.IsNullOrWhiteSpace(query))
                 query = "select";
 
@@ -287,47 +290,15 @@ namespace LazySQL.Core.CoreFactory
 
             isNotActiveConditionInsQL = true;
 
-            //获取({0},{1},{2}...)的位置，并格式化为 { [条件(ConditionSign):0,位置(Index):153], [条件:1,位置:178] ,...}
-            for (var sqlCount = 0; sqlCount < maxConditionsCount; sqlCount++)
-            {
-                int index = 0;
-                spliteCount.Add($"{{{sqlCount}}}");
-                while (index != -1)
-                {
-                    index = sQL.IndexOf($"{{{sqlCount}}}", index + $"{{{sqlCount}}}".Length);
-                    if (index == -1)
-                        break;
+            #region 添加CondiIndex
 
-                    indexList.Add(new CondiIndex
-                    {
-                        Index = index,
-                        CondiCount = sqlCount,
-                        Where = false
-                    });
-                    isNotActiveConditionInsQL = false;
-                }
-            }
+            IndexAdd("", CONDITION_TYPE.VALUE, sQL, maxConditionsCount, spliteCount, indexList, ref isNotActiveConditionInsQL);
 
-            //获取({0?},{1?},{2?}...)的位置，并格式化为 { [条件(ConditionSign):0,位置(Index):153], [条件:1,位置:178] ,...}
-            for (var sqlCount = 0; sqlCount < maxConditionsCount; sqlCount++)
-            {
-                int index = 0;
-                spliteCount.Add($"{{{sqlCount}?}}");
-                while (index != -1)
-                {
-                    index = sQL.IndexOf($"{{{sqlCount}?}}", index + $"{{{sqlCount}?}}".Length);
-                    if (index == -1)
-                        break;
+            IndexAdd("?", CONDITION_TYPE.WHERE, sQL, maxConditionsCount, spliteCount, indexList, ref isNotActiveConditionInsQL);
 
-                    indexList.Add(new CondiIndex
-                    {
-                        Index = index,
-                        CondiCount = sqlCount,
-                        Where = true
-                    });
-                    isNotActiveConditionInsQL = false;
-                }
-            }
+            IndexAdd("!", CONDITION_TYPE.SET, sQL, maxConditionsCount, spliteCount, indexList, ref isNotActiveConditionInsQL);
+
+            #endregion
 
             //让格式化后的条件按照位置，从小到大排序
             indexList.Sort((x, y) => x.Index.CompareTo(y.Index));
@@ -349,8 +320,8 @@ namespace LazySQL.Core.CoreFactory
                     if (count < indexList.Count)
                     {
                         sqlFormat.CondiIndex = indexList[count].CondiCount;
-                        sqlFormat.IsWhere = indexList[count].Where;
-                    }                        
+                        sqlFormat.oNDITION_TYPE = indexList[count].cONDITION_TYPE;
+                    }
                     else
                         sqlFormat.CondiIndex = -1;
 
@@ -363,12 +334,41 @@ namespace LazySQL.Core.CoreFactory
                 sqlList.Add(new SqlFormat()
                 {
                     CondiIndex = -1,
-                    SQLText = sqlSplite[0],
-                    IsWhere = false
+                    SQLText = sqlSplite[0]
                 });
             }
 
             return sqlList;
+        }
+
+        private void IndexAdd(
+            string otherAdd
+            , CONDITION_TYPE cONDITION_TYPE
+            , string sQL
+            , int maxConditionsCount
+            , List<string> spliteCount
+            , List<CondiIndex> condiIndices
+            , ref bool isNotActiveConditionInsQL)
+        {
+            for (var sqlCount = 0; sqlCount < maxConditionsCount; sqlCount++)
+            {
+                int index = 0;
+                spliteCount.Add($"{{{sqlCount}{otherAdd}}}");
+                while (index != -1)
+                {
+                    index = sQL.IndexOf($"{{{sqlCount}{otherAdd}}}", index + $"{{{sqlCount}{otherAdd}}}".Length);
+                    if (index == -1)
+                        break;
+
+                    condiIndices.Add(new CondiIndex
+                    {
+                        Index = index,
+                        CondiCount = sqlCount,
+                        cONDITION_TYPE = cONDITION_TYPE
+                    });
+                    isNotActiveConditionInsQL = false;
+                }
+            }
         }
 
         /// <summary>
@@ -384,8 +384,8 @@ namespace LazySQL.Core.CoreFactory
             {
                 for (var i = 0; i < parameters.Count; i++)
                 {
-                    string index = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "INDEX");
-                    string parName = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "NAME");
+                    string index = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "index");
+                    string parName = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "name");
                     if (!string.IsNullOrWhiteSpace(index))
                     {
                         int sequenceIndex = Convert.ToInt32(index);
@@ -427,24 +427,16 @@ namespace LazySQL.Core.CoreFactory
             Dictionary<PARAMETER, string> tmpDict = new Dictionary<PARAMETER, string>();
 
             //获取节点name属性
-            string name = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "NAME");
-            if (string.IsNullOrWhiteSpace(name))
-                name = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "name");
+            string name = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "name");
 
             //获取节点symbol属性
-            string symbol = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "SYMBOL");
-            if (string.IsNullOrWhiteSpace(symbol))
-                symbol = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "symbol");
+            string symbol = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "symbol");
 
             //获取节点target属性
-            string target = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "TARGET");
-            if (string.IsNullOrWhiteSpace(target))
-                target = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "target");
+            string target = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "target");
 
             //获取节点template属性
-            string template = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "TEMPLATE");
-            if (string.IsNullOrWhiteSpace(template))
-                template = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "template");
+            string template = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "template");
 
             #region 节点属性添加至属性字典(parameters)
 
@@ -516,62 +508,18 @@ namespace LazySQL.Core.CoreFactory
             , ITemplateBlueprint templateBlueprint
             , ListBlueprint listBlueprint)
         {
-            Dictionary<string, string> SavePar = new Dictionary<string, string>(); 
+            Dictionary<string, string> SavePar = new Dictionary<string, string>();
             //按顺序添加SQL语句以及条件语句
             for (int sQLsCount = 0; sQLsCount < sqls.Count; sQLsCount++)
             {
                 tryCodeStatementCollection.Add(stringBuilderBlueprint.Append(sqls[sQLsCount].SQLText));
                 if (!isNotCondition)
                 {
-                    int CondiIndex = sqls[sQLsCount].CondiIndex;                    
-                    if (sqls[sQLsCount].IsWhere)
+                    int CondiIndex = sqls[sQLsCount].CondiIndex;
+                    if (CondiIndex != -1)
                     {
-                        if (!SavePar.ContainsKey($"{CondiIndex}ParWhere"))
-                        {
-                            StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{CondiIndex}Where");
-
-                            tryCodeStatementCollection.Add(stringBuilderBlueprintTmp.Create());
-
-                            for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
-                            {
-                                bool isLastOne = (parametersChildCount == parameters[CondiIndex].Count - 1);
-
-                                tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
-                                    , parameters[CondiIndex][parametersChildCount]
-                                    , isLastOne
-                                    , true));
-                            }
-
-                            SavePar.Add($"{CondiIndex}ParWhere", stringBuilderBlueprintTmp.Field);
-                        }
-
-                        if (sqls[sQLsCount].CondiIndex != -1)
-                            tryCodeStatementCollection.Add(stringBuilderBlueprint.AppendField($"par{CondiIndex}Where"));
+                        CreateCondition(SavePar, CondiIndex, parameters, tryCodeStatementCollection, paramterQuery, sqls, sQLsCount, stringBuilderBlueprint, sqls[sQLsCount].oNDITION_TYPE);
                     }
-                    else
-                    {
-                        if (!SavePar.ContainsKey($"{CondiIndex}Par"))
-                        {
-                            StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{CondiIndex}");
-
-                            tryCodeStatementCollection.Add(stringBuilderBlueprintTmp.Create());
-
-                            for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
-                            {
-                                bool isLastOne = (parametersChildCount == parameters[CondiIndex].Count - 1);
-
-                                tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
-                                    , parameters[CondiIndex][parametersChildCount]
-                                    , isLastOne
-                                    , false));
-                            }
-
-                            SavePar.Add($"{CondiIndex}Par", stringBuilderBlueprintTmp.Field);
-                        }
-
-                        if (sqls[sQLsCount].CondiIndex != -1)
-                            tryCodeStatementCollection.Add(stringBuilderBlueprint.AppendField($"par{CondiIndex}"));
-                    }                    
                 }
             }
 
@@ -597,6 +545,53 @@ namespace LazySQL.Core.CoreFactory
                         , listBlueprint);
                     break;
             }
+        }
+
+        /// <summary>
+        /// 生成条件语句
+        /// </summary>
+        /// <param name="SavePar"></param>
+        /// <param name="CondiIndex"></param>
+        /// <param name="parameters"></param>
+        /// <param name="tryCodeStatementCollection"></param>
+        /// <param name="paramterQuery"></param>
+        /// <param name="sqls"></param>
+        /// <param name="sQLsCount"></param>
+        /// <param name="stringBuilderBlueprint"></param>
+        /// <param name="cONDITION_TYPE"></param>
+        /// <param name="customName"></param>
+        private void CreateCondition(Dictionary<string, string> SavePar
+            , int CondiIndex
+            , Dictionary<int, List<Dictionary<PARAMETER, string>>> parameters
+            , CodeStatementCollection tryCodeStatementCollection
+            , IParamterQuery paramterQuery
+            , List<SqlFormat> sqls
+            , int sQLsCount
+            , StringBuilderBlueprint stringBuilderBlueprint
+            , CONDITION_TYPE cONDITION_TYPE
+            , string customName = "")
+        {
+            if (!SavePar.ContainsKey($"{CondiIndex}Par{customName}"))
+            {
+                StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{CondiIndex}{customName}");
+
+                tryCodeStatementCollection.Add(stringBuilderBlueprintTmp.Create());
+
+                for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
+                {
+                    bool isLastOne = (parametersChildCount == parameters[CondiIndex].Count - 1);
+
+                    tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
+                        , parameters[CondiIndex][parametersChildCount]
+                        , isLastOne
+                        , cONDITION_TYPE));
+                }
+
+                SavePar.Add($"{CondiIndex}Par{customName}", stringBuilderBlueprintTmp.Field);
+            }
+
+            if (sqls[sQLsCount].CondiIndex != -1)
+                tryCodeStatementCollection.Add(stringBuilderBlueprint.AppendField($"par{CondiIndex}{customName}"));
         }
 
         protected abstract void SelectReturn(string connection

@@ -35,17 +35,25 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
             codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
         }
 
-        protected override void ExecuteNonQueryBuildTrue(CodeStatementCollection codeStatementCollection)
+        protected override void ValueTrue(CodeStatementCollection codeStatementCollection)
+        {
+            MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}Par");
+            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", $"{fieldName}"));
+            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+        }
+
+        protected override void ValueFalse(CodeStatementCollection codeStatementCollection)
         {
             MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}Par");
             codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", "\"''\""));
             codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
         }
 
-        protected override void ExecuteNonQueryBuildFalse(CodeStatementCollection codeStatementCollection)
+        protected override void SetTrue(CodeStatementCollection codeStatementCollection)
         {
-            MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}Par");
-            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", $"{fieldName}"));
+            stringBuilderBlueprint.Append($"{fieldName} = @{fieldName}ParSET");
+            MsSQLParmsBlueprint parameterBlueprint = new MsSQLParmsBlueprint($"{fieldName}ParSET");
+            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}ParSET\"", $"{fieldName}ParSET"));
             codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
         }
     }

@@ -4,7 +4,7 @@ using System.Data.SQLite;
 
 namespace LazySQL.Core.CoreFactory.Blueprint
 {
-    public class MsSQLParmsBlueprint : IBlueprint
+    public class MsSQLParmsBlueprint : IBlueprint, IParmsBlueprint
     {
         public MsSQLParmsBlueprint(string field)
         {

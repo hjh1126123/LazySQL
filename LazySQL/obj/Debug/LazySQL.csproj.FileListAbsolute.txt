@@ -8,3 +8,4 @@ F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.csproj.CopyComplete
 F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.dll
 F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.pdb
 F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.g.resources
+F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.csprojResolveAssemblyReference.cache

@@ -35,14 +35,22 @@ namespace LazySQL.Core.CoreFactory.MethodEncapsulation
             codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
         }
 
-        protected override void ExecuteNonQueryBuildFalse(CodeStatementCollection codeStatementCollection)
+        protected override void SetTrue(CodeStatementCollection codeStatementCollection)
+        {
+            stringBuilderBlueprint.Append($"{fieldName} = @{fieldName}ParSET");
+            SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}ParSET");
+            codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}ParSET\"", $"{fieldName}ParSET"));
+            codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
+        }
+
+        protected override void ValueFalse(CodeStatementCollection codeStatementCollection)
         {
             SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}Par");
             codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", "\"''\""));
             codeStatementCollection.Add(listBlueprint.Add(parameterBlueprint.Field));
         }
 
-        protected override void ExecuteNonQueryBuildTrue(CodeStatementCollection codeStatementCollection)
+        protected override void ValueTrue(CodeStatementCollection codeStatementCollection)
         {
             SQLLiteParmsBlueprint parameterBlueprint = new SQLLiteParmsBlueprint($"{fieldName}Par");
             codeStatementCollection.Add(parameterBlueprint.Create($"\"@{fieldName}\"", $"{fieldName}"));
