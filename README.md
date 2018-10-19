@@ -60,15 +60,15 @@ ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonMode
 ```xml
 
 <?xml version="1.0" encoding="utf-8" ?>
-<SQLLITE Query="insert">
-  <Parameters>
+<SQLLITE query="insert">
+  <parameters>
     <Parameter NAME="user"></Parameter>
     <Parameter NAME="pwd"></Parameter>
     <Parameter NAME="power"></Parameter>
-  </Parameters>
-  <SQL>
-    insert into user (user,pwd,power,sysTime) values ({0}datetime(CURRENT_TIMESTAMP,'localtime'))
-  </SQL>
+  </parameters>
+  <sql>
+    <![CDATA[insert into user (user,pwd,power,sysTime) values ({0}datetime(CURRENT_TIMESTAMP,'localtime'))]]>
+  </sql>
 </SQLLITE>
 
 ```
@@ -78,15 +78,15 @@ ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonMode
 ```xml
 
 <?xml version="1.0" encoding="utf-8" ?>
-<SQLLITE Query="select">
-  <Parameters>
+<SQLLITE query="select">
+  <parameters>
     <Parameter name="user"></Parameter>
     <Parameter name="pwd"></Parameter>    
     <Parameter name="id"></Parameter>
-  </Parameters>
-  <SQL>
+  </parameters>
+  <sql>
     select * from user where 1=1 {0?}
-  </SQL>
+  </sql>
 </SQLLITE>
 
 ```
@@ -96,16 +96,16 @@ ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonMode
 ```xml
 
 <?xml version="1.0" encoding="utf-8" ?>
-<SQLLITE Query="update">
-  <Parameters>
+<SQLLITE query="update">
+  <parameters>
     <Parameter name="user"></Parameter>
     <Parameter name="pwd"></Parameter>
     <Parameter name="power"></Parameter>
     <Parameter name="id" index="1"></Parameter>
-  </Parameters>
-  <SQL>
-    UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}
-  </SQL>
+  </parameters>
+  <sql>
+    <![CDATA[UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}]]>
+  </sql>
 </SQLLITE>
 
 ```
@@ -178,3 +178,34 @@ ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.
 > 将其导出
 
 > 所以遇到BUG了不要急，将其生成的代码导出，并反馈给我，下一个小版本它将会被修复
+
+##### 现在说说LazySql最重点的xml参数吧，用以下俩个模板来说明
+
+```xml
+
+<SQLLITE query="select">
+  <parameters>
+    <Parameter name="user"></Parameter>
+    <Parameter name="pwd"></Parameter>    
+    <Parameter name="id"></Parameter>
+  </parameters>
+  <sql>
+    <![CDATA[select * from user where 1=1 {0?}]]>
+  </sql>
+</SQLLITE>
+
+```
+
+> 因为在LazySQL做了内部处理，所以理论上所有的节点(sqllite,parameters...)包括特性(例如上面的query,name...)都可以不区分大小写(c#获取xml节点本身是严格区分大小写的，为了方便xml文档的编写做了这一处理，因为在这里面不会存在俩个节点名称相同的情况)，但是为了代码生成效率，还是建议全部小写，或者全部大写，因为这样没必要去得出字母的所有大小写的排列组合，然后遍历
+
+- SQLLITE，这个将标识该XML服务的数据库对象是谁，目前支持的是(MSSQL和SQLLITE)，将会在后续扩展
+
+- query，这个将标识该XML返回类型是什么，目前支持的是（select——返回DataTable和other——返回ExecuteNonModel），将会根据后续需求扩展
+
+- parameters，所有的参数都将在parameters里面，目前支持最大参数数量为10，可轻松扩展增加
+
+- Parameter，则定义各种参数，包括查询条件，插入值，更新值等，这些都与你定义的特性有关，后面会列出Parameter主要存在特性
+
+- sql，显而易见，你的数据库操作语句都应该写在这一节点下，在xml中建议使用<![CDATA[]]>将SQL语句包裹起来，这可以避免将大于号，小于号等敏感字符进行转义，降低代码可读性，当然sql也有一定的注意事项（这很重要），这将在后面列出
+
+
