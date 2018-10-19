@@ -6,7 +6,7 @@
     <Parameter name="power"></Parameter>
     <Parameter name="id" index="1"></Parameter>
   </parameters>
-  <sql>
-    <![CDATA[UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}]]>    
+  <sql>    
+    <![CDATA[UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}]]>
   </sql>
 </SQLLITE>

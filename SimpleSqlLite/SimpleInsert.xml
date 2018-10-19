@@ -6,6 +6,6 @@
     <Parameter NAME="power"></Parameter>
   </parameters>
   <sql>
-    <![CDATA[insert into user (user,pwd,power,sysTime) values ({0}datetime(CURRENT_TIMESTAMP,'localtime'))]]>   
+    <![CDATA[insert into user (user,pwd,power,sysTime) values ({0}datetime(CURRENT_TIMESTAMP,'localtime'))]]>
   </sql>
 </SQLLITE>
