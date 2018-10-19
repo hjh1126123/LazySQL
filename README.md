@@ -42,12 +42,8 @@ ActionMain.Instance.GetFactory().SetAssembly(Assembly.GetExecutingAssembly());
 ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10);
 
 //生成代码，并定义调用名称userQuery
-
-//在SimpleSqlLite工程下，存在SimpleQuery.xml，并且SimpleQuery.xml是嵌入的资源
 ActionMain.Instance.GetFactory().BuildMethod("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml");
-//在SimpleSqlLite工程下，存在SimpleInsert.xml，并且SimpleInsert.xml是嵌入的资源
 ActionMain.Instance.GetFactory().BuildMethod("t", "userInsert", $"SimpleSqlLite.SimpleInsert.xml");
-//在SimpleSqlLite工程下，存在SimpleUpdate.xml，并且SimpleUpdate.xml是嵌入的资源
 ActionMain.Instance.GetFactory().BuildMethod("t", "userUpdate", $"SimpleSqlLite.SimpleUpdate.xml");
 
 //执行查询语句，参数（调用名称，查询参数1，查询参数2，查询参数3），返回DataTable
