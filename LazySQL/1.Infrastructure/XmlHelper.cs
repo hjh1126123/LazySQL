@@ -64,7 +64,21 @@ namespace LazySQL.Infrastructure
         /// <returns></returns>
         public XmlNode GetNode(XmlDocument xml, string nodeName)
         {
-            return xml.SelectSingleNode(nodeName);
+            var xmlNode = xml.SelectSingleNode(nodeName);
+            if(xmlNode == null)
+                xmlNode = xml.SelectSingleNode(nodeName.ToLower());
+            if(xmlNode == null)
+            {
+                List<string> list = nodeName.StringAllCombination();
+                foreach (var str in list)
+                {
+                    xmlNode = xml.SelectSingleNode(str);
+                    if (xmlNode != null)
+                        break;
+                }
+            }
+
+            return xmlNode;
         }
 
         /// <summary>
@@ -75,12 +89,27 @@ namespace LazySQL.Infrastructure
         /// <returns></returns>
         public XmlNode GetNode(XmlNode xmlNode, string xmlNodeName)
         {
-            XmlNodeList xmlNodeList = xmlNode.ChildNodes;
+            XmlNodeList xmlNodeList = xmlNode.ChildNodes;            
             for (var i = 0; i < xmlNodeList.Count; i++)
             {
                 if (xmlNodeList[i].Name.Equals(xmlNodeName))
                 {
                     return xmlNodeList[i];
+                }
+                if (xmlNodeList[i].Name.Equals(xmlNodeName.ToUpper()))
+                {
+                    return xmlNodeList[i];
+                }
+            }
+            List<string> strList = xmlNodeName.StringAllCombination();
+            foreach (var str in strList)
+            {
+                for (var i = 0; i < xmlNodeList.Count; i++)
+                {
+                    if (xmlNodeList[i].Name.Equals(str))
+                    {
+                        return xmlNodeList[i];
+                    }
                 }
             }
             return null;
@@ -131,10 +160,6 @@ namespace LazySQL.Infrastructure
         {
             var xmlnode = xmlNode as XmlElement;
             string Attr = xmlnode.GetAttribute(AttributeName);
-            if (string.IsNullOrWhiteSpace(Attr))
-            {
-                Attr = xmlnode.GetAttribute(AttributeName.ToLower());
-            }
             if (string.IsNullOrWhiteSpace(Attr))
             {
                 Attr = xmlnode.GetAttribute(AttributeName.ToUpper());

@@ -1,12 +1,12 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SQLLITE Query="update">
-  <Parameters>
+<SQLLITE query="update">
+  <parameters>
     <Parameter name="user"></Parameter>
     <Parameter name="pwd"></Parameter>
     <Parameter name="power"></Parameter>
     <Parameter name="id" index="1"></Parameter>
-  </Parameters>
-  <SQL>
-    UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}
-  </SQL>
+  </parameters>
+  <sql>
+    <![CDATA[UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}]]>    
+  </sql>
 </SQLLITE>

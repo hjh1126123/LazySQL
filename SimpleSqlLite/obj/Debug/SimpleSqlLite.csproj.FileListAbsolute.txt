@@ -1,3 +1,5 @@
+F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\x64\SQLite.Interop.dll
+F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\x86\SQLite.Interop.dll
 F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\SimpleSqlLite.exe.config
 F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\SimpleSqlLite.exe
 F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\SimpleSqlLite.pdb
@@ -11,5 +13,3 @@ F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.csproj.CoreCompileInpu
 F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.csproj.CopyComplete
 F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.exe
 F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.pdb
-F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\x64\SQLite.Interop.dll
-F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\x86\SQLite.Interop.dll

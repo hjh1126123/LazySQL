@@ -185,7 +185,7 @@ namespace LazySQL.Core.CoreFactory
         {
             provider = CodeDomProvider.CreateProvider("CSharp");
 
-            XmlNode sqlNode = XmlHelper.GetInstance().GetNode(xmlNode, "SQL");
+            XmlNode sqlNode = XmlHelper.GetInstance().GetNode(xmlNode, "sql");
             if (sqlNode == null)
                 throw new Exception($"{name}不包含SQL节点，该XML文档是无效的");
 
@@ -202,11 +202,11 @@ namespace LazySQL.Core.CoreFactory
             List<CodeParameterDeclarationExpression> codeParameterDeclarationExpressions = new List<CodeParameterDeclarationExpression>();
 
             //从XML中获取Parameters所有内容
-            XmlNode parametersFarther = XmlHelper.GetInstance().GetNode(xmlNode, "Parameters");
+            XmlNode parametersFarther = XmlHelper.GetInstance().GetNode(xmlNode, "parameters");
             parameters = null;
             if (parametersFarther != null)
             {
-                parameters = XmlHelper.GetInstance().GetNode(xmlNode, "Parameters").ChildNodes;
+                parameters = parametersFarther.ChildNodes;
             }
             //将Parameters内容格化式
             Dictionary<int, List<Dictionary<PARAMETER, string>>> parametersDict = ParFormatAction(codeParameterDeclarationExpressions, parameters);

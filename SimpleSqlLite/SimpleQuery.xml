@@ -1,11 +1,11 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SQLLITE Query="select">
-  <Parameters>
+<SQLLITE query="select">
+  <parameters>
     <Parameter name="user"></Parameter>
     <Parameter name="pwd"></Parameter>    
     <Parameter name="id"></Parameter>
-  </Parameters>
-  <SQL>
-    select * from user where 1=1 {0?}
-  </SQL>
+  </parameters>
+  <sql>
+    <![CDATA[select * from user where 1=1 {0?}]]>    
+  </sql>
 </SQLLITE>
