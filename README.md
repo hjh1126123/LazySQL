@@ -89,7 +89,7 @@ ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonMode
     <Parameter name="id"></Parameter>
   </parameters>
   <sql>
-    select * from user where 1=1 {0?}
+    <![CDATA[select * from user where 1=1 {0?}]]>
   </sql>
 </SQLLITE>
 
@@ -120,9 +120,6 @@ ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonMode
 
 ```c#
 
-<<<<<<< HEAD
-public class user
-=======
 public class userQueryClass
     {
         
@@ -250,6 +247,3 @@ value | 否 | 该特性将指定这一个参数会在何处被填充，当不存
 ##### 欢迎提出任何扩展性建议和反馈任何BUG，我都会很开心的
 
 ##### 如果你能star一下，我会更开心
-
-
->>>>>>> parent of f4d9ace... Update README.md
