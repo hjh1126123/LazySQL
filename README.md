@@ -89,7 +89,7 @@ ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonMode
     <Parameter name="id"></Parameter>
   </parameters>
   <sql>
-    select * from user where 1=1 {0?}
+    <![CDATA[select * from user where 1=1 {0?}]]>
   </sql>
 </SQLLITE>
 
