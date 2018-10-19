@@ -212,7 +212,7 @@ ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.
 
 名称 | 必须存在? | 描述 | 写法
 ---|---|---|---
-name | 是 | 该特性与你自动生成代码息息相关，当target没有定义的时候，它必须是数据库字段名 | name = "some_name"
+name | 是 | <font size="1">该特性与你自动生成代码息息相关，当target没有定义的时候，它必须是数据库字段名</font> | name = "some_name"
 symbol | 否 | 该特性决定该参数的比值符，当该特性没有定义的时候默认为'='符号，它除了 '>' , '<' , '=' 等标准比值符以外，也可以用 'in' , 'not in', 'like' 等特殊比值符，当使用特殊比值符的时候，你必须给它安装一个模板 | symbol = ">=" 或者 symbol = "in"
 target | 否 | 该特性指向你的数据库字段，当你有 name 为 datetime_Start 和 datetime_end 俩个参数，但是它们实际上都只是想查询datetime这一字段时，那么可以用target = "datetime" | target = "some_field"
 template | 当symbol为非常规比值符的时候必须存在 | 当代码自动生成的时候，会将模板内的'\*'，替换为target或者name的内容，'\*'是在里面必不可少的一部分 | template = "(\*)"
