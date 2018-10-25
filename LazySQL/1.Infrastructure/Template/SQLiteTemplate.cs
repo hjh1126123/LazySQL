@@ -11,6 +11,48 @@ namespace LazySQL.Infrastructure
     /// </summary>
     public class SQLiteTemplate
     {
+        private static SQLiteTemplate _instance;
+        public static SQLiteTemplate Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new SQLiteTemplate();
+
+                return _instance;
+            }
+        }
+
+        #region 基础参数
+
+        readonly Dictionary<string,SQLiteConnection> sQLiteConnection;
+        private SQLiteTemplate()
+        {
+            sQLiteConnection = new Dictionary<string, SQLiteConnection>();
+        }
+
+        /// <summary>
+        /// 添加连接库
+        /// </summary>
+        /// <param name="name">名称</param>
+        /// <param name="connText">连接字符串</param>
+        public void AddConnection(string name,string connText)
+        {
+            if (sQLiteConnection == null)
+                return;
+
+            if (!sQLiteConnection.ContainsKey(name))
+            {
+                sQLiteConnection.Add(name, new SQLiteConnection(connText));
+            }
+            else
+            {
+                sQLiteConnection[name] = new SQLiteConnection(connText);
+            }
+        }
+
+        #endregion
+
         #region 执行数据库操作(新增、更新或删除)，返回影响行数
 
         /// <summary>
@@ -20,43 +62,40 @@ namespace LazySQL.Infrastructure
         /// <param name="commandType">执行类型(默认语句)</param>
         /// <param name="cmdParms">SQL参数对象</param>
         /// <returns>所受影响的行数</returns>
-        public ExecuteNonModel ExecuteNonQuery(string connectionString, StringBuilder commandText, List<SQLiteParameter> cmdParms)
-        {                        
+        public ExecuteNonModel ExecuteNonQuery(string connName, StringBuilder commandText, List<SQLiteParameter> cmdParms)
+        {
             int result = 0;
-            if (connectionString == null || connectionString.Length == 0)
-                throw new ArgumentNullException("connectionString");
+            if (connName == null || connName.Length == 0)
+                throw new ArgumentNullException("connName");
             if (commandText == null || commandText.Length == 0)
                 throw new ArgumentNullException("commandText");
 
             SQLiteCommand cmd = new SQLiteCommand();
-            using (SQLiteConnection con = new SQLiteConnection(connectionString))
+            SQLiteTransaction trans = null;
+            PrepareCommand(cmd, sQLiteConnection[connName], ref trans, true, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
+            try
             {
-                SQLiteTransaction trans = null;
-                PrepareCommand(cmd, con, ref trans, true, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
-                try
+                result = cmd.ExecuteNonQuery();
+                trans.Commit();
+                return new ExecuteNonModel()
                 {
-                    result = cmd.ExecuteNonQuery();
-                    trans.Commit();
-                    return new ExecuteNonModel()
+                    Result = result,
+                    Message = $"执行成功",
+                    Success = true
+                };
+            }
+            catch (Exception ex)
+            {
+                trans.Rollback();
+                throw ex;
+            }
+            finally
+            {
+                if (sQLiteConnection != null)
+                {
+                    if (sQLiteConnection[connName].State == ConnectionState.Open)
                     {
-                        Result = result,
-                        Message = $"执行成功",
-                        Success = true
-                    };
-                }
-                catch (Exception ex)
-                {
-                    trans.Rollback();
-                    throw ex;
-                }
-                finally
-                {
-                    if (con != null)
-                    {
-                        if (con.State == ConnectionState.Open)
-                        {
-                            con.Close();
-                        }
+                        sQLiteConnection[connName].Close();
                     }
                 }
             }
@@ -72,17 +111,16 @@ namespace LazySQL.Infrastructure
         /// <param name="commandText">执行语句或存储过程名</param>
         /// <param name="commandType">执行类型(默认语句)</param>
         /// <returns>DataTable对象</returns>
-        public DataTable ExecuteDataTable(string connectionString, StringBuilder commandText, List<SQLiteParameter> cmdParms)
+        public DataTable ExecuteDataTable(string connName, StringBuilder commandText, List<SQLiteParameter> cmdParms)
         {
-            if (connectionString == null || connectionString.Length == 0)
-                throw new ArgumentNullException("connectionString");
+            if (connName == null || connName.Length == 0)
+                throw new ArgumentNullException("connName");
             if (commandText == null || commandText.Length == 0)
                 throw new ArgumentNullException("commandText");
-            DataTable dt = new DataTable();
-            SQLiteConnection con = new SQLiteConnection(connectionString);            
+            DataTable dt = new DataTable();            
             SQLiteCommand cmd = new SQLiteCommand();
             SQLiteTransaction trans = null;
-            PrepareCommand(cmd, con, ref trans, false, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
+            PrepareCommand(cmd, sQLiteConnection[connName], ref trans, false, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
             try
             {
                 SQLiteDataAdapter sda = new SQLiteDataAdapter(cmd);
@@ -94,11 +132,11 @@ namespace LazySQL.Infrastructure
             }
             finally
             {
-                if (con != null)
+                if (sQLiteConnection != null)
                 {
-                    if (con.State == ConnectionState.Open)
+                    if (sQLiteConnection[connName].State == ConnectionState.Open)
                     {
-                        con.Close();
+                        sQLiteConnection[connName].Close();
                     }
                 }
             }

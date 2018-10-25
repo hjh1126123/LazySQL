@@ -62,7 +62,12 @@ namespace LazySQL.Action.Modules
         /// <param name="action">扩展方法</param>
         private void Method(string connName, string name, string path, Action<XmlNode, XmlNode, XmlNode, XmlNode> action)
         {
-            Stream stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path);
+            Stream stream;
+            if (factoryConfig.Assembly == null)
+                stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path);
+            else
+                stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path, factoryConfig.Assembly);
+
             if (factoryConfig.Assembly != null)
                 stream = ReflectionHelper.GetInstance().GetManifestResourceStream(path, factoryConfig.Assembly);
 
