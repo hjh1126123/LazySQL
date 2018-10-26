@@ -1,7 +1,7 @@
 ﻿using LazySQL.Core;
 using LazySQL.Infrastructure;
 using System;
-using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.IO;
 using System.Reflection;
 using System.Xml;
@@ -28,12 +28,10 @@ namespace LazySQL.Action.Modules
         class FactoryConfig
         {
             public Assembly Assembly { get; private set; }
-            public Dictionary<string, int> MaxCondition { get; set; }
-            public Dictionary<string, string> SQLConnDict { get; set; }
+            public ConcurrentDictionary<string, int> MaxCondition { get; set; }
             public FactoryConfig()
             {
-                MaxCondition = new Dictionary<string, int>();
-                SQLConnDict = new Dictionary<string, string>();
+                MaxCondition = new ConcurrentDictionary<string, int>();
             }
 
             public void SetAssembly(Assembly assembly)
@@ -95,18 +93,18 @@ namespace LazySQL.Action.Modules
         /// <summary>
         /// 构建代码
         /// </summary>
-        /// <param name="connName">连接库</param>
-        /// <param name="name">存储名称</param>
-        /// <param name="xmlPath">xml资源路径</param>
-        public void BuildMethod(string connName, string name, string xmlPath)
+        /// <param name="connName">数据池名称</param>
+        /// <param name="MethodName">方法名称</param>
+        /// <param name="xmlPath">xml内存文件地址</param>
+        public void BuildMethod(string connName, string MethodName, string xmlPath)
         {
-            Method(connName, name, xmlPath, (ms, my, oracl, sqllite) =>
+            Method(connName, MethodName, xmlPath, (ms, my, oracl, sqllite) =>
             {
                 if (ms != null)
-                    CoreMain.GetInstance().CoreBuild(factoryConfig.SQLConnDict[connName], name, ms, factoryConfig.MaxCondition[connName], Core.DBType.MSSQL);
+                    CoreMain.GetInstance().CoreBuild(connName, MethodName, ms, factoryConfig.MaxCondition[connName], DB_TYPE.MSSQL);
 
                 if (sqllite != null)
-                    CoreMain.GetInstance().CoreBuild(factoryConfig.SQLConnDict[connName], name, sqllite, factoryConfig.MaxCondition[connName], Core.DBType.SQLLITE);
+                    CoreMain.GetInstance().CoreBuild(connName, MethodName, sqllite, factoryConfig.MaxCondition[connName], DB_TYPE.SQLLITE);
             });
         }
 
@@ -122,10 +120,10 @@ namespace LazySQL.Action.Modules
             Method(connName, name, xmlPath, (ms, my, oracl, sqllite) =>
             {
                 if (ms != null)
-                    CoreMain.GetInstance().CoreOutPut(factoryConfig.SQLConnDict[connName], name, ms, factoryConfig.MaxCondition[connName], Core.DBType.MSSQL, outPutPath);
+                    CoreMain.GetInstance().CoreOutPut(connName, name, ms, factoryConfig.MaxCondition[connName], DB_TYPE.MSSQL, outPutPath);
 
                 if (sqllite != null)
-                    CoreMain.GetInstance().CoreOutPut(factoryConfig.SQLConnDict[connName], name, sqllite, factoryConfig.MaxCondition[connName], Core.DBType.SQLLITE, outPutPath);
+                    CoreMain.GetInstance().CoreOutPut(connName, name, sqllite, factoryConfig.MaxCondition[connName], DB_TYPE.SQLLITE, outPutPath);
             });
         }
 
@@ -136,29 +134,26 @@ namespace LazySQL.Action.Modules
         /// <param name="name">连接库名称</param>
         /// <param name="connText">连接字符串</param>
         /// <param name="maxCondition">XML所能拥有的最大动态条件查询组</param>
-        public void AddConnection(string name, string connText, int maxCondition)
+        public void AddConnection(string name, string connText, int initCount, int capacity, int maxCondition, DB_TYPE dBType)
         {
-            if (factoryConfig.SQLConnDict.ContainsKey(name))
+            factoryConfig.MaxCondition.AddOrUpdate(name, maxCondition, (key, oldvalue) => maxCondition);
+
+            switch (dBType)
             {
-                factoryConfig.SQLConnDict[name] = connText;
-            }
-            else
-            {
-                factoryConfig.SQLConnDict.Add(name, connText);
+                case DB_TYPE.MSSQL:
+                    MSSQLTemplate.Instance.AddPool(name, connText, initCount, capacity);
+                    break;
+
+                case DB_TYPE.SQLLITE:
+                    SQLiteTemplate.Instance.AddPool(name, connText, initCount, capacity);
+                    break;
             }
 
-            if (factoryConfig.MaxCondition.ContainsKey(name))
-            {
-                factoryConfig.MaxCondition[name] = maxCondition;
-            }
-            else
-            {
-                factoryConfig.MaxCondition.Add(name, maxCondition);
-            }
+            Console.WriteLine($"线程池{name}启动,连接字符串{connText},初始化连接数{initCount},最大连接数{capacity},最大条件字段{maxCondition},数据库类型{Enum.GetName(typeof(DB_TYPE), dBType)}");
         }
 
         /// <summary>
-        /// 设置Data层程序集
+        /// 设置程序集
         /// </summary>
         /// <param name="assembly">程序集</param>
         public void SetAssembly(Assembly assembly)

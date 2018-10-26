@@ -1,14 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Concurrent;
 using System.Data;
 using System.Data.SQLite;
 using System.Text;
 
 namespace LazySQL.Infrastructure
 {
-    /// <summary>
-    /// 本类为SQLite数据库帮助静态类,使用时只需直接调用即可,无需实例化
-    /// </summary>
     public class SQLiteTemplate
     {
         private static SQLiteTemplate _instance;
@@ -25,30 +23,25 @@ namespace LazySQL.Infrastructure
 
         #region 基础参数
 
-        readonly Dictionary<string,SQLiteConnection> sQLiteConnection;
-        private SQLiteTemplate()
+        ConcurrentDictionary<string, DBPool> DBPools;
+
+        #endregion
+
+        #region 基础参数控制
+
+        public void AddPool(string name, string conn, int initCount, int capacity)
         {
-            sQLiteConnection = new Dictionary<string, SQLiteConnection>();
+            DBPool dBPool = new DBPool(conn, initCount, capacity, DB.SQLLITE);
+            DBPools.AddOrUpdate(name, dBPool, (key, oldValue) => dBPool);
         }
 
-        /// <summary>
-        /// 添加连接库
-        /// </summary>
-        /// <param name="name">名称</param>
-        /// <param name="connText">连接字符串</param>
-        public void AddConnection(string name,string connText)
-        {
-            if (sQLiteConnection == null)
-                return;
+        #endregion
 
-            if (!sQLiteConnection.ContainsKey(name))
-            {
-                sQLiteConnection.Add(name, new SQLiteConnection(connText));
-            }
-            else
-            {
-                sQLiteConnection[name] = new SQLiteConnection(connText);
-            }
+        #region 构造方法
+
+        private SQLiteTemplate()
+        {
+            DBPools = new ConcurrentDictionary<string, DBPool>();
         }
 
         #endregion
@@ -56,23 +49,24 @@ namespace LazySQL.Infrastructure
         #region 执行数据库操作(新增、更新或删除)，返回影响行数
 
         /// <summary>
-        /// 执行数据库操作(新增、更新或删除)
+        /// 执行写入操作
         /// </summary>
-        /// <param name="commandText">执行语句或存储过程名</param>
-        /// <param name="commandType">执行类型(默认语句)</param>
-        /// <param name="cmdParms">SQL参数对象</param>
-        /// <returns>所受影响的行数</returns>
-        public ExecuteNonModel ExecuteNonQuery(string connName, StringBuilder commandText, List<SQLiteParameter> cmdParms)
+        /// <param name="name">数据库名称</param>
+        /// <param name="commandText"></param>
+        /// <param name="cmdParms"></param>
+        /// <returns>ExecuteNonModel</returns>
+        public ExecuteNonModel ExecuteNonQuery(string name, StringBuilder commandText, List<SQLiteParameter> cmdParms)
         {
             int result = 0;
-            if (connName == null || connName.Length == 0)
-                throw new ArgumentNullException("connName");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name");
             if (commandText == null || commandText.Length == 0)
                 throw new ArgumentNullException("commandText");
 
+            SQLiteConnection sQLiteConnection = DBPools[name].GetConnection<SQLiteConnection>();
+
             SQLiteCommand cmd = new SQLiteCommand();
-            SQLiteTransaction trans = null;
-            PrepareCommand(cmd, sQLiteConnection[connName], ref trans, true, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
+            PrepareCommand(cmd, sQLiteConnection, out SQLiteTransaction trans, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
             try
             {
                 result = cmd.ExecuteNonQuery();
@@ -91,13 +85,9 @@ namespace LazySQL.Infrastructure
             }
             finally
             {
-                if (sQLiteConnection != null)
-                {
-                    if (sQLiteConnection[connName].State == ConnectionState.Open)
-                    {
-                        sQLiteConnection[connName].Close();
-                    }
-                }
+                trans.Dispose();
+                cmd.Dispose();
+                DBPools[name].FreeConnection(sQLiteConnection);
             }
         }
 
@@ -106,25 +96,30 @@ namespace LazySQL.Infrastructure
         #region 执行数据库查询，返回DataTable对象
 
         /// <summary>
-        /// 执行数据库查询，返回DataTable对象
+        /// 执行读取操作
         /// </summary>
-        /// <param name="commandText">执行语句或存储过程名</param>
-        /// <param name="commandType">执行类型(默认语句)</param>
-        /// <returns>DataTable对象</returns>
-        public DataTable ExecuteDataTable(string connName, StringBuilder commandText, List<SQLiteParameter> cmdParms)
+        /// <param name="name">数据库名称</param>
+        /// <param name="commandText">访问字符串</param>
+        /// <param name="cmdParms">访问参数</param>
+        /// <returns>DataTable</returns>
+        public DataTable ExecuteDataTable(string name, StringBuilder commandText, List<SQLiteParameter> cmdParms)
         {
-            if (connName == null || connName.Length == 0)
-                throw new ArgumentNullException("connName");
+            if (string.IsNullOrWhiteSpace(name))
+                throw new ArgumentNullException("name");
             if (commandText == null || commandText.Length == 0)
                 throw new ArgumentNullException("commandText");
-            DataTable dt = new DataTable();            
+
+            SQLiteConnection sQLiteConnection = DBPools[name].GetConnection<SQLiteConnection>();
+
             SQLiteCommand cmd = new SQLiteCommand();
-            SQLiteTransaction trans = null;
-            PrepareCommand(cmd, sQLiteConnection[connName], ref trans, false, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
+            SQLiteDataAdapter sda = new SQLiteDataAdapter(cmd);
+            DataTable dt = new DataTable();
+
+            PrepareCommand(cmd, sQLiteConnection, CommandType.Text, commandText.ToString(), cmdParms.ToArray());
             try
             {
-                SQLiteDataAdapter sda = new SQLiteDataAdapter(cmd);
                 sda.Fill(dt);
+                return dt;
             }
             catch (Exception ex)
             {
@@ -132,15 +127,11 @@ namespace LazySQL.Infrastructure
             }
             finally
             {
-                if (sQLiteConnection != null)
-                {
-                    if (sQLiteConnection[connName].State == ConnectionState.Open)
-                    {
-                        sQLiteConnection[connName].Close();
-                    }
-                }
+                sda.Dispose();
+                cmd.Dispose();
+                DBPools[name].FreeConnection(sQLiteConnection);
             }
-            return dt;
+
         }
 
         #endregion
@@ -148,36 +139,41 @@ namespace LazySQL.Infrastructure
         #region 预处理Command对象,数据库链接,事务,需要执行的对象,参数等的初始化
 
         /// <summary>
-        /// 预处理Command对象,数据库链接,事务,需要执行的对象,参数等的初始化
+        /// 带事务
         /// </summary>
-        /// <param name="cmd">Command对象</param>
-        /// <param name="conn">Connection对象</param>
-        /// <param name="trans">Transcation对象</param>
-        /// <param name="useTrans">是否使用事务</param>
-        /// <param name="cmdType">SQL字符串执行类型</param>
-        /// <param name="cmdText">SQL Text</param>
-        /// <param name="cmdParms">SQLiteParameters to use in the command</param>
         private void PrepareCommand(SQLiteCommand cmd
             , SQLiteConnection conn
-            , ref SQLiteTransaction trans
-            , bool useTrans
+            , out SQLiteTransaction trans
             , CommandType cmdType
             , string cmdText
             , params SQLiteParameter[] cmdParms)
         {
-
-            if (conn.State != ConnectionState.Open)
-                conn.Open();
-
             cmd.Connection = conn;
             cmd.CommandText = cmdText;
 
-            if (useTrans)
-            {
-                trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
-                cmd.Transaction = trans;
-            }
+            trans = conn.BeginTransaction(IsolationLevel.ReadCommitted);
+            cmd.Transaction = trans;
 
+            cmd.CommandType = cmdType;
+
+            if (cmdParms != null)
+            {
+                foreach (SQLiteParameter parm in cmdParms)
+                    cmd.Parameters.Add(parm);
+            }
+        }
+
+        /// <summary>
+        /// 不带事务
+        /// </summary>
+        private void PrepareCommand(SQLiteCommand cmd
+            , SQLiteConnection conn
+            , CommandType cmdType
+            , string cmdText
+            , params SQLiteParameter[] cmdParms)
+        {
+            cmd.Connection = conn;
+            cmd.CommandText = cmdText;
 
             cmd.CommandType = cmdType;
 

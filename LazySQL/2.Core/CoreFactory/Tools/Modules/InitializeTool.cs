@@ -8,6 +8,10 @@ namespace LazySQL.Core.CoreFactory.Tools.Modules
         {
             return WriteCode($"{typeof(T).FullName} {fieldName}");
         }
+        public CodeExpression CreateObj_Instance_Static<T>(string fieldName)
+        {
+            return WriteCode($"{typeof(T).FullName} {fieldName} = {typeof(T).FullName}.Instance");
+        }
         public CodeExpression CreateAndInstantiation<T>(string fieldName)
         {
             return WriteCode($"{typeof(T).FullName} {fieldName} = new {typeof(T).FullName}()");

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Concurrent;
 using System.Data;
 using System.Data.SqlClient;
 
@@ -6,6 +7,43 @@ namespace LazySQL.Infrastructure
 {
     public class MSSQLTemplate
     {
+        private static MSSQLTemplate _instance;
+        public static MSSQLTemplate Instance
+        {
+            get
+            {
+                if (_instance == null)
+                    _instance = new MSSQLTemplate();
+
+                return _instance;
+            }
+        }
+
+        #region 基础参数
+
+        ConcurrentDictionary<string, DBPool> DBPools;
+
+        #endregion
+
+        #region 基础参数控制
+
+        public void AddPool(string name, string conn, int initCount, int capacity)
+        {
+            DBPool dBPool = new DBPool(conn, initCount, capacity, DB.MSSQL);
+            DBPools.AddOrUpdate(name, dBPool, (key, oldValue) => dBPool);
+        }
+
+        #endregion
+
+        #region 构造方法
+
+        private MSSQLTemplate()
+        {
+            DBPools = new ConcurrentDictionary<string, DBPool>();
+        }
+
+        #endregion
+
         /// <summary>
         /// 执行返回操作条数(通过connStr)(携带事务)
         /// </summary>
@@ -13,11 +51,10 @@ namespace LazySQL.Infrastructure
         /// <param name="cmdText"></param>
         /// <param name="commandParameters"></param>
         /// <returns></returns>
-        public int ExecuteNonQuery(string connectionString, string cmdText, params SqlParameter[] commandParameters)
+        public int ExecuteNonQuery(string name, string cmdText, params SqlParameter[] commandParameters)
         {
-            SqlConnection conn = new SqlConnection(connectionString);
+            SqlConnection conn = DBPools[name].GetConnection<SqlConnection>();
             SqlCommand cmd = new SqlCommand();
-            conn.Open();
             SqlTransaction sqlTransaction = conn.BeginTransaction(IsolationLevel.ReadCommitted);
             try
             {
@@ -29,11 +66,11 @@ namespace LazySQL.Infrastructure
             catch (Exception ex)
             {
                 sqlTransaction.Rollback();
-                throw ex.ThrowMineFormat(this, "ExecuteNonQuery", connectionString, cmdText, cmd.CommandText);
+                throw ex.ThrowMineFormat(this, "ExecuteNonQuery", name, cmdText, cmd.CommandText);
             }
             finally
             {
-                conn.Dispose();
+                DBPools[name].FreeConnection(conn);
                 cmd.Dispose();
                 sqlTransaction.Dispose();
             }
@@ -46,12 +83,12 @@ namespace LazySQL.Infrastructure
         /// <param name="cmdText"></param>
         /// <param name="commandParameters"></param>
         /// <returns></returns>
-        public DataTable ExecuteDataTable(string connectionString, string cmdText, params SqlParameter[] commandParameters)
+        public DataTable ExecuteDataTable(string name, string cmdText, params SqlParameter[] commandParameters)
         {
-            DataTable dt = new DataTable();
+            SqlConnection conn = DBPools[name].GetConnection<SqlConnection>();            
             SqlCommand cmd = new SqlCommand();
             SqlDataAdapter da = new SqlDataAdapter(cmd);
-            SqlConnection conn = new SqlConnection(connectionString);
+            DataTable dt = new DataTable();
             try
             {
                 PrepareCommand(cmd, conn, null, CommandType.Text, cmdText, commandParameters);
@@ -61,14 +98,14 @@ namespace LazySQL.Infrastructure
             }
             catch (Exception ex)
             {
-                throw ex.ThrowMineFormat(this, "ExecuteDataTable", connectionString, cmdText, cmd.CommandText);
+                throw ex.ThrowMineFormat(this, "ExecuteDataTable", name, cmdText, cmd.CommandText);
             }
             finally
             {
                 dt.Dispose();
                 cmd.Dispose();
                 da.Dispose();
-                conn.Dispose();
+                DBPools[name].FreeConnection(conn);
             }
         }
 
@@ -83,10 +120,6 @@ namespace LazySQL.Infrastructure
         /// <param name="cmdParms"></param>
         private void PrepareCommand(SqlCommand cmd, SqlConnection conn, SqlTransaction trans, CommandType cmdType, string cmdText, SqlParameter[] cmdParms)
         {
-
-            if (conn.State != ConnectionState.Open)
-                conn.Open();
-
             cmd.Connection = conn;
             cmd.CommandText = cmdText;
 

@@ -14,7 +14,7 @@ namespace SimpleSqlLite
             {
                 ActionMain.Instance.GetFactory().SetAssembly(Assembly.GetExecutingAssembly());
 
-                ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10);
+                ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10, 100, 10, DB_TYPE.SQLLITE);
 
                 //输出自动生成的脚本文件到目录Debug/output
                 //ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml", "output");
@@ -29,7 +29,7 @@ namespace SimpleSqlLite
 
                 Task.Factory.StartNew(() =>
                 {
-                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("yyyyMMddHHmmss")}", DateTime.Now.Ticks.ToString(), "1");
+                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("yyyyMMdd")}", DateTime.Now.Ticks.ToString(), "1");
                     if (NonModel.Success)
                     {
                         Console.WriteLine("插入数据成功");

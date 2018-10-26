@@ -18,23 +18,23 @@ namespace LazySQL.Core.CoreFactory.Blueprint
 
         public override CodeExpression Create()
         {
-            return ToolManager.Instance.InitializeTool.CreateAndInstantiation<SQLiteTemplate>(Field);
+            return ToolManager.Instance.InitializeTool.CreateObj_Instance_Static<SQLiteTemplate>(Field);
         }
 
-        public override CodeExpression ExecuteNonQuery(string connectionString, string commandTextField, string cmdParmsField)
+        public override CodeExpression ExecuteNonQuery(string conn, string commandTextField, string cmdParmsField)
         {
             return ToolManager.Instance.InvokeTool.InvokeWithMore(Field,
                 "ExecuteNonQuery",
-                new CodePrimitiveExpression(connectionString),
+                new CodePrimitiveExpression(conn),
                 new CodeVariableReferenceExpression(commandTextField),
                 new CodeVariableReferenceExpression(cmdParmsField));
         }
 
-        public override CodeExpression ExecuteDataTable(string connectionString, string commandTextField, string cmdParmsField)
+        public override CodeExpression ExecuteDataTable(string conn, string commandTextField, string cmdParmsField)
         {
             return ToolManager.Instance.InvokeTool.InvokeWithMore(Field,
                 "ExecuteDataTable",
-                new CodePrimitiveExpression(connectionString),
+                new CodePrimitiveExpression(conn),
                 new CodeVariableReferenceExpression(commandTextField),
                 new CodeVariableReferenceExpression(cmdParmsField));
         }
