@@ -1,33 +1,34 @@
 ## LazySQL 2 ！！！！
 
-> 在LazySQL的基础上进行重构，从通过对代码标记生成代码到从XML上定制代码，让你在轻松构建数据层的同时，增强代码的可读性，标记往往会让model的构建更为复杂
+> 在LazySQL的经验上进行重构，从通过对model进行标记生成代码到从XML上定制代码，让你在轻松构建数据层的同时，增强代码的可读性，因为标记会让model的构建更为复杂
 
-#### 主打
+#### 主要作用
 
-> 是否为每次拼接sql的时候感到烦恼，看到一长串的if-else是否觉得头疼，lazySQL将会解救你，因为你不需要再去判断是否存在这个值，是否要查询这个条件，是否要修改这个值，你只需要定义一个xml，其他的lazySql都帮你做了
+> 它极大的简化了DAL层的代码容量（你在DAL层几乎只需要写SQL和几行注册lazySQL的代码，无需理会任何ADO操作，以及字符串拼接等这些烦人且重复性高的工作，这些，LazySQL都帮你自动完成了），LazySQL并不是简单的helper(如果是这样，它将不能让效率与便捷并存），我更愿意叫它底层工具库，因为它不是提供一些写好的万能方法，让你去调用，它的工作是帮你自动生成执行效率最高的数据访问代码，然后对其进行编译，并存在内存当中.
 
-#### 特性(Feature)
+#### 版本现状
 
-- [x] 脚本导出(export script)
-- [x] 多数据库支持(multiple db support)
-- [x] 使用参数化查询(use parameterized queries)
-- [x] 在第一次生成代码编译后，调用效率与直接调用Ado.net组件所写的方法不相上下(After first generated , it same invocation efficiency as that of calling the method written by the Ado.net)
-- [x] SQLLite支持(sqllite support)
-- [x] MSSQL支持(mssql support)
-- [ ] MYSQL支持(mysql support)[正在制作  building...]
-
-#### 原理
-
-> 从xml上获取参数后，利用codedom自动生成代码，将其编译后将方法缓存入内存中，方便以后调用
-
+- [x] 自制数据连接对象池
+- [x] 多池(数据连接对象池)支持
+- [x] 使用参数化查询
+- [x] 事务回滚
+- [x] 线程安全
+- [x] SQLLite支持
+- [x] MSSQL支持
+- [ ] MYSQL支持[building...]
 
 #### 快速开始
+
+#### 跃跃欲试的同学，建议下载工程项目，直接运行sqlliteTest,里面有较为完整的范例
+
+#### 后续的文档更新将在个人主页上更新（当然个人主页也在Building）
 
 ##### 首先是c#代码
 
 ```c#
 
 //在通常情况下，只需要引入这个命名空间
+
 using LazySQL.Action;
 using System.Data;
 
