@@ -194,8 +194,6 @@ ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.
 
 > 将其导出
 
-> 所以遇到BUG了不要急，将其生成的代码导出，并反馈给我，下一个小版本它将会被修复
-
 ##### 现在说说LazySql最重点的xml参数吧，用以下俩个模板来说明
 
 ```xml
