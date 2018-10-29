@@ -51,7 +51,7 @@ class Main(){
 ActionMain.Instance.GetFactory().SetAssembly(Assembly.GetExecutingAssembly());
 
 //添加数据库连接字符串
-ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10);
+ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10, 100, 10, DB_TYPE.SQLLITE);
 
 //生成代码，并定义调用名称userQuery
 ActionMain.Instance.GetFactory().BuildMethod("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml");
@@ -61,10 +61,10 @@ ActionMain.Instance.GetFactory().BuildMethod("t", "userUpdate", $"SimpleSqlLite.
 //执行查询语句，参数（调用名称，查询参数1，查询参数2，查询参数3），返回DataTable
 DataTable dataTable = ActionMain.Instance.GetSystem().Method_DataTable("userQuery", "", "", "");
 
-//执行插入语句，参数（调用名称，插入值1，插入值2，插入值3），返回ExecuteNonModel（内含，错误信息，插入成功与否，受影响数量）
+//执行插入语句，参数（调用名称，插入值1，插入值2，插入值3），返回ExecuteNonModel（含，错误信息，插入成功与否，受影响数量）
 ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("yyyyMMddHHmmss")}", DateTime.Now.Ticks.ToString(), "1");
 
-//执行更新语句，参数（调用名称，修改值1，修改值2，修改值3，条件值1），返回ExecuteNonModel（内含，错误信息，插入成功与否，受影响数量）
+//执行更新语句，参数（调用名称，修改值1，修改值2，修改值3，条件值1），返回ExecuteNonModel（含，错误信息，插入成功与否，受影响数量）
 ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userUpdate", "", DateTime.Now.Ticks.ToString(), "", "27");
 
 }
@@ -169,8 +169,7 @@ public class userQueryClass
                 StrbSQL.Append(par0);
                 
                 //执行内置方法（为何这里是调用LazySQL内置方法呢，而不是自动生成完整的数据库操作代码呢？因为数据库操作在大多数情况下是有通用方法的，这可以让我更容易去扩展项目，也可以让所有使用我这个开源项目的人，更容易去扩展自己的LazySql，因为比起去扩展codedom操作来说，扩展Ado.net操作要轻松的多）
-                return sqlLiteT.ExecuteDataTable("Data Source=db\\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=Tru" +
-                        "e;Max Pool Size=10", StrbSQL, aList);
+                return sqlLiteT.ExecuteDataTable("t", StrbSQL, aList);
             }
             catch (System.Exception ex)
             {
