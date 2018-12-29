@@ -1,33 +1,47 @@
 ## LazySQL 2 ！！！！
 
-> 在LazySQL的基础上进行重构，从通过对代码标记生成代码到从XML上定制代码，让你在轻松构建数据层的同时，增强代码的可读性，标记往往会让model的构建更为复杂
+> 在LazySQL的经验上进行重构，从通过对model进行标记生成代码到从XML上定制代码，让你在轻松构建数据层的同时，增强代码的可读性，因为标记会让model的构建更为复杂
 
-#### 主打
+#### 主要作用
 
-> 是否为每次拼接sql的时候感到烦恼，看到一长串的if-else是否觉得头疼，lazySQL将会解救你，因为你不需要再去判断是否存在这个值，是否要查询这个条件，是否要修改这个值，你只需要定义一个xml，其他的lazySql都帮你做了
+> 它极大的简化了DAL层的代码容量（你在DAL层几乎只需要写SQL和几行注册lazySQL的代码，无需理会任何ADO操作，以及字符串拼接等这些烦人且重复性高的工作，这些，LazySQL都帮你自动完成了），LazySQL并不是简单的helper(如果是这样，它将不能让效率与便捷并存），我更愿意叫它底层工具库，因为它不是提供一些写好的万能方法，让你去调用，它的工作是帮你自动生成执行效率最高的数据访问代码，然后对其进行编译，并存在内存当中.
 
-#### 特性(Feature)
+#### 版本现状
+- [x] 无配置
+- [x] 使用简单
+- [x] 自制数据连接对象池(实际测试，比简单的在配置开启连接池要快上15%~25%)
+- [x] 多池(数据连接对象池)支持
+- [x] 使用参数化查询
+- [x] 事务
+- [x] 线程安全
+- [x] SQLLite支持
+- [x] MSSQL支持
+- [ ] MYSQL支持[building...]
 
-- [x] 脚本导出(export script)
-- [x] 多数据库支持(multiple db support)
-- [x] 使用参数化查询(use parameterized queries)
-- [x] 在第一次生成代码编译后，调用效率与直接调用Ado.net组件所写的方法不相上下(After first generated , it same invocation efficiency as that of calling the method written by the Ado.net)
-- [x] SQLLite支持(sqllite support)
-- [x] MSSQL支持(mssql support)
-- [ ] MYSQL支持(mysql support)[正在制作  building...]
+#### 不建议
 
-#### 原理
+> 不建议在IIS或者任何需要高度重启的项目中使用，因为他在第一次执行的时候，它将会执行如下操作:<br/>生成连接池→根据XML自动创建代码→编译代码→存入内存<br/>通常时间不会超过3秒，但依然是不舒服的体验
 
-> 从xml上获取参数后，利用codedom自动生成代码，将其编译后将方法缓存入内存中，方便以后调用
+#### 注意点
 
+- 在AddConnection的时候，将会生成对象池
+
+- 在BuildMethod的时候，将会自动生成代码以及编译代码并存入内存
+
+> 上述操作建议单次执行，作者通常将它们写在单例模式的构造方法中
 
 #### 快速开始
+
+#### 跃跃欲试的同学，建议下载工程项目，直接运行sqlliteTest,里面有较为完整的范例
+
+#### 后续的文档更新将在个人主页上更新（当然个人主页也在Building）
 
 ##### 首先是c#代码
 
 ```c#
 
 //在通常情况下，只需要引入这个命名空间
+
 using LazySQL.Action;
 using System.Data;
 
@@ -37,7 +51,7 @@ class Main(){
 ActionMain.Instance.GetFactory().SetAssembly(Assembly.GetExecutingAssembly());
 
 //添加数据库连接字符串
-ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10);
+ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10, 100, 10, DB_TYPE.SQLLITE);
 
 //生成代码，并定义调用名称userQuery
 ActionMain.Instance.GetFactory().BuildMethod("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml");
@@ -47,10 +61,10 @@ ActionMain.Instance.GetFactory().BuildMethod("t", "userUpdate", $"SimpleSqlLite.
 //执行查询语句，参数（调用名称，查询参数1，查询参数2，查询参数3），返回DataTable
 DataTable dataTable = ActionMain.Instance.GetSystem().Method_DataTable("userQuery", "", "", "");
 
-//执行插入语句，参数（调用名称，插入值1，插入值2，插入值3），返回ExecuteNonModel（内含，错误信息，插入成功与否，受影响数量）
+//执行插入语句，参数（调用名称，插入值1，插入值2，插入值3），返回ExecuteNonModel（含，错误信息，插入成功与否，受影响数量）
 ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("yyyyMMddHHmmss")}", DateTime.Now.Ticks.ToString(), "1");
 
-//执行更新语句，参数（调用名称，修改值1，修改值2，修改值3，条件值1），返回ExecuteNonModel（内含，错误信息，插入成功与否，受影响数量）
+//执行更新语句，参数（调用名称，修改值1，修改值2，修改值3，条件值1），返回ExecuteNonModel（含，错误信息，插入成功与否，受影响数量）
 ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userUpdate", "", DateTime.Now.Ticks.ToString(), "", "27");
 
 }
@@ -155,8 +169,7 @@ public class userQueryClass
                 StrbSQL.Append(par0);
                 
                 //执行内置方法（为何这里是调用LazySQL内置方法呢，而不是自动生成完整的数据库操作代码呢？因为数据库操作在大多数情况下是有通用方法的，这可以让我更容易去扩展项目，也可以让所有使用我这个开源项目的人，更容易去扩展自己的LazySql，因为比起去扩展codedom操作来说，扩展Ado.net操作要轻松的多）
-                return sqlLiteT.ExecuteDataTable("Data Source=db\\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=Tru" +
-                        "e;Max Pool Size=10", StrbSQL, aList);
+                return sqlLiteT.ExecuteDataTable("t", StrbSQL, aList);
             }
             catch (System.Exception ex)
             {
@@ -180,8 +193,6 @@ ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.
 ```
 
 > 将其导出
-
-> 所以遇到BUG了不要急，将其生成的代码导出，并反馈给我，下一个小版本它将会被修复
 
 ##### 现在说说LazySql最重点的xml参数吧，用以下俩个模板来说明
 
