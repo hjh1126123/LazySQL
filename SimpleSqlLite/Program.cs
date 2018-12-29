@@ -29,7 +29,7 @@ namespace SimpleSqlLite
 
                 Task.Factory.StartNew(() =>
                 {
-                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("yyyyMMdd")}", DateTime.Now.Ticks.ToString(), "1");
+                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("HHmmss")}", DateTime.Now.Ticks.ToString(), "1");
                     if (NonModel.Success)
                     {
                         Console.WriteLine("插入数据成功");

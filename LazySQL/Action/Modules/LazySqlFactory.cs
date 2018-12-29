@@ -149,7 +149,7 @@ namespace LazySQL.Action.Modules
                     break;
             }
 
-            Console.WriteLine($"线程池{name}启动,连接字符串{connText},初始化连接数{initCount},最大连接数{capacity},最大条件字段{maxCondition},数据库类型{Enum.GetName(typeof(DB_TYPE), dBType)}");
+            Console.WriteLine($"对象池{name}启动,初始化连接数{initCount},最大连接数{capacity}\n");
         }
 
         /// <summary>
