@@ -64,7 +64,7 @@ namespace LazySQL.Core.CoreFactory
             }
             catch (Exception ex)
             {
-                throw ex.ThrowMineFormat(this, "Production", name);
+                throw ex;
             }
             finally
             {
@@ -110,7 +110,7 @@ namespace LazySQL.Core.CoreFactory
             }
             catch (Exception ex)
             {
-                throw ex.ThrowMineFormat(this, "Production", name);
+                throw ex;
             }
             finally
             {
@@ -278,7 +278,8 @@ namespace LazySQL.Core.CoreFactory
         /// <param name="sQL">sQL字段</param>
         /// <param name="maxConditionsCount">最大条件数量</param>
         /// <returns></returns>
-        private List<SqlFormat> SqlFormatAction(string sQL
+        private List<SqlFormat> SqlFormatAction(
+            string sQL
             , int maxConditionsCount
             , out bool isNotActiveConditionInsQL)
         {
@@ -386,32 +387,38 @@ namespace LazySQL.Core.CoreFactory
                 {
                     string index = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "index");
                     string parName = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "name");
-                    if (!string.IsNullOrWhiteSpace(index))
+                    bool only = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "only").ToBool();
+
+                    if (!only)
                     {
-                        int sequenceIndex = Convert.ToInt32(index);
-                        if (parametersDict.ContainsKey(sequenceIndex))
+                        if (!string.IsNullOrWhiteSpace(index))
                         {
-                            parametersDict[sequenceIndex].Add(GetXmlNodeAttribute(parameters[i]));
+                            int sequenceIndex = Convert.ToInt32(index);
+                            if (parametersDict.ContainsKey(sequenceIndex))
+                            {
+                                parametersDict[sequenceIndex].Add(GetXmlNodeAttribute(parameters[i]));
+                            }
+                            else
+                            {
+                                parametersDict.Add(sequenceIndex, new List<Dictionary<PARAMETER, string>>());
+                                parametersDict[sequenceIndex].Add(GetXmlNodeAttribute(parameters[i]));
+                            }
                         }
                         else
                         {
-                            parametersDict.Add(sequenceIndex, new List<Dictionary<PARAMETER, string>>());
-                            parametersDict[sequenceIndex].Add(GetXmlNodeAttribute(parameters[i]));
+                            if (parametersDict.ContainsKey(0))
+                            {
+                                parametersDict[0].Add(GetXmlNodeAttribute(parameters[i]));
+                            }
+                            else
+                            {
+                                parametersDict.Add(0, new List<Dictionary<PARAMETER, string>>());
+                                parametersDict[0].Add(GetXmlNodeAttribute(parameters[i]));
+                            }
                         }
                     }
-                    else
-                    {
-                        if (parametersDict.ContainsKey(0))
-                        {
-                            parametersDict[0].Add(GetXmlNodeAttribute(parameters[i]));
-                        }
-                        else
-                        {
-                            parametersDict.Add(0, new List<Dictionary<PARAMETER, string>>());
-                            parametersDict[0].Add(GetXmlNodeAttribute(parameters[i]));
-                        }
-                    }
-                    codeParameterDeclarationExpressions.Add(new CodeParameterDeclarationExpression(typeof(string), parName.Replace("@", "").Replace(".", string.Empty)));
+
+                    codeParameterDeclarationExpressions.Add(new CodeParameterDeclarationExpression(typeof(string), parName.Replace("@", string.Empty).Replace(".", string.Empty)));
                 }
             }
             return parametersDict;
@@ -446,7 +453,7 @@ namespace LazySQL.Core.CoreFactory
             }
             else
             {
-                throw new Exception("没有添加NAME或name字段");
+                throw new Exception("没有添加NAME或name字段",new XmlException());
             }
 
             if (!string.IsNullOrWhiteSpace(symbol))
@@ -478,7 +485,8 @@ namespace LazySQL.Core.CoreFactory
         /// <param name="isNotCondition"></param>
         /// <param name="ReferencedAssemblies"></param>
         /// <returns></returns>
-        protected abstract CodeStatementCollection Build(Dictionary<int, List<Dictionary<PARAMETER, string>>> parameters
+        protected abstract CodeStatementCollection Build(
+            Dictionary<int, List<Dictionary<PARAMETER, string>>> parameters
             , List<SqlFormat> sQLs
             , string connection
             , bool isNotCondition
@@ -487,7 +495,7 @@ namespace LazySQL.Core.CoreFactory
             , string query);
 
         /// <summary>
-        /// 代码构成享元模板
+        /// 代码构成模板
         /// </summary>
         /// <param name="isNotCondition"></param>
         /// <param name="parameters"></param>
@@ -496,7 +504,8 @@ namespace LazySQL.Core.CoreFactory
         /// <param name="type"></param>
         /// <param name="sqls"></param>
         /// <param name="stringBuilderBlueprint"></param>
-        protected void Building(bool isNotCondition
+        protected void Building(
+            bool isNotCondition
             , Dictionary<int, List<Dictionary<PARAMETER, string>>> parameters
             , CodeStatementCollection tryCodeStatementCollection
             , IParamterQuery paramterQuery
@@ -550,7 +559,7 @@ namespace LazySQL.Core.CoreFactory
         /// <summary>
         /// 生成条件语句
         /// </summary>
-        /// <param name="SavePar"></param>
+        /// <param name="savePar"></param>
         /// <param name="CondiIndex"></param>
         /// <param name="parameters"></param>
         /// <param name="tryCodeStatementCollection"></param>
@@ -560,7 +569,8 @@ namespace LazySQL.Core.CoreFactory
         /// <param name="stringBuilderBlueprint"></param>
         /// <param name="cONDITION_TYPE"></param>
         /// <param name="customName"></param>
-        private void CreateCondition(Dictionary<string, string> SavePar
+        private void CreateCondition(
+            Dictionary<string, string> savePar
             , int CondiIndex
             , Dictionary<int, List<Dictionary<PARAMETER, string>>> parameters
             , CodeStatementCollection tryCodeStatementCollection
@@ -571,7 +581,7 @@ namespace LazySQL.Core.CoreFactory
             , CONDITION_TYPE cONDITION_TYPE
             , string customName = "")
         {
-            if (!SavePar.ContainsKey($"{CondiIndex}Par{customName}"))
+            if (!savePar.ContainsKey($"{CondiIndex}Par{customName}"))
             {
                 StringBuilderBlueprint stringBuilderBlueprintTmp = new StringBuilderBlueprint($"par{CondiIndex}{customName}");
 
@@ -579,14 +589,12 @@ namespace LazySQL.Core.CoreFactory
 
                 for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
                 {
-                    //bool isLastOne = (parametersChildCount == parameters.Count - 1);
-
                     tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
                         , parameters[CondiIndex][parametersChildCount]
                         , cONDITION_TYPE));
                 }
 
-                SavePar.Add($"{CondiIndex}Par{customName}", stringBuilderBlueprintTmp.Field);
+                savePar.Add($"{CondiIndex}Par{customName}", stringBuilderBlueprintTmp.Field);
             }
 
             if (sqls[sQLsCount].CondiIndex != -1)

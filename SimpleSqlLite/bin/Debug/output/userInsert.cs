@@ -15,54 +15,54 @@ namespace Autogeneration.Dao.SQL
     public class userInsertClass
     {
         
-        public static LazySQL.Infrastructure.ExecuteNonModel userInsert(string user, string pwd, string power)
+        public static ExecuteNonModel userInsert(string user, string pwd, string power)
         {
             System.Text.StringBuilder StrbSQL = new System.Text.StringBuilder();
-            LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = new LazySQL.Infrastructure.SQLiteTemplate();
+            LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = LazySQL.Infrastructure.SQLiteTemplate.Instance;
             try
             {
                 System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter> aList = new System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter>();
-                StrbSQL.Append("insert into user (user,pwd,power) values (");
+                StrbSQL.Append("insert into user (user,pwd,power,sysTime) values (");
                 System.Text.StringBuilder par0 = new System.Text.StringBuilder();
-                par0.Append("@user");
+                par0.Append("@userVALUE");
                 par0.Append(" , ");
                 if (!string.IsNullOrWhiteSpace(user))
                 {
-                    System.Data.SQLite.SQLiteParameter userPar = new System.Data.SQLite.SQLiteParameter("@user",user);
-                    aList.Add(userPar);
+                    System.Data.SQLite.SQLiteParameter userParValue = new System.Data.SQLite.SQLiteParameter("@userVALUE",user);
+                    aList.Add(userParValue);
                 }
                 else
                 {
-                    System.Data.SQLite.SQLiteParameter userPar = new System.Data.SQLite.SQLiteParameter("@user","''");
-                    aList.Add(userPar);
+                    System.Data.SQLite.SQLiteParameter userParValue = new System.Data.SQLite.SQLiteParameter("@userVALUE","");
+                    aList.Add(userParValue);
                 }
-                par0.Append("@pwd");
+                par0.Append("@pwdVALUE");
                 par0.Append(" , ");
                 if (!string.IsNullOrWhiteSpace(pwd))
                 {
-                    System.Data.SQLite.SQLiteParameter pwdPar = new System.Data.SQLite.SQLiteParameter("@pwd",pwd);
-                    aList.Add(pwdPar);
+                    System.Data.SQLite.SQLiteParameter pwdParValue = new System.Data.SQLite.SQLiteParameter("@pwdVALUE",pwd);
+                    aList.Add(pwdParValue);
                 }
                 else
                 {
-                    System.Data.SQLite.SQLiteParameter pwdPar = new System.Data.SQLite.SQLiteParameter("@pwd","''");
-                    aList.Add(pwdPar);
+                    System.Data.SQLite.SQLiteParameter pwdParValue = new System.Data.SQLite.SQLiteParameter("@pwdVALUE","");
+                    aList.Add(pwdParValue);
                 }
-                par0.Append("@power");
+                par0.Append("@powerVALUE");
+                par0.Append(" , ");
                 if (!string.IsNullOrWhiteSpace(power))
                 {
-                    System.Data.SQLite.SQLiteParameter powerPar = new System.Data.SQLite.SQLiteParameter("@power",power);
-                    aList.Add(powerPar);
+                    System.Data.SQLite.SQLiteParameter powerParValue = new System.Data.SQLite.SQLiteParameter("@powerVALUE",power);
+                    aList.Add(powerParValue);
                 }
                 else
                 {
-                    System.Data.SQLite.SQLiteParameter powerPar = new System.Data.SQLite.SQLiteParameter("@power","''");
-                    aList.Add(powerPar);
+                    System.Data.SQLite.SQLiteParameter powerParValue = new System.Data.SQLite.SQLiteParameter("@powerVALUE","");
+                    aList.Add(powerParValue);
                 }
                 StrbSQL.Append(par0);
-                StrbSQL.Append(")");
-                return sqlLiteT.ExecuteNonQuery("Data Source=db\\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=Tru" +
-                        "e;Max Pool Size=10", StrbSQL, aList);
+                StrbSQL.Append("datetime(CURRENT_TIMESTAMP,\'localtime\'))");
+                return sqlLiteT.ExecuteNonQuery("t", StrbSQL, aList);
             }
             catch (System.Exception ex)
             {

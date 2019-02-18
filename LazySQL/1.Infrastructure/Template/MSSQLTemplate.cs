@@ -66,7 +66,7 @@ namespace LazySQL.Infrastructure
             catch (Exception ex)
             {
                 sqlTransaction.Rollback();
-                throw ex.ThrowMineFormat(this, "ExecuteNonQuery", name, cmdText, cmd.CommandText);
+                throw ex;
             }
             finally
             {
@@ -98,7 +98,7 @@ namespace LazySQL.Infrastructure
             }
             catch (Exception ex)
             {
-                throw ex.ThrowMineFormat(this, "ExecuteDataTable", name, cmdText, cmd.CommandText);
+                throw ex;
             }
             finally
             {

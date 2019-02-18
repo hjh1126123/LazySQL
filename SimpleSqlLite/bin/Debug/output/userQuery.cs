@@ -18,35 +18,35 @@ namespace Autogeneration.Dao.SQL
         public static System.Data.DataTable userQuery(string user, string pwd, string id)
         {
             System.Text.StringBuilder StrbSQL = new System.Text.StringBuilder();
-            LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = new LazySQL.Infrastructure.SQLiteTemplate();
+            LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = LazySQL.Infrastructure.SQLiteTemplate.Instance;
             try
             {
                 System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter> aList = new System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter>();
-                StrbSQL.Append("select * from user where ");
+                StrbSQL.Append("select * from user where 1=1 ");
                 System.Text.StringBuilder par0 = new System.Text.StringBuilder();
                 if (!string.IsNullOrWhiteSpace(user))
                 {
+                    par0.Append(" AND ");
                     par0.Append("user = @user");
                     System.Data.SQLite.SQLiteParameter userPar = new System.Data.SQLite.SQLiteParameter("@user",user);
                     aList.Add(userPar);
-                    par0.Append(" AND ");
                 }
                 if (!string.IsNullOrWhiteSpace(pwd))
                 {
+                    par0.Append(" AND ");
                     par0.Append("pwd = @pwd");
                     System.Data.SQLite.SQLiteParameter pwdPar = new System.Data.SQLite.SQLiteParameter("@pwd",pwd);
                     aList.Add(pwdPar);
-                    par0.Append(" AND ");
                 }
                 if (!string.IsNullOrWhiteSpace(id))
                 {
+                    par0.Append(" AND ");
                     par0.Append("id = @id");
                     System.Data.SQLite.SQLiteParameter idPar = new System.Data.SQLite.SQLiteParameter("@id",id);
                     aList.Add(idPar);
                 }
                 StrbSQL.Append(par0);
-                return sqlLiteT.ExecuteDataTable("Data Source=db\\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=Tru" +
-                        "e;Max Pool Size=10", StrbSQL, aList);
+                return sqlLiteT.ExecuteDataTable("t", StrbSQL, aList);
             }
             catch (System.Exception ex)
             {

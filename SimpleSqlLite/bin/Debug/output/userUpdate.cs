@@ -15,10 +15,10 @@ namespace Autogeneration.Dao.SQL
     public class userUpdateClass
     {
         
-        public static ExecuteNonModel userUpdate(string user, string pwd, string power, string id)
+        public static ExecuteNonModel userUpdate(string user, string pwd, string power, string id, string a, string b, string c, string d)
         {
             System.Text.StringBuilder StrbSQL = new System.Text.StringBuilder();
-            LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = new LazySQL.Infrastructure.SQLiteTemplate();
+            LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = LazySQL.Infrastructure.SQLiteTemplate.Instance;
             try
             {
                 System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter> aList = new System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter>();
@@ -26,36 +26,34 @@ namespace Autogeneration.Dao.SQL
                 System.Text.StringBuilder par0 = new System.Text.StringBuilder();
                 if (!string.IsNullOrWhiteSpace(user))
                 {
-                    par0.Append("user = @userParSET");
-                    System.Data.SQLite.SQLiteParameter userParSET = new System.Data.SQLite.SQLiteParameter("@userParSET",userParSET);
+                    par0.Append("user = @userParSET,");
+                    System.Data.SQLite.SQLiteParameter userParSET = new System.Data.SQLite.SQLiteParameter("@userParSET",user);
                     aList.Add(userParSET);
                 }
                 if (!string.IsNullOrWhiteSpace(pwd))
                 {
-                    par0.Append(" , ");
-                    par0.Append("pwd = @pwdParSET");
-                    System.Data.SQLite.SQLiteParameter pwdParSET = new System.Data.SQLite.SQLiteParameter("@pwdParSET",pwdParSET);
+                    par0.Append("pwd = @pwdParSET,");
+                    System.Data.SQLite.SQLiteParameter pwdParSET = new System.Data.SQLite.SQLiteParameter("@pwdParSET",pwd);
                     aList.Add(pwdParSET);
                 }
                 if (!string.IsNullOrWhiteSpace(power))
                 {
-                    par0.Append(" , ");
-                    par0.Append("power = @powerParSET");
-                    System.Data.SQLite.SQLiteParameter powerParSET = new System.Data.SQLite.SQLiteParameter("@powerParSET",powerParSET);
+                    par0.Append("power = @powerParSET,");
+                    System.Data.SQLite.SQLiteParameter powerParSET = new System.Data.SQLite.SQLiteParameter("@powerParSET",power);
                     aList.Add(powerParSET);
                 }
                 StrbSQL.Append(par0);
-                StrbSQL.Append(" where ");
+                StrbSQL.Append("sysTime=datetime(CURRENT_TIMESTAMP,\'localtime\') where 1=1 ");
                 System.Text.StringBuilder par1 = new System.Text.StringBuilder();
                 if (!string.IsNullOrWhiteSpace(id))
                 {
+                    par1.Append(" AND ");
                     par1.Append("id = @id");
                     System.Data.SQLite.SQLiteParameter idPar = new System.Data.SQLite.SQLiteParameter("@id",id);
                     aList.Add(idPar);
                 }
                 StrbSQL.Append(par1);
-                return sqlLiteT.ExecuteNonQuery("Data Source=db\\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=Tru" +
-                        "e;Max Pool Size=10", StrbSQL, aList);
+                return sqlLiteT.ExecuteNonQuery("t", StrbSQL, aList);
             }
             catch (System.Exception ex)
             {

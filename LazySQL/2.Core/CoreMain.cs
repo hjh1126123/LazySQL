@@ -1,6 +1,5 @@
 ﻿using LazySQL.Core.CoreFactory;
 using LazySQL.Core.CoreSystem;
-using LazySQL.Infrastructure;
 using System;
 using System.Xml;
 
@@ -66,7 +65,7 @@ namespace LazySQL.Core
             }
             catch (Exception ex)
             {
-                throw ex.ThrowMineFormat(this, "CoreBuild", name);
+                throw ex;
             }
         }
 
@@ -101,7 +100,7 @@ namespace LazySQL.Core
             }
             catch (Exception ex)
             {
-                throw ex.ThrowMineFormat(this, "CoreBuild", name);
+                throw ex;
             }
         }
 

@@ -35,7 +35,6 @@ namespace LazySQL.Infrastructure
             List<string> ListTemp = new List<string>();
             return Get(List, str.Length - 1);
         }
-
         private static List<string> Get(List<string> List, int tag)
         {
             List<string> result = new List<string>();
@@ -48,6 +47,21 @@ namespace LazySQL.Infrastructure
                 return result;
             tag--;
             return Get(result, tag);
+        }
+
+        /// <summary>
+        /// 字符串转换布尔值
+        /// </summary>
+        /// <param name="str">字符串对象</param>
+        /// <returns></returns>
+        public static bool ToBool(this String str)
+        {
+            if (str.Equals("true", StringComparison.InvariantCultureIgnoreCase) || str.Equals("false", StringComparison.InvariantCultureIgnoreCase))
+            {
+                return Convert.ToBoolean(str);
+            }
+
+            return false;
         }
     }
 }

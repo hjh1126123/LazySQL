@@ -17,9 +17,9 @@ namespace SimpleSqlLite
                 ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10, 100, 10, DB_TYPE.SQLLITE);
 
                 //输出自动生成的脚本文件到目录Debug/output
-                //ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml", "output");
-                //ActionMain.Instance.GetFactory().ExportScript("t", "userInsert", $"SimpleSqlLite.SimpleInsert.xml", "output");
-                //ActionMain.Instance.GetFactory().ExportScript("t", "userUpdate", $"SimpleSqlLite.SimpleUpdate.xml", "output");
+                ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml", "output");
+                ActionMain.Instance.GetFactory().ExportScript("t", "userInsert", $"SimpleSqlLite.SimpleInsert.xml", "output");
+                ActionMain.Instance.GetFactory().ExportScript("t", "userUpdate", $"SimpleSqlLite.SimpleUpdate.xml", "output");
 
                 ActionMain.Instance.GetFactory().BuildMethod("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml");
                 ActionMain.Instance.GetFactory().BuildMethod("t", "userInsert", $"SimpleSqlLite.SimpleInsert.xml");
@@ -38,7 +38,7 @@ namespace SimpleSqlLite
 
                 Task.Factory.StartNew(() =>
                 {
-                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userUpdate", "", DateTime.Now.Ticks.ToString(), "", "27");
+                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userUpdate", "", DateTime.Now.Ticks.ToString(), "", "27", "a", "b", "c", "d");
                     if (NonModel.Success)
                     {
                         Console.WriteLine("修改成功");
