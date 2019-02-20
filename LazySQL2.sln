@@ -13,6 +13,12 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleMsSql", "SimpleMsSql\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SimpleTest", "SimpleTest\SimpleTest.csproj", "{E5D80170-F1FC-4121-8E32-C2E0998D7BB0}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LazySQL_MsSQL", "LazySQL_MsSQL\LazySQL_MsSQL.csproj", "{7FB4E2B1-4E4B-4064-B8BD-9917AD280A99}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LazySQL_MySQL", "LazySQL_MySQL\LazySQL_MySQL.csproj", "{2C61883D-C34B-496A-BED3-C159F2009E64}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LazySQL_SQLLite", "LazySQL_SQLLite\LazySQL_SQLLite.csproj", "{2790C9B6-93ED-40E2-B817-008A25F3F9D9}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +41,18 @@ Global
 		{E5D80170-F1FC-4121-8E32-C2E0998D7BB0}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{E5D80170-F1FC-4121-8E32-C2E0998D7BB0}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{E5D80170-F1FC-4121-8E32-C2E0998D7BB0}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7FB4E2B1-4E4B-4064-B8BD-9917AD280A99}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7FB4E2B1-4E4B-4064-B8BD-9917AD280A99}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7FB4E2B1-4E4B-4064-B8BD-9917AD280A99}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7FB4E2B1-4E4B-4064-B8BD-9917AD280A99}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2C61883D-C34B-496A-BED3-C159F2009E64}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2C61883D-C34B-496A-BED3-C159F2009E64}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2C61883D-C34B-496A-BED3-C159F2009E64}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2C61883D-C34B-496A-BED3-C159F2009E64}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2790C9B6-93ED-40E2-B817-008A25F3F9D9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2790C9B6-93ED-40E2-B817-008A25F3F9D9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2790C9B6-93ED-40E2-B817-008A25F3F9D9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2790C9B6-93ED-40E2-B817-008A25F3F9D9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
