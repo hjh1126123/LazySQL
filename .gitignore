@@ -1,0 +1,10 @@
+[plain] view plaincopy
+
+*.mdb
+*.ldb
+*.sln
+*.config
+
+Debug/
+Release/
+obj/
