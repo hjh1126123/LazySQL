@@ -2,7 +2,6 @@
 
 *.mdb
 *.ldb
-*.sln
 *.config
 
 Debug/
