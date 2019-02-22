@@ -1,8 +1,7 @@
-﻿using LazySQL.Action;
+﻿using LazySQL.SQLite;
 using System;
 using System.Data;
 using System.Reflection;
-using System.Threading.Tasks;
 
 namespace SimpleSqlLite
 {
@@ -12,44 +11,37 @@ namespace SimpleSqlLite
         {
             try
             {
-                ActionMain.Instance.GetFactory().SetAssembly(Assembly.GetExecutingAssembly());
+                SQLiteFactory sQLiteFactory = new SQLiteFactory();
 
-                ActionMain.Instance.GetFactory().AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10, 100, 10, DB_TYPE.SQLLITE);
+                sQLiteFactory.SetAssembly(Assembly.GetExecutingAssembly());
 
-                //输出自动生成的脚本文件到目录Debug/output
-                ActionMain.Instance.GetFactory().ExportScript("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml", "output");
-                ActionMain.Instance.GetFactory().ExportScript("t", "userInsert", $"SimpleSqlLite.SimpleInsert.xml", "output");
-                ActionMain.Instance.GetFactory().ExportScript("t", "userUpdate", $"SimpleSqlLite.SimpleUpdate.xml", "output");
+                sQLiteFactory.AddConnection("t", @"Data Source=" + @"db\sqlliteTest.db;Initial Catalog=sqlliteTest;Integrated Security=True;Max Pool Size=10", 10, 100, 10);
 
-                ActionMain.Instance.GetFactory().BuildMethod("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml");
-                ActionMain.Instance.GetFactory().BuildMethod("t", "userInsert", $"SimpleSqlLite.SimpleInsert.xml");
-                ActionMain.Instance.GetFactory().BuildMethod("t", "userUpdate", $"SimpleSqlLite.SimpleUpdate.xml");
+                //sQLiteFactory.ExportScript("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml", "output");
 
+                sQLiteFactory.BuildMethod("t", "userQuery", $"SimpleSqlLite.SimpleQuery.xml");
+                sQLiteFactory.BuildMethod("t", "userInsert", $"SimpleSqlLite.SimpleInsert.xml");
+                sQLiteFactory.BuildMethod("t", "userUpdate", $"SimpleSqlLite.SimpleUpdate.xml");
 
 
-                Task.Factory.StartNew(() =>
+                ExecuteNonModel insertNonModel = sQLiteFactory.Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("HHmmss")}", DateTime.Now.Ticks.ToString(), "1");                
+                if (insertNonModel.Success)
                 {
-                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userInsert", $"hjh{DateTime.Now.ToString("HHmmss")}", DateTime.Now.Ticks.ToString(), "1");
-                    if (NonModel.Success)
-                    {
-                        Console.WriteLine("插入数据成功");
-                    }
-                }).Wait();
-
-                Task.Factory.StartNew(() =>
+                    Console.WriteLine("插入数据成功");
+                }
+                else
                 {
-                    ExecuteNonModel NonModel = ActionMain.Instance.GetSystem().Method_ExecuteNonModel("userUpdate", "", DateTime.Now.Ticks.ToString(), "", "27", "a", "b", "c", "d");
-                    if (NonModel.Success)
-                    {
-                        Console.WriteLine("修改成功");
-                    }
-                }).Wait();
+                    Console.WriteLine($"插入数据失败,失败原因,{insertNonModel.Message}");                    
+                }
 
-                Task.Factory.StartNew(() =>
+                ExecuteNonModel updateNonModel = sQLiteFactory.Method_ExecuteNonModel("userUpdate", "", DateTime.Now.Ticks.ToString(), "", "27", "a", "b", "c", "d");
+                if (updateNonModel.Success)
                 {
-                    DataTable dataTable = ActionMain.Instance.GetSystem().Method_DataTable("userQuery", "", "", "");
-                    Console.WriteLine(dataTable.DTString());
-                });
+                    Console.WriteLine("修改成功");
+                }
+
+                DataTable dataTable = sQLiteFactory.Method_DataTable("userQuery", "", "", "");
+                Console.WriteLine(dataTable.DTString());
 
                 Console.Read();
             }

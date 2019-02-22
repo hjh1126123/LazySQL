@@ -1,4 +1,5 @@
-﻿using LazySQL.Core;
+﻿using LazySQL.Extends;
+using LazySQL.SQLite.CoreFactory;
 
 namespace LazySQL.SQLite
 {
@@ -6,7 +7,7 @@ namespace LazySQL.SQLite
     {
         public SQLiteCore()
         {
-            coreFactory = new SQLiteCoreFactory(SystemMediator);
+            coreFactory = new SQLiteCoreFactory();
         }
     }
 }

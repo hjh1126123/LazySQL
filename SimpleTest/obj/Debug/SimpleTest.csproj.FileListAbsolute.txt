@@ -2,10 +2,7 @@ F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\SimpleTest.exe.config
 F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\SimpleTest.exe
 F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\SimpleTest.pdb
 F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\LazySQL.dll
-F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\System.Data.SQLite.dll
 F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\LazySQL.pdb
-F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\System.Data.SQLite.xml
-F:\GitHub2\LazySQL2\SimpleTest\bin\Debug\System.Data.SQLite.dll.config
 F:\GitHub2\LazySQL2\SimpleTest\obj\Debug\SimpleTest.csprojResolveAssemblyReference.cache
 F:\GitHub2\LazySQL2\SimpleTest\obj\Debug\SimpleTest.csproj.CoreCompileInputs.cache
 F:\GitHub2\LazySQL2\SimpleTest\obj\Debug\SimpleTest.csproj.CopyComplete

@@ -13,3 +13,5 @@ F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.csproj.CoreCompileInpu
 F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.csproj.CopyComplete
 F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.exe
 F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.pdb
+F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\LazySQL.SQLite.dll
+F:\GitHub2\LazySQL2\SimpleSqlLite\bin\Debug\LazySQL.SQLite.pdb

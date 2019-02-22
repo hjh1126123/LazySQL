@@ -18,7 +18,7 @@ namespace Autogeneration.Dao.SQL
         public static System.Data.DataTable userQuery(string user, string pwd, string id)
         {
             System.Text.StringBuilder StrbSQL = new System.Text.StringBuilder();
-            LazySQL.Infrastructure.SQLiteTemplate sqlLiteT = LazySQL.Infrastructure.SQLiteTemplate.Instance;
+            LazySQL.SQLite.SQLiteTemplate sqlLiteT = LazySQL.SQLite.SQLiteTemplate.Instance;
             try
             {
                 System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter> aList = new System.Collections.Generic.List<System.Data.SQLite.SQLiteParameter>();

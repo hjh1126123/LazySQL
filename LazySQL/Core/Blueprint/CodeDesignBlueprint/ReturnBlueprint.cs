@@ -1,0 +1,39 @@
+﻿using LazySQL.Core.Tools;
+using LazySQL.Extends;
+using System.CodeDom;
+
+namespace LazySQL.Core.Blueprint.CodeDesignBlueprint
+{
+    public class ReturnBlueprint : IBlueprint
+    {
+        public CodeStatement ReturnField(string dataSetField)
+        {
+            return ToolManager.Instance.ReturnTool.ReturnField(dataSetField);
+        }
+
+        public CodeStatement ReturnTrue()
+        {            
+            return ToolManager.Instance.ReturnTool.ReturnField("true");
+        }
+
+        public CodeStatement ReturnFalse()
+        {
+            return ToolManager.Instance.ReturnTool.ReturnField("false");
+        }
+
+        public CodeStatement ReturnDataTable(string dataSetField)
+        {
+            return ToolManager.Instance.ReturnTool.ReturnField($"{dataSetField}.Tables[0]");
+        }
+
+        public CodeStatement ReturnDataTable(string dataSetField, int dataTableCount)
+        {
+            return ToolManager.Instance.ReturnTool.ReturnField($"{dataSetField}.Tables[{dataTableCount}]");
+        }
+
+        public CodeStatement ReturnExpress(CodeExpression codeExpression)
+        {
+            return ToolManager.Instance.ReturnTool.ReturnExpress(codeExpression);
+        }
+    }
+}

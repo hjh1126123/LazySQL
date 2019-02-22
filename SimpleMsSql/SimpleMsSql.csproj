@@ -53,6 +53,10 @@
     </None>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\LazySQL.MSSQL\LazySQL.MSSQL.csproj">
+      <Project>{352e6037-f633-42c0-a1e9-edbbe51401a7}</Project>
+      <Name>LazySQL.MSSQL</Name>
+    </ProjectReference>
     <ProjectReference Include="..\LazySQL\LazySQL.csproj">
       <Project>{c4ac1ab2-9829-4d66-a913-7ff45ec0437c}</Project>
       <Name>LazySQL</Name>

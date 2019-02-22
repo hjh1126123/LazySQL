@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SQLLITE query="insert">
+<SQL query="insert">
   <parameters>
     <Parameter NAME="user"></Parameter>
     <Parameter NAME="pwd"></Parameter>
@@ -8,4 +8,4 @@
   <sql>
     <![CDATA[insert into user (user,pwd,power,sysTime) values ({0}datetime(CURRENT_TIMESTAMP,'localtime'))]]>
   </sql>
-</SQLLITE>
+</SQL>

@@ -1,38 +1,26 @@
-﻿using LazySQL.Infrastructure;
+﻿using LazySQL.Extends;
 using System;
+using System.Collections.Generic;
 using System.Data;
 using System.Data.SQLite;
 using System.Text;
-using System.Collections.Generic;
 
 namespace LazySQL.SQLite
 {
     public class SQLiteTemplate : ITemplate<SQLiteParameter>
     {
-        public SQLiteTemplate()
+        private static SQLiteTemplate _instance;
+        public static SQLiteTemplate Instance
         {
+            get
+            {
+                if (_instance == null)
+                    _instance = new SQLiteTemplate();
+
+                return _instance;
+            }
         }
 
-        /// <summary>
-        /// 添加池
-        /// </summary>
-        /// <param name="name">池名称</param>
-        /// <param name="conn">池连接对象</param>
-        /// <param name="initCount">初始连接数</param>
-        /// <param name="capacity">最大连接数</param>
-        public override void AddPool(string name, string conn, int initCount, int capacity)
-        {
-            SQLitePool sQLLitePool = new SQLitePool(conn, initCount, capacity);
-            DBPools.AddOrUpdate(name, sQLLitePool, (key, oldValue) => sQLLitePool);
-        }
-
-        /// <summary>
-        /// 执行读取操作
-        /// </summary>
-        /// <param name="name">池名称</param>
-        /// <param name="commandText">请求字段</param>
-        /// <param name="cmdParms">请求参数</param>
-        /// <returns>DataTable</returns>
         public override DataTable ExecuteDataTable(string name, StringBuilder cmdText, List<SQLiteParameter> commandParameters)
         {
             if (string.IsNullOrWhiteSpace(name))
@@ -40,7 +28,7 @@ namespace LazySQL.SQLite
             if (string.IsNullOrWhiteSpace(cmdText.ToString()))
                 throw new ArgumentNullException("commandText");
 
-            SQLiteConnection sQLiteConnection = DBPools[name].GetConnection<SQLiteConnection>();
+            SQLiteConnection sQLiteConnection = pools[name].GetConnection<SQLiteConnection>();
 
             SQLiteCommand cmd = new SQLiteCommand();
             SQLiteDataAdapter sda = new SQLiteDataAdapter(cmd);
@@ -61,17 +49,10 @@ namespace LazySQL.SQLite
             {
                 sda.Dispose();
                 cmd.Dispose();
-                DBPools[name].FreeConnection(sQLiteConnection);
+                pools[name].FreeConnection(sQLiteConnection);
             }
         }
 
-        /// <summary>
-        /// 执行写入操作
-        /// </summary>
-        /// <param name="name">池名称</param>
-        /// <param name="cmdText">请求字段</param>
-        /// <param name="commandParameters">请求参数</param>
-        /// <returns></returns>
         public override ExecuteNonModel ExecuteNonQuery(string name, StringBuilder cmdText, List<SQLiteParameter> commandParameters)
         {
             int result = 0;
@@ -80,7 +61,7 @@ namespace LazySQL.SQLite
             if (string.IsNullOrWhiteSpace(cmdText.ToString()))
                 throw new ArgumentNullException("commandText");
 
-            SQLiteConnection sQLiteConnection = DBPools[name].GetConnection<SQLiteConnection>();
+            SQLiteConnection sQLiteConnection = pools[name].GetConnection<SQLiteConnection>();
             SQLiteCommand cmd = new SQLiteCommand();
             SQLiteTransaction sqlTransaction = sQLiteConnection.BeginTransaction(IsolationLevel.ReadCommitted);
 
@@ -112,7 +93,7 @@ namespace LazySQL.SQLite
             {
                 sqlTransaction.Dispose();
                 cmd.Dispose();
-                DBPools[name].FreeConnection(sQLiteConnection);
+                pools[name].FreeConnection(sQLiteConnection);
             }
         }
     }

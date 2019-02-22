@@ -1,0 +1,2 @@
+F:\GitHub2\LazySQL2\SimpleMsSql\obj\Debug\SimpleMsSql.csprojResolveAssemblyReference.cache
+F:\GitHub2\LazySQL2\SimpleMsSql\obj\Debug\SimpleMsSql.csproj.CoreCompileInputs.cache

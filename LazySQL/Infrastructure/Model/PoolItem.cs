@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LazySQL.Extends;
+using System;
 
 namespace LazySQL.Infrastructure
 {
@@ -19,7 +20,7 @@ namespace LazySQL.Infrastructure
         private void Create()
         {
             _bUsing = false;
-            _object = (IDynamicObject)System.Activator.CreateInstance(_type);
+            _object = (IDynamicObject)Activator.CreateInstance(_type);
             _object.Create(_CreateParam);
         }
 

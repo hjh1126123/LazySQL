@@ -1,4 +1,5 @@
-﻿using LazySQL.Infrastructure;
+﻿using LazySQL.Extends;
+using LazySQL.Infrastructure;
 using System;
 using System.Data;
 using System.Data.SQLite;

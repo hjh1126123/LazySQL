@@ -53,12 +53,6 @@
     <EmbeddedResource Include="SimpleInsert.xml" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\LazySQL\LazySQL.csproj">
-      <Project>{c4ac1ab2-9829-4d66-a913-7ff45ec0437c}</Project>
-      <Name>LazySQL</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="db\sqlliteTest.db" />
     <EmbeddedResource Include="SimpleQuery.xml" />
     <EmbeddedResource Include="SimpleUpdate.xml" />
@@ -68,6 +62,16 @@
     <Content Include="x86\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\LazySQL.SQLite\LazySQL.SQLite.csproj">
+      <Project>{c4b58a18-2ab1-43d6-9e8e-1ff8a18b5703}</Project>
+      <Name>LazySQL.SQLite</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\LazySQL\LazySQL.csproj">
+      <Project>{c4ac1ab2-9829-4d66-a913-7ff45ec0437c}</Project>
+      <Name>LazySQL</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

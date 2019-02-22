@@ -1,4 +1,4 @@
-﻿using LazySQL.Action;
+﻿using LazySQL.MSSQL;
 using System;
 using System.Configuration;
 using System.Data;
@@ -10,22 +10,25 @@ namespace SimpleMsSql
     {
         static void Main(string[] args)
         {
-            ActionMain.Instance.GetFactory().SetAssembly(Assembly.GetExecutingAssembly());
+            try
+            {
+                MSSQLFactory mSSQLFactory = new MSSQLFactory();
 
-            ConnectionStringSettings settings = ConfigurationManager.ConnectionStrings["test"];
+                mSSQLFactory.SetAssembly(Assembly.GetExecutingAssembly());
 
-            ActionMain.Instance.GetFactory().AddConnection("test", settings.ConnectionString, 10);
+                mSSQLFactory.AddConnection("t", @"...", 10, 100, 10);
 
-            //输出自动生成的脚本文件到目录Debug/output
-            //ActionMain.Instance.GetFactory().ExportScript("t", "user", $"SimpleMsSql.SimpleQuery.xml", "output");
+                mSSQLFactory.BuildMethod("t", "userQuery", $"SimpleMsSql.SimpleQuery.xml");
 
-            ActionMain.Instance.GetFactory().BuildMethod("t", "user", $"SimpleMsSql.SimpleQuery.xml");
+                DataTable dataTable = mSSQLFactory.Method_DataTable("userQuery");
+                Console.WriteLine(dataTable.DTString());
 
-            DataTable dataTable = ActionMain.Instance.GetSystem().Method_DataTable("user");
-
-            Console.WriteLine(dataTable.DTString());
-
-            Console.Read();
+                Console.Read();
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
         }
     }
 }

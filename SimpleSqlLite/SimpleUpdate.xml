@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-<SQLLITE query="update">
+<SQL query="update">
   <parameters>
     <Parameter name="user"></Parameter>
     <Parameter name="pwd"></Parameter>
@@ -13,4 +13,4 @@
   <sql>
     <![CDATA[UPDATE user SET {0!}sysTime=datetime(CURRENT_TIMESTAMP,'localtime') where 1=1 {1?}]]>
   </sql>
-</SQLLITE>
+</SQL>

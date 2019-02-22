@@ -1,7 +1,8 @@
-﻿using System;
-using System.CodeDom;
+﻿using System.CodeDom;
 using System.CodeDom.Compiler;
 using System.Collections.Generic;
+using System.Reflection;
+using System;
 
 namespace LazySQL.Infrastructure
 {
@@ -98,7 +99,7 @@ namespace LazySQL.Infrastructure
             return new CodeTypeDeclaration(className)
             {
                 IsClass = true,
-                TypeAttributes = System.Reflection.TypeAttributes.Public
+                TypeAttributes = TypeAttributes.Public
             };
         }
 
