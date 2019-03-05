@@ -71,8 +71,8 @@ namespace LazySQL.Extends
 
             try
             {
-                XmlDocument xmlDocument = XmlHelper.GetInstance().GetXml(stream);
-                XmlNode sqlNode = XmlHelper.GetInstance().GetNode(xmlDocument, "SQL");
+                XmlDocument xmlDocument = XmlHelper.Instance.GetXml(stream);
+                XmlNode sqlNode = XmlHelper.Instance.GetNode(xmlDocument, "SQL");
 
                 action(sqlNode);
             }

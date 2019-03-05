@@ -50,7 +50,7 @@ namespace LazySQL.SQLite.CoreFactory
                 Building(isNotCondition
                     , parameters
                     , tryCodeStatementCollection
-                    , new SqlLiteParamterQuery(listBlueprint)
+                    , new SQLiteParamterQuery(listBlueprint)
                     , type
                     , sQLs
                     , stringBuilderBlueprint

@@ -54,7 +54,7 @@
     <Compile Include="Infrastructure\Eextend\ExceptionEextend.cs" />
     <Compile Include="Infrastructure\Eextend\StringExtend.cs" />
     <Compile Include="Infrastructure\Enum\XMLTypeEnum.cs" />
-    <Compile Include="Global\Model\ExecuteNonModel.cs" />
+    <Compile Include="Global\ExecuteNonModel.cs" />
     <Compile Include="Infrastructure\Model\PoolItem.cs" />
     <Compile Include="Infrastructure\Pool\ObjectPool.cs" />
     <Compile Include="Infrastructure\ReflectionHelper.cs" />
@@ -89,6 +89,1632 @@
     <Compile Include="System\ObjectSystem.cs" />
     <Compile Include="System\SystemMediator.cs" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Content Include="Global\A_Flop.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\A_FlopDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\A_RecordAccess.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\A_TestTable.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\BG_Base.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\BG_Delivery.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\BG_OverseasRouting.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_Bale.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_BalePrintRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_BillNoSet.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_BussCenter.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ChargeItem.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ClearFormatDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ClearFormatFrom.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ClearPort.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ClearPortBill.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ComplaintType.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_CooperativeBusines.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_CSVersionConfig.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_CustomsGood.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_District.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_Exception.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ExistHDBCode.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ExRate.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_Fake.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_FraudulentAddress.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_GoodsClass.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_GoodsInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_GoodsRecordInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HDBGood.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HDBGoodST.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HDBPurchaseGood.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HDBPurchaseGoodLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HDBPurchaseGoodType.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HDBPurchaseGood_SKU.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HDBRole.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_HolidayBase.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_JPEMSCharge.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_Label.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_LineValueAdded.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_MonthlyClient.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_OpenSource.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_OptionCategory.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_PayPerson.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_PickupHKZYStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_PurchaseDiscountLink.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_RuleOpeationLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_SourceConfig.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_StateInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_StateInfo_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_SysFunction.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_SystemOpeationLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_TransportLine.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_TransportLine_2.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_UserCodeSet.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_ValueAdded.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_WechatMallBrand.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_WechatMallGood.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\B_WHOperateItem.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\CS_LargeCustomerMg.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\CS_RelatedCSservice.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\C_PayCustomerNumber.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_DockUsers.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_FFHTDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_FFHTOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_FFHTPushInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_HYBuyerInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_HYLogInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_HYPushInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_HYTaxRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_KTXDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_KTXOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_KTXPushInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_OfflineExpForecast.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_PurchasePicking.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_PurchasePickingDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_PurchaseTemporary.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_PurchaseTemporaryDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_PushInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\DJ_Users.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\D_BoxCNExpCost.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\D_BoxCostReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\D_BoxReportLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\D_BoxTariff.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\EX_Company.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\EX_Rebate.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\EX_RebateExtra.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\EX_RebateTemp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\EX_RebateUsers.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ExpressEbay.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ExpressForecast.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ExpressForecastDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ExpressOfFailRegistration.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ExpressOfFQTH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ExpressOfRepeatedOP.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ExpressType.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ForecastInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_ForecastUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_OverseasExpress.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_OverseasExpressDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_OverseasExpressDetailForScanForecast.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_OverseasExpressDetailT.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_OverseasExpressForScanForecast.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_OverseasExpressVA.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\E_OverseasValueAdded.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_authority.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_authority_object.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_auth_preference.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_backup_node.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_base_message.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_base_output.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_bi_report_expand.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_block_ip.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_conf_classname.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_conf_entity.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_conf_xmlentity.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_custom_role.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_department.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_dep_role.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_extra_property.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_favorite_entry.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_homepage_expand.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_last_login.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_login_lock.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_mobile_device.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_mobile_push_message.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_class.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_client_notice.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_email.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_ftp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_mount.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_platform_msg.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_print.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_output_sms.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_pack_filter.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_param_template.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_post.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_print_offset.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_print_offset_ip_relate.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_process_expand.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_process_message.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_remote_design_auth.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_report_expand.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_schedule_output.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_schedule_record.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_schedule_task.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_col_idx_conf.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_config_entity.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_metadata.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_segments.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_seg_location.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_service_info.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_table_path.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_swift_tab_idx_conf.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_system_message.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_user.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_user_role_middle.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_workflow.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_workflow_log.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_workflow_node.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_workflow_stash_data.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_workflow_task.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_workflow_task_impl.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\fine_write_stash.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\FQ_Order.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\FQ_QueryTimeRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\FQ_Sku.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\FQ_Supplier.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_BoxCostAnalysis.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayAccountBalance.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayAccountBalanceBusiness.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayAccountBalanceLogUsers.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayAccountBalanceUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayPoints.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayPointsBusiness.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayPointsLogUsers.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayPointsUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayThirdPartyPay.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_DayThirdPartyPayByFinanceEntry.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_FinanceStatement.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalance.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog0.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog10000.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog11.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog1510131412.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog205.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog267.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog3.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog8.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLog9999.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceLogUsers.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthAccountBalanceUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthPoints.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthPointsUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthThirdPartyPay.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_MonthThirdPartyPayUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\F_PlatformOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_BattlePort.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_BattlePortRule.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_Battle_Box_F.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_Battle_Box_F_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_Battle_Box_T.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_Battle_Box_T_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideArticle.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideGood.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideGoodLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideGoodsDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideGoodsType.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideGoodsTypes.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideGooods.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_GuideWebsiteInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_Guide_PurchaseCart.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_RuleBasic.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_StateInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_StateInfo_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_TransBatchNum.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\G_WarningInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_E_OverseasExpress.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_G_Battle_Box_T.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_G_StateInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_O_CustomerCharge.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_O_CustomerOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_O_FeePayment.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_O_FeeReturn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_P_Box.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_P_BoxCharge.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_P_BoxConsignee.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_P_BoxGoodsDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_P_BoxGoodsPhoto.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_P_BoxRoute.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_R_CustomerOrder_Box.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\History_R_Express_Box.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\HT_OA_Details.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\H_HDBRoleFunc.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\H_HDBUsers.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\H_HDBUsers_PWChange201711032230.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\H_HDBUserValidationInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Info_SystemInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\I_APIExeCount.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\I_APIPermission.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\I_APIToKen.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\I_APIUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\I_APIUserPermission.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\I_SSO.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\log_Detail_U_UserFinance.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\log_U_UserFinance.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\L_JGPushLogInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Mobile_AccessDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Mobile_AppUpdate.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Mobile_SweepCERT.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <EmbeddedResource Include="Global\ModelCreate.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>ModelCreate.xml</LastGenOutput>
+      <Parameters>&lt;%3fxml version="1.0" encoding="utf-16"%3f&gt;
+&lt;ArrayOfParameterStorage xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" /&gt;</Parameters>
+    </EmbeddedResource>
+    <Content Include="Global\ModelCreate.xml">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_Activitie.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_Ads.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LeaveWordReply.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LeaveWords.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LeaveWordsDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LotteryActivity.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LotteryActivityDuration.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LotteryActivityDurations.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LotteryActivityPrizes.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LotteryActivityPrizesType.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_LotteryActivityRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_MsgContent.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_NewInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_NoRemindUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_NoticeMessage.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_RemindMessage.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_SiteMessage.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_SiteMessageEx.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_Sms.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_Sms_Detail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_Sms_Temp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_TslActivitie.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_YeWuLeiXing.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\M_YeWuLeiXing_ZiDuan.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\NewTable1.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\OA_HT_Results.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Compensate.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_CompensatePhotos.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_CompensateRecover.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_CustomerBox.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_CustomerCharge.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_CustomerOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_CustomerValueAdded.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_FeePayment.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_FeeReturn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_FeeReturn20160512002.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_FeeReturn2017_2.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_MonthlyBill.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Overseas_Purchase.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Overseas_Purchase_Good.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Overseas_Purchase_Good_Inventory.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Overseas_Purchase_OutBound.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Overseas_Purchase_OutBound_Good.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Overseas_WareHouse_Purchase_Good_Record.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Overseas_WareHouse_Purchase_Record.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseCards.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseCart.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseExpress.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseFeeReturn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseGood.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseHistory.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseOrderRemark.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseSpecialGood.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseSpecialGoodLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_PurchaseUsers.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\O_Returns.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_Box.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxAddInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxAddInfo_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxCharge.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxCnReturn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxConsignee.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxConsigneeSpare.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxCXCPush.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxDeclareInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxEndRemark.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxException.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxExceptionAccepted.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxExceptionFollow.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxFirstAddress.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxForecastExpress.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxForecastExpressDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxForPush.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxGoodsDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxGoodsDetailST.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxGoodsDetailT.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxGoodsDetail_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxGoodsLock.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxGoodsPhoto.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxLabel.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxModifyLock.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxModifyLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxModifyWarehouse.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxOpRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxPickup.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxPickupHKZYH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxPushToCXC.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRecipientInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRecordST.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRemark.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxReturn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxReturnList.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRoute.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRouteForPush.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRoute_CustomsClean.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRoute_CustomsClean_Import.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRoute_Ex.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRoute_LongLoaded.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxRoute_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxType.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxVA.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_BoxWarehouseReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_Box_ArrearsStateUpdate20160420.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_Box_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_DetainPackage.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_EMSPushRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_EMSPushState.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_ExpNumAndBoxCode.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_NeedOpenBox.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_PeopleCheck.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_PushRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_PushSettings.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_RecordLogST.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_RouteExcpStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\P_UserConsignee.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_BLOB_TRIGGERS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_CALENDARS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_CRON_TRIGGERS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_FIRED_TRIGGERS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_JOB_DETAILS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_LOCKS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_PAUSED_TRIGGER_GRPS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_SCHEDULER_STATE.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_SIMPLE_TRIGGERS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_SIMPROP_TRIGGERS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\QRTZ_TRIGGERS.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctBalanceAbn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayBalance.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayBalance20160414.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayBalance20160419.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayBalanceException.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayBalanceReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayBalanceReportException.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayPoint.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctDayPointReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_AcctOrderAbn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_BoxDayDuration.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_BoxDayDurationClearLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_BoxDayDurationPayLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_BoxesStatisticsForRoutePhases.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_CustomsDayStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_CustomsEfficiency.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_DayReceipt.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_ExFeedBack.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_InOutStock.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_UsersReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_WarehouseBacklog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_WarehouseDailyBacklog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_WHBalance.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_WHBalanceMidData.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_WH_Delayed.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Q_WH_DelayedDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\rpt_LogisticsExceptionReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\rpt_LogisticsExceptionReportDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_BattleExcepStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_BattleStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_CheckAndLeaveStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_MicroMart.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_ProjectProgressData.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_RouteExcpStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_RouteStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\RT_SignAndInStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\R_Bale_Box.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\R_BussCenter_Line.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\R_CustomerOrder_Box.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\R_Express_Box.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\R_Express_Good.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\R_HDBUser_Role.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\R_Prizes_Duration.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Sheet1%24.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_PushId.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_PushId_CU.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_SynSql.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_SynSql_CU.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_Table.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_TableField.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_TableField_CU.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Client_Table_CU.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\Syn_Svr_SynSql_CU.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_BatchSortingBoxs.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_ClassificationGoods.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_PrintRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_PrintRecordForEMSWB.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_PrintRecordForPrintOnly.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_PrintRecord_ZH.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_RuleBasic.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_SortPort.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_SortPortRule.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_SortPortSRule.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\S_StateInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\temp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\temp2.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\TH_Address.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\TH_AirCompany.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\TH_ClearNums.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\TH_Consignee.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\TH_Inventory.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\TH_InventoryGoodsDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\TH_MasterUnit.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_HasReadBoxRoute.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_SensitiveWordsMg.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_SysConfiguration.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_SysRequestLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_Temp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_ToReadBoxRoute.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_UserLock.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\T_UserOperationLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_AccountOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_AcctAdjustRec.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_AdjustRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_AKeyCall.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_AKeyCallRole.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ApplyForRegisterCode.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ChargeRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ChargeRule.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ComplaintCheckIn.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_Coupons.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_CouponsDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_CouponsReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_CustomsDeclaration.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ExistRegisterTel.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ExistRequestIp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ExistUserCode.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_FinanceAnalysisRp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_FinanceRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_FinanceRecordTemp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_FinanceReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_GrowthRate.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_MemberChargeRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_MemberPointsRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_MessagePush.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PayArrearsPush.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PointOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PointsChargeRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PointsRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PreferentialExchangeCode.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PreferentialExchangeCodeDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PreferentialRebateCode.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PreferentialRebateCodeDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PreferentialRegisterCode.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_Promotion.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PurchaseAddresses.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_PurchaseDiscount.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ReChargeUser.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_ReliefWithdrawRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_RoutingPush.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_TopicAttach.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_TopicInfo.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_TopicReply.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UnpaidOrderPush.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserAddresses.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserExcessCardId.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserFinance.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserFinanceBalanceLog.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserFinanceTemp.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserFinance_History2016.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserFinance_History2017.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserFinance_History2018.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserIncome.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserIncomeReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserKeyPositionRecord.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserLevel.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserLevelCompute.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserRegIps.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserRequest.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_Users.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserSpecialRole.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UsersPromotion.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_Users_Personalized.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_Users_Token_Online.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_UserUncheckCardId.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_Withdraw.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_WithdrawReport.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_WithdrawStatistics.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_WorkOrder.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_WorkOrderList.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_WorkOrderProcess.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\U_WorkOrderType.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\W_OperateItem.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\W_OperateItemDetail.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\W_OperateItemDetail_InSRule.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\W_OperateItem_InSRule.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\W_OperateItem_OutSRule.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+    <Content Include="Global\版号对应箱子.xml">
+      <DependentUpon>ModelCreate.tt</DependentUpon>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Global\MultipleOutputHelper.ttinclude" />
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

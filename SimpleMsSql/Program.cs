@@ -2,6 +2,7 @@
 using System;
 using System.Configuration;
 using System.Data;
+using System.Data.SqlClient;
 using System.Reflection;
 
 namespace SimpleMsSql
@@ -14,16 +15,9 @@ namespace SimpleMsSql
             {
                 MSSQLFactory mSSQLFactory = new MSSQLFactory();
 
-                mSSQLFactory.SetAssembly(Assembly.GetExecutingAssembly());
-
-                mSSQLFactory.AddConnection("t", @"...", 10, 100, 10);
-
-                mSSQLFactory.BuildMethod("t", "userQuery", $"SimpleMsSql.SimpleQuery.xml");
-
-                DataTable dataTable = mSSQLFactory.Method_DataTable("userQuery");
-                Console.WriteLine(dataTable.DTString());
-
-                Console.Read();
+                mSSQLFactory.AddConnection("","",10,10,10);
+                mSSQLFactory.BuildMethod();
+                mSSQLFactory.Method_DataTable();
             }
             catch (Exception ex)
             {

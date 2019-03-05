@@ -12,10 +12,10 @@ namespace Autogeneration.Dao.SQL
 {
     
     
-    public class userQueryClass
+    public class USERQUERY_CLASS
     {
         
-        public static System.Data.DataTable userQuery(string user, string pwd, string id)
+        public static System.Data.DataTable USERQUERY_SQL()
         {
             System.Text.StringBuilder StrbSQL = new System.Text.StringBuilder();
             LazySQL.SQLite.SQLiteTemplate sqlLiteT = LazySQL.SQLite.SQLiteTemplate.Instance;

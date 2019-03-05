@@ -8,12 +8,15 @@ namespace LazySQL.Infrastructure
     public class XmlHelper
     {
         private static XmlHelper _instance;
-        public static XmlHelper GetInstance()
+        public static XmlHelper Instance
         {
-            if (_instance == null)
-                _instance = new XmlHelper();
+            get
+            {
+                if (_instance == null)
+                    _instance = new XmlHelper();
 
-            return _instance;
+                return _instance;
+            }
         }
         private XmlHelper() { }
 

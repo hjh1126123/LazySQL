@@ -1,2 +1,14 @@
 F:\GitHub2\LazySQL2\SimpleMsSql\obj\Debug\SimpleMsSql.csprojResolveAssemblyReference.cache
 F:\GitHub2\LazySQL2\SimpleMsSql\obj\Debug\SimpleMsSql.csproj.CoreCompileInputs.cache
+D:\Github\LazySQL\SimpleMsSql\bin\Debug\SimpleMsSql.exe.config
+D:\Github\LazySQL\SimpleMsSql\bin\Debug\SimpleMsSql.exe
+D:\Github\LazySQL\SimpleMsSql\bin\Debug\SimpleMsSql.pdb
+D:\Github\LazySQL\SimpleMsSql\bin\Debug\LazySQL.dll
+D:\Github\LazySQL\SimpleMsSql\bin\Debug\LazySQL.MSSQL.dll
+D:\Github\LazySQL\SimpleMsSql\bin\Debug\LazySQL.MSSQL.pdb
+D:\Github\LazySQL\SimpleMsSql\bin\Debug\LazySQL.pdb
+D:\Github\LazySQL\SimpleMsSql\obj\Debug\SimpleMsSql.csprojAssemblyReference.cache
+D:\Github\LazySQL\SimpleMsSql\obj\Debug\SimpleMsSql.csproj.CoreCompileInputs.cache
+D:\Github\LazySQL\SimpleMsSql\obj\Debug\SimpleMsSql.csproj.CopyComplete
+D:\Github\LazySQL\SimpleMsSql\obj\Debug\SimpleMsSql.exe
+D:\Github\LazySQL\SimpleMsSql\obj\Debug\SimpleMsSql.pdb

@@ -178,52 +178,21 @@ namespace LazySQL.Extends
             , out CodeCompileUnit codeCompileUnit)
         {
             provider = CodeDomProvider.CreateProvider("CSharp");
-
-            XmlNode sqlNode = XmlHelper.GetInstance().GetNode(xmlNode, "sql");
-            if (sqlNode == null)
-                throw new Exception($"{name}不包含SQL节点，该XML文档是无效的");
-
-            string sQL = sqlNode.InnerText.Replace("\r", " ").Replace("\t", " ").Replace("\n", " ").Trim();
-
-            //诺是无任何条件标记则为true (即是无 {0},{1},{2},... 中任意一个)
-            bool isNotActiveConditionInsQL;
-
-            //格式化SQL字段，分割SQL并写出对应条件键值
-            List<SqlFormat> sqlList = SqlFormatAction(sQL, maxConditionsCount, out isNotActiveConditionInsQL);
-
-            #region 格式化条件字符
-
-            List<CodeParameterDeclarationExpression> codeParameterDeclarationExpressions = new List<CodeParameterDeclarationExpression>();
+            parameters = null;
+            codeReturnType = null;
+            compilerParameters = null;
+            codeCompileUnit = null;
 
             //从XML中获取Parameters所有内容
-            XmlNode parametersFarther = XmlHelper.GetInstance().GetNode(xmlNode, "parameters");
-            parameters = null;
+            XmlNode parametersFarther = XmlHelper.Instance.GetNode(xmlNode, "parameters");
             if (parametersFarther != null)
             {
                 parameters = parametersFarther.ChildNodes;
             }
-            //将Parameters内容格化式
-            Dictionary<int, List<Dictionary<PARAMETER, string>>> parametersDict = ParFormatAction(codeParameterDeclarationExpressions, parameters);
+            //将Parameters内容格式化
+            Dictionary<int, List<Dictionary<PARAMETER, string>>> parametersDict = ParFormatAction(out List<CodeParameterDeclarationExpression> codeParameterDeclarationExpressions, parameters);
 
-            #endregion
-
-            //返回类型
-            string query = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "query");
-            if (string.IsNullOrWhiteSpace(query))
-                query = "select";
-
-            codeReturnType = query.ConventToTypes();
-
-            //添加系统组件
-            compilerParameters = new CompilerParameters
-            {
-                GenerateExecutable = false,
-                GenerateInMemory = true
-            };
-            compilerParameters.ReferencedAssemblies.Add("System.dll");
-            compilerParameters.ReferencedAssemblies.Add("System.Xml.dll");
-            compilerParameters.ReferencedAssemblies.Add("System.Data.dll");
-
+            //新建代码容器
             codeCompileUnit = new CodeCompileUnit();
 
             //创建命名空间
@@ -231,35 +200,63 @@ namespace LazySQL.Extends
 
             //创建类
             CodeTypeDeclaration codeTypeDeclarations = new CodeTypeDeclaration();
-            codeTypeDeclarations.Name = $"{name}Class";
+            codeTypeDeclarations.Name = $"{name.ToUpper()}_CLASS";
             codeTypeDeclarations.Attributes = MemberAttributes.Public | MemberAttributes.Final;
 
-            //创建方法
-            CodeMemberMethod codeMemberMethod = new CodeMemberMethod
+            //获取所有xml子节点
+            XmlNodeList xmlNodeList = XmlHelper.Instance.GetAllNode(xmlNode);
+            for (var i = 0; i < xmlNodeList.Count; i++)
             {
-                Attributes = MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static
-            };
-            codeMemberMethod.Name = name;
-            codeMemberMethod.ReturnType = new CodeTypeReference(codeReturnType);
+                XmlNode sqlNode = xmlNodeList[i];
+                if (sqlNode.Name.Equals("parameters"))
+                    continue;
 
-            //为方法添加参数
-            codeMemberMethod.Parameters.AddRange(codeParameterDeclarationExpressions.ToArray());
-            List<string> referencedAssemblies = new List<string>();
-            codeMemberMethod.Statements.AddRange(Build(parametersDict
-                , sqlList
-                , connection
-                , isNotActiveConditionInsQL
-                , referencedAssemblies
-                , codeReturnType
-                , query
-                ));
-            if (referencedAssemblies.Count > 0)
-            {
-                compilerParameters.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
+                //返回类型
+                string query = XmlHelper.Instance.GetNodeAttribute(xmlNode, "query");
+                if (string.IsNullOrWhiteSpace(query))
+                    query = "select";
+
+                codeReturnType = query.ConventToTypes();
+
+                //添加系统组件
+                compilerParameters = new CompilerParameters
+                {
+                    GenerateExecutable = false,
+                    GenerateInMemory = true
+                };
+                compilerParameters.ReferencedAssemblies.Add("System.dll");
+                compilerParameters.ReferencedAssemblies.Add("System.Xml.dll");
+                compilerParameters.ReferencedAssemblies.Add("System.Data.dll");
+            
+                //创建方法
+                CodeMemberMethod codeMemberMethod = new CodeMemberMethod
+                {
+                    Attributes = MemberAttributes.Public | MemberAttributes.Final | MemberAttributes.Static
+                };
+                codeMemberMethod.Name = $"{name.ToUpper()}_{sqlNode.Name.ToUpper()}";
+                codeMemberMethod.ReturnType = new CodeTypeReference(codeReturnType);
+
+                //为方法添加参数
+                codeMemberMethod.Parameters.AddRange(codeParameterDeclarationExpressions.ToArray());
+
+                //格式化SQL字段，分割SQL并写出对应条件键值
+                List<string> referencedAssemblies = new List<string>();
+                codeMemberMethod.Statements.AddRange(Build(parametersDict
+                    , SqlFormatAction(sqlNode.InnerText.Replace("\r", " ").Replace("\t", " ").Replace("\n", " ").Trim(), maxConditionsCount, out bool isNotActiveConditionInsQL)
+                    , connection
+                    , isNotActiveConditionInsQL
+                    , referencedAssemblies
+                    , codeReturnType
+                    , query
+                    ));
+                if (referencedAssemblies.Count > 0)
+                {
+                    compilerParameters.ReferencedAssemblies.AddRange(referencedAssemblies.ToArray());
+                }
+                //在类中添加方法
+                codeTypeDeclarations.Members.Add(codeMemberMethod);
             }
 
-            //在类中添加方法
-            codeTypeDeclarations.Members.Add(codeMemberMethod);
             //在命名空间添加类
             nameSpace.Types.Add(codeTypeDeclarations);
             //在代码容器中添加命名空间
@@ -345,6 +342,9 @@ namespace LazySQL.Extends
             , List<CondiIndex> condiIndices
             , ref bool isNotActiveConditionInsQL)
         {
+            if (string.IsNullOrWhiteSpace(sQL))
+                return;
+
             for (var sqlCount = 0; sqlCount < maxConditionsCount; sqlCount++)
             {
                 int index = 0;
@@ -371,17 +371,18 @@ namespace LazySQL.Extends
         /// </summary>
         /// <param name="xmlNode"></param>
         /// <returns></returns>
-        private Dictionary<int, List<Dictionary<PARAMETER, string>>> ParFormatAction(List<CodeParameterDeclarationExpression> codeParameterDeclarationExpressions
+        private Dictionary<int, List<Dictionary<PARAMETER, string>>> ParFormatAction(out List<CodeParameterDeclarationExpression> codeParameterDeclarationExpressions
             , XmlNodeList parameters)
         {
             Dictionary<int, List<Dictionary<PARAMETER, string>>> parametersDict = new Dictionary<int, List<Dictionary<PARAMETER, string>>>();
+            codeParameterDeclarationExpressions = new List<CodeParameterDeclarationExpression>();
             if (parameters != null)
             {
                 for (var i = 0; i < parameters.Count; i++)
                 {
-                    string index = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "index");
-                    string parName = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "name");
-                    bool only = XmlHelper.GetInstance().GetNodeAttribute(parameters[i], "only").ToBool();
+                    string index = XmlHelper.Instance.GetNodeAttribute(parameters[i], "index");
+                    string parName = XmlHelper.Instance.GetNodeAttribute(parameters[i], "name");
+                    bool only = XmlHelper.Instance.GetNodeAttribute(parameters[i], "only").ToBool();
 
                     if (!only)
                     {
@@ -428,16 +429,16 @@ namespace LazySQL.Extends
             Dictionary<PARAMETER, string> tmpDict = new Dictionary<PARAMETER, string>();
 
             //获取节点name属性
-            string name = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "name");
+            string name = XmlHelper.Instance.GetNodeAttribute(xmlNode, "name");
 
             //获取节点symbol属性
-            string symbol = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "symbol");
+            string symbol = XmlHelper.Instance.GetNodeAttribute(xmlNode, "symbol");
 
             //获取节点target属性
-            string target = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "target");
+            string target = XmlHelper.Instance.GetNodeAttribute(xmlNode, "target");
 
             //获取节点template属性
-            string template = XmlHelper.GetInstance().GetNodeAttribute(xmlNode, "template");
+            string template = XmlHelper.Instance.GetNodeAttribute(xmlNode, "template");
 
             #region 节点属性添加至属性字典(parameters)
 

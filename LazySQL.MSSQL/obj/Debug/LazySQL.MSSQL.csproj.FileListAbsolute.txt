@@ -7,3 +7,12 @@ F:\GitHub2\LazySQL2\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.csproj.CoreCompileInpu
 F:\GitHub2\LazySQL2\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.csproj.CopyComplete
 F:\GitHub2\LazySQL2\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.dll
 F:\GitHub2\LazySQL2\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.pdb
+D:\Github\LazySQL\LazySQL.MSSQL\bin\Debug\LazySQL.MSSQL.dll
+D:\Github\LazySQL\LazySQL.MSSQL\bin\Debug\LazySQL.MSSQL.pdb
+D:\Github\LazySQL\LazySQL.MSSQL\bin\Debug\LazySQL.dll
+D:\Github\LazySQL\LazySQL.MSSQL\bin\Debug\LazySQL.pdb
+D:\Github\LazySQL\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.csprojAssemblyReference.cache
+D:\Github\LazySQL\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.csproj.CoreCompileInputs.cache
+D:\Github\LazySQL\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.csproj.CopyComplete
+D:\Github\LazySQL\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.dll
+D:\Github\LazySQL\LazySQL.MSSQL\obj\Debug\LazySQL.MSSQL.pdb

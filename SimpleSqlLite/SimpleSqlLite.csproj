@@ -54,7 +54,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="db\sqlliteTest.db" />
-    <EmbeddedResource Include="SimpleQuery.xml" />
+    <EmbeddedResource Include="Simple.xml" />
     <EmbeddedResource Include="SimpleUpdate.xml" />
     <Content Include="x64\SQLite.Interop.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>

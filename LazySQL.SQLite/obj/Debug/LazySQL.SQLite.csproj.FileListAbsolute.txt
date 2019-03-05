@@ -10,3 +10,15 @@ F:\GitHub2\LazySQL2\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csproj.CoreCompileIn
 F:\GitHub2\LazySQL2\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csproj.CopyComplete
 F:\GitHub2\LazySQL2\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.dll
 F:\GitHub2\LazySQL2\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.pdb
+D:\Github\LazySQL\LazySQL.SQLite\bin\Debug\LazySQL.SQLite.dll
+D:\Github\LazySQL\LazySQL.SQLite\bin\Debug\LazySQL.SQLite.pdb
+D:\Github\LazySQL\LazySQL.SQLite\bin\Debug\LazySQL.dll
+D:\Github\LazySQL\LazySQL.SQLite\bin\Debug\System.Data.SQLite.dll
+D:\Github\LazySQL\LazySQL.SQLite\bin\Debug\LazySQL.pdb
+D:\Github\LazySQL\LazySQL.SQLite\bin\Debug\System.Data.SQLite.xml
+D:\Github\LazySQL\LazySQL.SQLite\bin\Debug\System.Data.SQLite.dll.config
+D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csprojAssemblyReference.cache
+D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csproj.CoreCompileInputs.cache
+D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csproj.CopyComplete
+D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.dll
+D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.pdb
