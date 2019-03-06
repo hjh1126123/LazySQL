@@ -45,9 +45,9 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="CoreFactory\SqlLiteParmsBlueprint.cs" />
+    <Compile Include="CoreFactory\SQLiteParmsBlueprint.cs" />
     <Compile Include="CoreFactory\SQLLiteTemplateBlueprint.cs" />
-    <Compile Include="CoreFactory\SqlLiteParamterQuery.cs" />
+    <Compile Include="CoreFactory\SQLiteParamterQuery.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SQLiteFactory.cs" />
     <Compile Include="SQLiteCore.cs" />

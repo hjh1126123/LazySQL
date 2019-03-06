@@ -584,7 +584,8 @@ namespace LazySQL.Extends
 
                 for (int parametersChildCount = 0; parametersChildCount < parameters[CondiIndex].Count; parametersChildCount++)
                 {
-                    tryCodeStatementCollection.AddRange(paramterQuery.Create(stringBuilderBlueprintTmp
+                    tryCodeStatementCollection.AddRange(paramterQuery.Create(
+                        stringBuilderBlueprintTmp
                         , parameters[CondiIndex][parametersChildCount]
                         , cONDITION_TYPE));
                 }

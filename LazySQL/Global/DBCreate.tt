@@ -1,29 +1,99 @@
-﻿<#@ template debug="true" hostSpecific="true" #>
-<#@ output extension=".cs" #>
-<#@ Assembly Name="System.Core" #>
-<#@ Assembly Name="System.Windows.Forms" #>
-<#@ import namespace="System" #>
-<#@ import namespace="System.IO" #>
-<#@ import namespace="System.Diagnostics" #>
+﻿<#@ template language="C#" debug="True" hostspecific="True" #>
+<#@ assembly name="System.Data" #>
+<#@ assembly name="System.xml" #>
+<#@ assembly name="System.Core"#>
 <#@ import namespace="System.Linq" #>
-<#@ import namespace="System.Collections" #>
-<#@ import namespace="System.Collections.Generic" #> 
+<#@ import namespace="System.Text" #>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.SqlClient" #>
+<#@ import namespace="System.Collections.Generic" #>
+
+<#@include file="MultipleOutputHelper.ttinclude" #> 
+
+//选择数据库类型
+<# var dbType = LazyType.MSSQL; #>
+
+<# var manager = Manager.Create(Host, GenerationEnvironment); #>
 <#
-   // insert your template code here the tempalte code will be syntaxhighlighted 
-   // and you will have intellisense for all namespaces in the full edition
-   string Greeting = "Hello";
+	var connName = "myDB";
+	var connectionText = "Data Source=120.24.80.151;Initial Catalog=hdb21;Persist Security Info=True;User ID=sahdb;Password=www.baidu.com;MultipleActiveResultSets=true";
+
+	var conn = new SqlConnection(connectionText);
+	conn.Open();
+	
+	string sql = "SELECT (case when a.colorder=1 then d.name else null end) 表名, a.colorder 字段序号,a.name 字段名,(case when COLUMNPROPERTY( a.id,a.name,'IsIdentity')=1 then '√'else '' end) 标识, (case when (SELECT count(*) FROM sysobjects WHERE (name in (SELECT name FROM sysindexes WHERE (id = a.id) AND (indid in (SELECT indid FROM sysindexkeys WHERE (id = a.id) AND (colid in (SELECT colid FROM syscolumns WHERE (id = a.id) AND (name = a.name))))))) AND (xtype = 'PK'))>0 then '√' else '' end) 主键,b.name 类型,a.length 占用字节数, COLUMNPROPERTY(a.id,a.name,'PRECISION') as 长度, isnull(COLUMNPROPERTY(a.id,a.name,'Scale'),0) as 小数位数,(case when a.isnullable=1 then '√'else '' end) 允许空, isnull(e.text,'') 默认值,isnull(g.[value], ' ') AS [说明] FROM syscolumns a left join systypes b on a.xtype=b.xusertype inner join sysobjects d on a.id=d.id and d.xtype='U' and d.name<>'dtproperties' left join syscomments e on a.cdefault=e.id left join sys.extended_properties g on a.id=g.major_id AND a.colid=g.minor_id left join sys.extended_properties f on d.id=f.class and f.minor_id=0 where b.name is not null order by a.id,a.colorder";
+
+	SqlDataAdapter adapter = new SqlDataAdapter(sql,conn);
+	DataSet ds = new DataSet();
+	adapter.Fill(ds);
+	DataTable dt = ds.Tables[0];
+
+	Dictionary<string,List<string>> dicts = new Dictionary<string,List<string>>();
+
+	string tmp_Table_Name = string.Empty;
+	for(var i = 0; i < dt.Rows.Count; i++){
+		string table_name = dt.Rows[i]["表名"].ToString();
+		string field = dt.Rows[i]["字段名"].ToString() + ":" +  dt.Rows[i]["类型"].ToString();
+		if(!String.IsNullOrWhiteSpace(table_name)){
+			tmp_Table_Name = table_name;
+			if(!dicts.ContainsKey(table_name)){
+				dicts.Add(table_name,new List<string>());
+			}
+			dicts[table_name].Add(field);
+		}else{
+			if(!String.IsNullOrWhiteSpace(tmp_Table_Name)){
+				dicts[tmp_Table_Name].Add(field);
+			}
+		}
+    }
+
+	manager.StartNewFile("LazyDB" + ".cs");
 #>
-// This is the output code from your template
-// you only get syntax-highlighting here - not intellisense
-namespace MyNameSpace{
-  class MyGeneratedClass{
-     static void main (string[] args){
-       System.Console.WriteLine("<#= Greeting #>, the time is now: <#= System.DateTime.Now.ToString() #>");
-     }
-  }
+using System;
+<#
+	switch(dbType){
+		case LazyType.MSSQL:
+#>
+using LazySQL.MSSQL;
+<#			
+			break;
+		case LazyType.MYSQL:
+#>
+using LazySQL.MYSQL;
+<#
+			break;
+		case LazyType.SQLite:
+#>
+using LazySQL.SQLite;
+<#
+			break;
+	}
+#>
+namespace LazySQL.DB
+{
+	public class LazyDB
+	{
+		public void Init()
+		{
+<# 
+	switch(dbType){
+		case LazyType.MSSQL:
+			#>
+			MSSQLFactory mSSQLFactory = new MSSQLFactory();
+			mSSQLFactory.AddConnection("myDB","<#= connectionText #>",10,100,10);
+			mSSQLFactory.BuildMethod();
+			mSSQLFactory.Method_DataTable();
+			<#
+			break;
+    }
+#>
+		}
+	}
 }
- 
-<#+
-  // Insert any template procedures here
-  void foo(){}
+<#
+	manager.EndBlock();
+	ds.Dispose();
+	adapter.Dispose();
+	conn.Dispose();
+	manager.Process(true);
 #>
