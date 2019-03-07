@@ -5,6 +5,8 @@ using System.Reflection;
 
 using System.Collections.Generic;
 
+using System.Data.SqlClient;
+
 namespace SimpleSqlLite
 {
     class Program
@@ -13,6 +15,7 @@ namespace SimpleSqlLite
         {
             try
             {
+
                 SQLiteFactory sQLiteFactory = new SQLiteFactory();
 
                 sQLiteFactory.SetAssembly(Assembly.GetExecutingAssembly());

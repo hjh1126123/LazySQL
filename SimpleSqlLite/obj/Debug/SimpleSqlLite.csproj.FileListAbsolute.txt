@@ -32,3 +32,4 @@ D:\Github\LazySQL\SimpleSqlLite\obj\Debug\SimpleSqlLite.csproj.CoreCompileInputs
 D:\Github\LazySQL\SimpleSqlLite\obj\Debug\SimpleSqlLite.csproj.CopyComplete
 D:\Github\LazySQL\SimpleSqlLite\obj\Debug\SimpleSqlLite.exe
 D:\Github\LazySQL\SimpleSqlLite\obj\Debug\SimpleSqlLite.pdb
+F:\GitHub2\LazySQL2\SimpleSqlLite\obj\Debug\SimpleSqlLite.csprojAssemblyReference.cache

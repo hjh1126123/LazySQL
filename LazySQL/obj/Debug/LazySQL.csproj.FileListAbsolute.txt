@@ -10,3 +10,4 @@ D:\Github\LazySQL\LazySQL\obj\Debug\LazySQL.csproj.CoreCompileInputs.cache
 D:\Github\LazySQL\LazySQL\obj\Debug\LazySQL.dll
 D:\Github\LazySQL\LazySQL\obj\Debug\LazySQL.pdb
 D:\Github\LazySQL\LazySQL\obj\Debug\LazySQL.csprojAssemblyReference.cache
+F:\GitHub2\LazySQL2\LazySQL\obj\Debug\LazySQL.csprojAssemblyReference.cache

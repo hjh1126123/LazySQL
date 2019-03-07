@@ -22,3 +22,4 @@ D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csproj.CoreCompileInpu
 D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csproj.CopyComplete
 D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.dll
 D:\Github\LazySQL\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.pdb
+F:\GitHub2\LazySQL2\LazySQL.SQLite\obj\Debug\LazySQL.SQLite.csprojAssemblyReference.cache

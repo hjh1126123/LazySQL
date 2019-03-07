@@ -1,22 +1,60 @@
-<#@ assembly name="System.Core"
-#><#@ assembly name="System.Data.Linq"
-#><#@ assembly name="EnvDTE"
-#><#@ assembly name="System.Xml"
-#><#@ assembly name="System.Xml.Linq"
-#><#@ import namespace="System.Collections.Generic"
-#><#@ import namespace="System.IO"
-#><#@ import namespace="System.Text"
-#><#@ import namespace="Microsoft.VisualStudio.TextTemplating"
-#><#+
-// https://raw.github.com/damieng/DamienGKit
-// http://damieng.com/blog/2009/11/06/multiple-outputs-from-t4-made-easy-revisited
-
-// Manager class records the various blocks so it can split them up
-
-enum LazyType {
+<#@ assembly name="System.Core"#>
+<#@ assembly name="System.Data.Linq"#>
+<#@ assembly name="EnvDTE"#>
+<#@ assembly name="System.Xml"#>
+<#@ assembly name="System.Xml.Linq"#>
+<#@ import namespace="System.Collections.Generic"#>
+<#@ import namespace="System.IO"#>
+<#@ import namespace="System.Text"#>
+<#@ import namespace="System.Data" #>
+<#@ import namespace="System.Data.Common" #>
+<#@ import namespace="Microsoft.VisualStudio.TextTemplating"#>
+<#+
+public const string MssQLComm = "SELECT (case when a.colorder=1 then d.name else null end) [TABLE], a.colorder [FIELD_NUM],a.name [FIELD_NAME],(case when COLUMNPROPERTY( a.id,a.name,'IsIdentity')=1 then 'YES' else 'NO' end) [IDENTITY], (case when (SELECT count(*) FROM sysobjects WHERE (name in (SELECT name FROM sysindexes WHERE (id = a.id) AND (indid in (SELECT indid FROM sysindexkeys WHERE (id = a.id) AND (colid in (SELECT colid FROM syscolumns WHERE (id = a.id) AND (name = a.name))))))) AND (xtype = 'PK')) > 0 then 'YES' else 'NO' end) [KEY],b.name [FIELD_TYPE],a.length [FIELD_BIT], COLUMNPROPERTY(a.id,a.name,'PRECISION') as [FIELD_LENGTH], isnull(COLUMNPROPERTY(a.id,a.name,'Scale'),0) as [DECIMAL_PLACES],(case when a.isnullable=1 then '¡Ì'else '' end) [ABLE_NULL], isnull(e.text,'') [IS_DEFAULT],isnull(g.[value], ' ') AS [DESCRIBE] FROM syscolumns a left join systypes b on a.xtype=b.xusertype inner join sysobjects d on a.id=d.id and d.xtype='U' and d.name <> 'dtproperties' left join syscomments e on a.cdefault=e.id left join sys.extended_properties g on a.id=g.major_id AND a.colid=g.minor_id left join sys.extended_properties f on d.id=f.class and f.minor_id=0 where b.name is not null order by a.id,a.colorder";
+public const string MysQLComm = "";
+public const string SQLiteComm = "";
+public enum LazyType {
 	SQLite,
 	MSSQL,
 	MYSQL
+}
+public class DBHelper {
+	private static DBHelper _instance;
+	public static DBHelper Instance
+	{
+		get{
+			if(_instance == null)
+				_instance = new DBHelper();
+
+			return _instance;
+		}
+	}
+	public Dictionary<string,List<string>> Init(SqlConnection conn){
+		conn.Open();
+		SqlDataAdapter adapter = new SqlDataAdapter(MssQLComm,conn);
+		DataSet ds = new DataSet();
+		adapter.Fill(ds);
+		DataTable dt = ds.Tables[0];
+		Dictionary<string,List<string>> dicts = new Dictionary<string,List<string>>();
+		string tmp_Table_Name = string.Empty;
+		for(var i = 0; i < dt.Rows.Count; i++){
+			string table_name = dt.Rows[i]["TABLE"].ToString();
+			string field = dt.Rows[i]["FIELD_NAME"].ToString() + ":" +  dt.Rows[i]["FIELD_TYPE"].ToString();
+			if(!String.IsNullOrWhiteSpace(table_name)){
+				tmp_Table_Name = table_name;
+				if(!dicts.ContainsKey(table_name)){
+					dicts.Add(table_name,new List<string>());
+			}
+				dicts[table_name].Add(field);
+			}else{
+				if(!String.IsNullOrWhiteSpace(tmp_Table_Name)){
+					dicts[tmp_Table_Name].Add(field);
+				}
+			}
+		}
+
+		return dicts;
+	}
 }
 
 class Manager {
@@ -185,4 +223,5 @@ class Manager {
                 checkOutAction.EndInvoke(checkOutAction.BeginInvoke(fileName, null, null));
         }
     }
-} #>
+}
+#>
